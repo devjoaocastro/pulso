@@ -221,6 +221,8 @@ Three-tier memory architecture:
 | **Hardened** | 21 vulnerabilities found and fixed (3 critical, 5 high) |
 | **BYOK** | Your API keys, your models, your data. Zero shared credentials |
 
+Found a vulnerability? Please report it responsibly. See [SECURITY.md](SECURITY.md).
+
 ## Architecture
 
 ```
@@ -265,10 +267,6 @@ All plans include **BYOK** (Bring Your Own Key) — your keys, your models, your
 - [GitHub Issues](https://github.com/usepulso/pulso/issues) — Bug reports and feature requests
 - [GitHub Discussions](https://github.com/usepulso/pulso/discussions) — Questions, ideas, feedback
 - [@usepulso](https://x.com/usepulso) — Updates and announcements
-
-## Security
-
-Found a vulnerability? Please report it responsibly. See [SECURITY.md](SECURITY.md).
 
 ## License
 
