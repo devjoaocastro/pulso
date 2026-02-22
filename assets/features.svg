@@ -1,92 +1,68 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="900" height="360" viewBox="0 0 900 360">
-  <defs>
-    <linearGradient id="bg3" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#0a0a0a"/>
-      <stop offset="100%" stop-color="#111111"/>
-    </linearGradient>
-    <linearGradient id="accent3" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#FF512F"/>
-      <stop offset="100%" stop-color="#F09819"/>
-    </linearGradient>
-    <filter id="s3">
-      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000000" flood-opacity="0.25"/>
-    </filter>
-  </defs>
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="320" viewBox="0 0 900 320">
+  <rect width="900" height="320" fill="#09090b" rx="8"/>
+  <rect width="900" height="320" fill="none" stroke="#1c1c1f" rx="8"/>
 
-  <rect width="900" height="360" fill="url(#bg3)" rx="12"/>
-  <rect width="900" height="360" fill="none" stroke="#222222" rx="12"/>
+  <text x="450" y="36" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="10" font-weight="500" letter-spacing="2" fill="#52525b">WHAT YOUR AGENTS CAN DO</text>
 
-  <!-- Title -->
-  <text x="450" y="40" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#555555" letter-spacing="3">CAPABILITIES</text>
+  <g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">
 
-  <!-- Row 1 -->
-  <!-- Multi-Agent -->
-  <g filter="url(#s3)">
-    <rect x="30" y="65" width="270" height="120" rx="10" fill="#141414" stroke="#1e1e1e"/>
-    <rect x="30" y="65" width="270" height="3" rx="1.5" fill="#FF512F"/>
-    <text x="50" y="95" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#ffffff">Multi-Agent Swarms</text>
-    <text x="50" y="115" font-family="system-ui, sans-serif" font-size="10" fill="#888888">Parallel agent teams with DAG execution.</text>
-    <text x="50" y="132" font-family="system-ui, sans-serif" font-size="10" fill="#888888">Smart model routing picks the best AI</text>
-    <text x="50" y="149" font-family="system-ui, sans-serif" font-size="10" fill="#888888">for each task. Budget caps per agent.</text>
-    <text x="50" y="173" font-family="system-ui, sans-serif" font-size="9" font-weight="600" fill="#FF512F">140+ TEMPLATES · VISUAL BUILDER · YAML</text>
+    <!-- Row 1 -->
+    <!-- Multi-Agent -->
+    <rect x="40" y="56" width="265" height="110" rx="6" fill="#18181b" stroke="#27272a"/>
+    <circle cx="58" cy="80" r="4" fill="#f97316"/>
+    <text x="70" y="84" font-size="12" font-weight="600" fill="#e4e4e7">Multi-Agent Swarms</text>
+    <text x="56" y="104" font-size="9.5" fill="#71717a">Teams of specialized agents working in parallel.</text>
+    <text x="56" y="118" font-size="9.5" fill="#71717a">Smart routing picks the best model for each task.</text>
+    <text x="56" y="132" font-size="9.5" fill="#71717a">Hard budget caps. Visual builder. 140+ templates.</text>
+    <text x="56" y="154" font-size="8" font-weight="500" letter-spacing="0.5" fill="#52525b">YAML · Drag-and-drop · Natural language</text>
+
+    <!-- Computer Control -->
+    <rect x="317" y="56" width="265" height="110" rx="6" fill="#18181b" stroke="#27272a"/>
+    <circle cx="335" cy="80" r="4" fill="#22c55e"/>
+    <text x="347" y="84" font-size="12" font-weight="600" fill="#e4e4e7">Computer Control</text>
+    <text x="333" y="104" font-size="9.5" fill="#71717a">Screenshot + OCR + mouse + keyboard.</text>
+    <text x="333" y="118" font-size="9.5" fill="#71717a">Operate any app visually. Run shell commands.</text>
+    <text x="333" y="132" font-size="9.5" fill="#71717a">Manage files, apps, browser, system settings.</text>
+    <text x="333" y="154" font-size="8" font-weight="500" letter-spacing="0.5" fill="#52525b">macOS · Windows · Linux · 65+ commands</text>
+
+    <!-- Knowledge Graph -->
+    <rect x="594" y="56" width="266" height="110" rx="6" fill="#18181b" stroke="#27272a"/>
+    <circle cx="612" cy="80" r="4" fill="#3b82f6"/>
+    <text x="624" y="84" font-size="12" font-weight="600" fill="#e4e4e7">Knowledge Graph</text>
+    <text x="610" y="104" font-size="9.5" fill="#71717a">Entities and relationships from conversations.</text>
+    <text x="610" y="118" font-size="9.5" fill="#71717a">Semantic search finds context by meaning.</text>
+    <text x="610" y="132" font-size="9.5" fill="#71717a">Natural decay keeps memory fresh and relevant.</text>
+    <text x="610" y="154" font-size="8" font-weight="500" letter-spacing="0.5" fill="#52525b">Up to 100,000 items · Auto-extraction</text>
+
+    <!-- Row 2 -->
+    <!-- 12 Channels -->
+    <rect x="40" y="180" width="265" height="110" rx="6" fill="#18181b" stroke="#27272a"/>
+    <circle cx="58" cy="204" r="4" fill="#a855f7"/>
+    <text x="70" y="208" font-size="12" font-weight="600" fill="#e4e4e7">12 Messaging Channels</text>
+    <text x="56" y="228" font-size="9.5" fill="#71717a">Telegram, WhatsApp, Slack, Discord, Signal,</text>
+    <text x="56" y="242" font-size="9.5" fill="#71717a">iMessage, Teams, Google Chat, Matrix, IG, LINE.</text>
+    <text x="56" y="256" font-size="9.5" fill="#71717a">Full agent loop on every channel. Not just text.</text>
+    <text x="56" y="278" font-size="8" font-weight="500" letter-spacing="0.5" fill="#52525b">Tool use · Reasoning · Memory · Images</text>
+
+    <!-- Smart Home -->
+    <rect x="317" y="180" width="265" height="110" rx="6" fill="#18181b" stroke="#27272a"/>
+    <circle cx="335" cy="204" r="4" fill="#eab308"/>
+    <text x="347" y="208" font-size="12" font-weight="600" fill="#e4e4e7">Smart Home + Media</text>
+    <text x="333" y="228" font-size="9.5" fill="#71717a">Philips Hue lights, scenes, brightness, color.</text>
+    <text x="333" y="242" font-size="9.5" fill="#71717a">Sonos multi-room music. Spotify playback.</text>
+    <text x="333" y="256" font-size="9.5" fill="#71717a">Home Assistant for locks, blinds, climate, more.</text>
+    <text x="333" y="278" font-size="8" font-weight="500" letter-spacing="0.5" fill="#52525b">Local control · No cloud dependency</text>
+
+    <!-- Automations -->
+    <rect x="594" y="180" width="266" height="110" rx="6" fill="#18181b" stroke="#27272a"/>
+    <circle cx="612" cy="204" r="4" fill="#ef4444"/>
+    <text x="624" y="208" font-size="12" font-weight="600" fill="#e4e4e7">24/7 Automations</text>
+    <text x="610" y="228" font-size="9.5" fill="#71717a">Event-driven triggers run full agent loops.</text>
+    <text x="610" y="242" font-size="9.5" fill="#71717a">Email, schedule, webhook, or custom events.</text>
+    <text x="610" y="256" font-size="9.5" fill="#71717a">Budget caps per trigger. Multi-channel alerts.</text>
+    <text x="610" y="278" font-size="8" font-weight="500" letter-spacing="0.5" fill="#52525b">Up to 100 triggers · Always running</text>
+
   </g>
 
-  <!-- Computer Control -->
-  <g filter="url(#s3)">
-    <rect x="315" y="65" width="270" height="120" rx="10" fill="#141414" stroke="#1e1e1e"/>
-    <rect x="315" y="65" width="270" height="3" rx="1.5" fill="#22c55e"/>
-    <text x="335" y="95" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#ffffff">Computer Control</text>
-    <text x="335" y="115" font-family="system-ui, sans-serif" font-size="10" fill="#888888">Agents run shell commands, manage files,</text>
-    <text x="335" y="132" font-family="system-ui, sans-serif" font-size="10" fill="#888888">control apps, automate browsers, and</text>
-    <text x="335" y="149" font-family="system-ui, sans-serif" font-size="10" fill="#888888">monitor your system. From any channel.</text>
-    <text x="335" y="173" font-family="system-ui, sans-serif" font-size="9" font-weight="600" fill="#22c55e">MACOS · WINDOWS · LINUX · 65+ COMMANDS</text>
-  </g>
-
-  <!-- Knowledge Graph -->
-  <g filter="url(#s3)">
-    <rect x="600" y="65" width="270" height="120" rx="10" fill="#141414" stroke="#1e1e1e"/>
-    <rect x="600" y="65" width="270" height="3" rx="1.5" fill="#3b82f6"/>
-    <text x="620" y="95" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#ffffff">Knowledge Graph</text>
-    <text x="620" y="115" font-family="system-ui, sans-serif" font-size="10" fill="#888888">Agents build a memory of entities,</text>
-    <text x="620" y="132" font-family="system-ui, sans-serif" font-size="10" fill="#888888">relationships, and preferences. Semantic</text>
-    <text x="620" y="149" font-family="system-ui, sans-serif" font-size="10" fill="#888888">search by meaning. Natural memory decay.</text>
-    <text x="620" y="173" font-family="system-ui, sans-serif" font-size="9" font-weight="600" fill="#3b82f6">UP TO 100K ITEMS · AUTO-EXTRACTION</text>
-  </g>
-
-  <!-- Row 2 -->
-  <!-- 12 Channels -->
-  <g filter="url(#s3)">
-    <rect x="30" y="205" width="270" height="120" rx="10" fill="#141414" stroke="#1e1e1e"/>
-    <rect x="30" y="205" width="270" height="3" rx="1.5" fill="#8b5cf6"/>
-    <text x="50" y="235" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#ffffff">12 Channels</text>
-    <text x="50" y="255" font-family="system-ui, sans-serif" font-size="10" fill="#888888">Telegram, WhatsApp, Slack, Discord, Signal,</text>
-    <text x="50" y="272" font-family="system-ui, sans-serif" font-size="10" fill="#888888">iMessage, Teams, Google Chat, Matrix,</text>
-    <text x="50" y="289" font-family="system-ui, sans-serif" font-size="10" fill="#888888">Instagram, Messenger, LINE.</text>
-    <text x="50" y="313" font-family="system-ui, sans-serif" font-size="9" font-weight="600" fill="#8b5cf6">FULL AGENT LOOP ON EVERY CHANNEL</text>
-  </g>
-
-  <!-- BYOK -->
-  <g filter="url(#s3)">
-    <rect x="315" y="205" width="270" height="120" rx="10" fill="#141414" stroke="#1e1e1e"/>
-    <rect x="315" y="205" width="270" height="3" rx="1.5" fill="#f59e0b"/>
-    <text x="335" y="235" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#ffffff">Bring Your Own Keys</text>
-    <text x="335" y="255" font-family="system-ui, sans-serif" font-size="10" fill="#888888">Anthropic, OpenAI, Google, DeepSeek,</text>
-    <text x="335" y="272" font-family="system-ui, sans-serif" font-size="10" fill="#888888">Mistral, Ollama, or 200+ models via</text>
-    <text x="335" y="289" font-family="system-ui, sans-serif" font-size="10" fill="#888888">OpenRouter. Your keys. Your data.</text>
-    <text x="335" y="313" font-family="system-ui, sans-serif" font-size="9" font-weight="600" fill="#f59e0b">ZERO TRAINING ON YOUR DATA · AES-256</text>
-  </g>
-
-  <!-- Automations -->
-  <g filter="url(#s3)">
-    <rect x="600" y="205" width="270" height="120" rx="10" fill="#141414" stroke="#1e1e1e"/>
-    <rect x="600" y="205" width="270" height="3" rx="1.5" fill="#ef4444"/>
-    <text x="620" y="235" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#ffffff">24/7 Automations</text>
-    <text x="620" y="255" font-family="system-ui, sans-serif" font-size="10" fill="#888888">Event-driven triggers that run full agent</text>
-    <text x="620" y="272" font-family="system-ui, sans-serif" font-size="10" fill="#888888">loops automatically. Email arrives, agent</text>
-    <text x="620" y="289" font-family="system-ui, sans-serif" font-size="10" fill="#888888">summarizes, drafts reply, notifies you.</text>
-    <text x="620" y="313" font-family="system-ui, sans-serif" font-size="9" font-weight="600" fill="#ef4444">UP TO 100 TRIGGERS · BUDGET CAPS</text>
-  </g>
-
-  <!-- Bottom line -->
-  <text x="450" y="352" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#333333">© 2026 CodeAhead Lda · runpulso.com</text>
+  <text x="450" y="312" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="7" fill="#27272a">© 2026 CodeAhead Lda · runpulso.com</text>
 </svg>

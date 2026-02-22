@@ -1,86 +1,39 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="900" height="300" viewBox="0 0 900 300">
-  <defs>
-    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#0a0a0a"/>
-      <stop offset="50%" stop-color="#111111"/>
-      <stop offset="100%" stop-color="#0a0a0a"/>
-    </linearGradient>
-    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#FF512F"/>
-      <stop offset="100%" stop-color="#F09819"/>
-    </linearGradient>
-    <linearGradient id="glow" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#FF512F" stop-opacity="0.15"/>
-      <stop offset="50%" stop-color="#FF512F" stop-opacity="0.05"/>
-      <stop offset="100%" stop-color="#F09819" stop-opacity="0.15"/>
-    </linearGradient>
-    <filter id="blur">
-      <feGaussianBlur in="SourceGraphic" stdDeviation="40"/>
-    </filter>
-  </defs>
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="240" viewBox="0 0 900 240">
+  <rect width="900" height="240" fill="#09090b"/>
 
-  <!-- Background -->
-  <rect width="900" height="300" fill="url(#bg)"/>
+  <!-- Subtle top border -->
+  <rect x="0" y="0" width="900" height="1" fill="#27272a"/>
 
-  <!-- Subtle grid pattern -->
-  <g opacity="0.03" stroke="#ffffff" stroke-width="0.5">
-    <line x1="0" y1="50" x2="900" y2="50"/>
-    <line x1="0" y1="100" x2="900" y2="100"/>
-    <line x1="0" y1="150" x2="900" y2="150"/>
-    <line x1="0" y1="200" x2="900" y2="200"/>
-    <line x1="0" y1="250" x2="900" y2="250"/>
-    <line x1="150" y1="0" x2="150" y2="300"/>
-    <line x1="300" y1="0" x2="300" y2="300"/>
-    <line x1="450" y1="0" x2="450" y2="300"/>
-    <line x1="600" y1="0" x2="600" y2="300"/>
-    <line x1="750" y1="0" x2="750" y2="300"/>
-  </g>
-
-  <!-- Glow effects -->
-  <ellipse cx="300" cy="150" rx="200" ry="120" fill="#FF512F" opacity="0.06" filter="url(#blur)"/>
-  <ellipse cx="600" cy="150" rx="200" ry="120" fill="#F09819" opacity="0.04" filter="url(#blur)"/>
-
-  <!-- Top accent line -->
-  <rect x="0" y="0" width="900" height="2" fill="url(#accent)"/>
-
-  <!-- Brand name -->
-  <text x="450" y="120" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="64" font-weight="800" letter-spacing="8" fill="#ffffff">PULSO</text>
+  <!-- Brand -->
+  <text x="450" y="88" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="48" font-weight="700" letter-spacing="6" fill="#fafafa">PULSO</text>
 
   <!-- Tagline -->
-  <text x="450" y="165" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="17" font-weight="400" letter-spacing="4" fill="#888888">AI AGENTS THAT ACTUALLY DO THINGS</text>
+  <text x="450" y="122" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14" font-weight="400" letter-spacing="1.5" fill="#71717a">AI agents that actually do things</text>
 
-  <!-- Stat pills -->
-  <g transform="translate(135, 210)">
-    <!-- 12 Channels -->
-    <rect x="0" y="0" width="120" height="34" rx="17" fill="#ffffff" fill-opacity="0.06" stroke="#ffffff" stroke-opacity="0.08"/>
-    <text x="60" y="13" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#FF512F" letter-spacing="0.5">12</text>
-    <text x="60" y="27" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" font-weight="500" fill="#666666" letter-spacing="1">CHANNELS</text>
-  </g>
-  <g transform="translate(275, 210)">
-    <!-- 350+ Tools -->
-    <rect x="0" y="0" width="120" height="34" rx="17" fill="#ffffff" fill-opacity="0.06" stroke="#ffffff" stroke-opacity="0.08"/>
-    <text x="60" y="13" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#FF512F" letter-spacing="0.5">350+</text>
-    <text x="60" y="27" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" font-weight="500" fill="#666666" letter-spacing="1">TOOLS</text>
-  </g>
-  <g transform="translate(415, 210)">
-    <!-- 200+ Models -->
-    <rect x="0" y="0" width="120" height="34" rx="17" fill="#ffffff" fill-opacity="0.06" stroke="#ffffff" stroke-opacity="0.08"/>
-    <text x="60" y="13" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#FF512F" letter-spacing="0.5">200+</text>
-    <text x="60" y="27" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" font-weight="500" fill="#666666" letter-spacing="1">AI MODELS</text>
-  </g>
-  <g transform="translate(555, 210)">
-    <!-- 6 Platforms -->
-    <rect x="0" y="0" width="120" height="34" rx="17" fill="#ffffff" fill-opacity="0.06" stroke="#ffffff" stroke-opacity="0.08"/>
-    <text x="60" y="13" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#FF512F" letter-spacing="0.5">6</text>
-    <text x="60" y="27" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" font-weight="500" fill="#666666" letter-spacing="1">PLATFORMS</text>
-  </g>
-  <g transform="translate(695, 210)">
-    <!-- Edge -->
-    <rect x="0" y="0" width="120" height="34" rx="17" fill="#ffffff" fill-opacity="0.06" stroke="#ffffff" stroke-opacity="0.08"/>
-    <text x="60" y="13" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#FF512F" letter-spacing="0.5">&lt;50ms</text>
-    <text x="60" y="27" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" font-weight="500" fill="#666666" letter-spacing="1">GLOBAL EDGE</text>
+  <!-- Divider line -->
+  <rect x="380" y="144" width="140" height="1" fill="#27272a"/>
+
+  <!-- Stats row -->
+  <g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" text-anchor="middle">
+    <text x="168" y="190" font-size="20" font-weight="600" fill="#fafafa">12</text>
+    <text x="168" y="208" font-size="10" font-weight="500" letter-spacing="1.5" fill="#52525b">CHANNELS</text>
+
+    <rect x="270" y="178" width="1" height="36" fill="#27272a"/>
+
+    <text x="348" y="190" font-size="20" font-weight="600" fill="#fafafa">350+</text>
+    <text x="348" y="208" font-size="10" font-weight="500" letter-spacing="1.5" fill="#52525b">TOOLS</text>
+
+    <rect x="432" y="178" width="1" height="36" fill="#27272a"/>
+
+    <text x="510" y="190" font-size="20" font-weight="600" fill="#fafafa">200+</text>
+    <text x="510" y="208" font-size="10" font-weight="500" letter-spacing="1.5" fill="#52525b">AI MODELS</text>
+
+    <rect x="594" y="178" width="1" height="36" fill="#27272a"/>
+
+    <text x="672" y="190" font-size="20" font-weight="600" fill="#fafafa">6</text>
+    <text x="672" y="208" font-size="10" font-weight="500" letter-spacing="1.5" fill="#52525b">PLATFORMS</text>
   </g>
 
-  <!-- Bottom accent line -->
-  <rect x="0" y="298" width="900" height="2" fill="url(#accent)"/>
+  <!-- Bottom border -->
+  <rect x="0" y="239" width="900" height="1" fill="#27272a"/>
 </svg>
