@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="360" viewBox="0 0 900 360">
+  <defs>
+    <linearGradient id="bg3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a0a0a"/>
+      <stop offset="100%" stop-color="#111111"/>
+    </linearGradient>
+    <linearGradient id="accent3" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#FF512F"/>
+      <stop offset="100%" stop-color="#F09819"/>
+    </linearGradient>
+    <filter id="s3">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000000" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+
+  <rect width="900" height="360" fill="url(#bg3)" rx="12"/>
+  <rect width="900" height="360" fill="none" stroke="#222222" rx="12"/>
+
+  <!-- Title -->
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#555555" letter-spacing="3">CAPABILITIES</text>
+
+  <!-- Row 1 -->
+  <!-- Multi-Agent -->
+  <g filter="url(#s3)">
+    <rect x="30" y="65" width="270" height="120" rx="10" fill="#141414" stroke="#1e1e1e"/>
+    <rect x="30" y="65" width="270" height="3" rx="1.5" fill="#FF512F"/>
+    <text x="50" y="95" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#ffffff">Multi-Agent Swarms</text>
+    <text x="50" y="115" font-family="system-ui, sans-serif" font-size="10" fill="#888888">Parallel agent teams with DAG execution.</text>
+    <text x="50" y="132" font-family="system-ui, sans-serif" font-size="10" fill="#888888">Smart model routing picks the best AI</text>
+    <text x="50" y="149" font-family="system-ui, sans-serif" font-size="10" fill="#888888">for each task. Budget caps per agent.</text>
+    <text x="50" y="173" font-family="system-ui, sans-serif" font-size="9" font-weight="600" fill="#FF512F">140+ TEMPLATES · VISUAL BUILDER · YAML</text>
+  </g>
+
+  <!-- Computer Control -->
+  <g filter="url(#s3)">
+    <rect x="315" y="65" width="270" height="120" rx="10" fill="#141414" stroke="#1e1e1e"/>
+    <rect x="315" y="65" width="270" height="3" rx="1.5" fill="#22c55e"/>
+    <text x="335" y="95" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#ffffff">Computer Control</text>
+    <text x="335" y="115" font-family="system-ui, sans-serif" font-size="10" fill="#888888">Agents run shell commands, manage files,</text>
+    <text x="335" y="132" font-family="system-ui, sans-serif" font-size="10" fill="#888888">control apps, automate browsers, and</text>
+    <text x="335" y="149" font-family="system-ui, sans-serif" font-size="10" fill="#888888">monitor your system. From any channel.</text>
+    <text x="335" y="173" font-family="system-ui, sans-serif" font-size="9" font-weight="600" fill="#22c55e">MACOS · WINDOWS · LINUX · 65+ COMMANDS</text>
+  </g>
+
+  <!-- Knowledge Graph -->
+  <g filter="url(#s3)">
+    <rect x="600" y="65" width="270" height="120" rx="10" fill="#141414" stroke="#1e1e1e"/>
+    <rect x="600" y="65" width="270" height="3" rx="1.5" fill="#3b82f6"/>
+    <text x="620" y="95" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#ffffff">Knowledge Graph</text>
+    <text x="620" y="115" font-family="system-ui, sans-serif" font-size="10" fill="#888888">Agents build a memory of entities,</text>
+    <text x="620" y="132" font-family="system-ui, sans-serif" font-size="10" fill="#888888">relationships, and preferences. Semantic</text>
+    <text x="620" y="149" font-family="system-ui, sans-serif" font-size="10" fill="#888888">search by meaning. Natural memory decay.</text>
+    <text x="620" y="173" font-family="system-ui, sans-serif" font-size="9" font-weight="600" fill="#3b82f6">UP TO 100K ITEMS · AUTO-EXTRACTION</text>
+  </g>
+
+  <!-- Row 2 -->
+  <!-- 12 Channels -->
+  <g filter="url(#s3)">
+    <rect x="30" y="205" width="270" height="120" rx="10" fill="#141414" stroke="#1e1e1e"/>
+    <rect x="30" y="205" width="270" height="3" rx="1.5" fill="#8b5cf6"/>
+    <text x="50" y="235" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#ffffff">12 Channels</text>
+    <text x="50" y="255" font-family="system-ui, sans-serif" font-size="10" fill="#888888">Telegram, WhatsApp, Slack, Discord, Signal,</text>
+    <text x="50" y="272" font-family="system-ui, sans-serif" font-size="10" fill="#888888">iMessage, Teams, Google Chat, Matrix,</text>
+    <text x="50" y="289" font-family="system-ui, sans-serif" font-size="10" fill="#888888">Instagram, Messenger, LINE.</text>
+    <text x="50" y="313" font-family="system-ui, sans-serif" font-size="9" font-weight="600" fill="#8b5cf6">FULL AGENT LOOP ON EVERY CHANNEL</text>
+  </g>
+
+  <!-- BYOK -->
+  <g filter="url(#s3)">
+    <rect x="315" y="205" width="270" height="120" rx="10" fill="#141414" stroke="#1e1e1e"/>
+    <rect x="315" y="205" width="270" height="3" rx="1.5" fill="#f59e0b"/>
+    <text x="335" y="235" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#ffffff">Bring Your Own Keys</text>
+    <text x="335" y="255" font-family="system-ui, sans-serif" font-size="10" fill="#888888">Anthropic, OpenAI, Google, DeepSeek,</text>
+    <text x="335" y="272" font-family="system-ui, sans-serif" font-size="10" fill="#888888">Mistral, Ollama, or 200+ models via</text>
+    <text x="335" y="289" font-family="system-ui, sans-serif" font-size="10" fill="#888888">OpenRouter. Your keys. Your data.</text>
+    <text x="335" y="313" font-family="system-ui, sans-serif" font-size="9" font-weight="600" fill="#f59e0b">ZERO TRAINING ON YOUR DATA · AES-256</text>
+  </g>
+
+  <!-- Automations -->
+  <g filter="url(#s3)">
+    <rect x="600" y="205" width="270" height="120" rx="10" fill="#141414" stroke="#1e1e1e"/>
+    <rect x="600" y="205" width="270" height="3" rx="1.5" fill="#ef4444"/>
+    <text x="620" y="235" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#ffffff">24/7 Automations</text>
+    <text x="620" y="255" font-family="system-ui, sans-serif" font-size="10" fill="#888888">Event-driven triggers that run full agent</text>
+    <text x="620" y="272" font-family="system-ui, sans-serif" font-size="10" fill="#888888">loops automatically. Email arrives, agent</text>
+    <text x="620" y="289" font-family="system-ui, sans-serif" font-size="10" fill="#888888">summarizes, drafts reply, notifies you.</text>
+    <text x="620" y="313" font-family="system-ui, sans-serif" font-size="9" font-weight="600" fill="#ef4444">UP TO 100 TRIGGERS · BUDGET CAPS</text>
+  </g>
+
+  <!-- Bottom line -->
+  <text x="450" y="352" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#333333">© 2026 CodeAhead Lda · runpulso.com</text>
+</svg>

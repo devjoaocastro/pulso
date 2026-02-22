@@ -1,0 +1,144 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="520" viewBox="0 0 900 520">
+  <defs>
+    <linearGradient id="bg2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a0a0a"/>
+      <stop offset="100%" stop-color="#111111"/>
+    </linearGradient>
+    <linearGradient id="accent2" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#FF512F"/>
+      <stop offset="100%" stop-color="#F09819"/>
+    </linearGradient>
+    <linearGradient id="card" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1a1a1a"/>
+      <stop offset="100%" stop-color="#141414"/>
+    </linearGradient>
+    <filter id="shadow">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000000" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="520" fill="url(#bg2)" rx="12"/>
+  <rect width="900" height="520" fill="none" stroke="#222222" stroke-width="1" rx="12"/>
+
+  <!-- Title -->
+  <text x="450" y="45" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#555555" letter-spacing="3">HOW IT WORKS</text>
+
+  <!-- === TOP ROW: Input channels === -->
+  <text x="450" y="85" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="500" fill="#444444" letter-spacing="1.5">YOUR DEVICES &amp; CHANNELS</text>
+
+  <!-- Web -->
+  <g filter="url(#shadow)">
+    <rect x="30" y="100" width="120" height="60" rx="8" fill="url(#card)" stroke="#2a2a2a"/>
+    <text x="90" y="126" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#ffffff">Web App</text>
+    <text x="90" y="144" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#666666">Dashboard</text>
+  </g>
+  <!-- Mobile -->
+  <g filter="url(#shadow)">
+    <rect x="165" y="100" width="120" height="60" rx="8" fill="url(#card)" stroke="#2a2a2a"/>
+    <text x="225" y="126" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#ffffff">Mobile</text>
+    <text x="225" y="144" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#666666">iOS &amp; Android</text>
+  </g>
+  <!-- Telegram -->
+  <g filter="url(#shadow)">
+    <rect x="300" y="100" width="120" height="60" rx="8" fill="url(#card)" stroke="#2a2a2a"/>
+    <text x="360" y="126" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#ffffff">Telegram</text>
+    <text x="360" y="144" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#22c55e">Production</text>
+  </g>
+  <!-- WhatsApp -->
+  <g filter="url(#shadow)">
+    <rect x="435" y="100" width="120" height="60" rx="8" fill="url(#card)" stroke="#2a2a2a"/>
+    <text x="495" y="126" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#ffffff">WhatsApp</text>
+    <text x="495" y="144" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#22c55e">Production</text>
+  </g>
+  <!-- Slack -->
+  <g filter="url(#shadow)">
+    <rect x="570" y="100" width="120" height="60" rx="8" fill="url(#card)" stroke="#2a2a2a"/>
+    <text x="630" y="126" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#ffffff">Slack</text>
+    <text x="630" y="144" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#22c55e">Production</text>
+  </g>
+  <!-- +7 more -->
+  <g filter="url(#shadow)">
+    <rect x="705" y="100" width="165" height="60" rx="8" fill="url(#card)" stroke="#2a2a2a"/>
+    <text x="787" y="126" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#FF512F">+7 more</text>
+    <text x="787" y="144" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#666666">Discord, Signal, Teams...</text>
+  </g>
+
+  <!-- Connection lines down -->
+  <g stroke="url(#accent2)" stroke-width="1.5" opacity="0.4">
+    <line x1="90" y1="160" x2="450" y2="200"/>
+    <line x1="225" y1="160" x2="450" y2="200"/>
+    <line x1="360" y1="160" x2="450" y2="200"/>
+    <line x1="495" y1="160" x2="450" y2="200"/>
+    <line x1="630" y1="160" x2="450" y2="200"/>
+    <line x1="787" y1="160" x2="450" y2="200"/>
+  </g>
+
+  <!-- === CENTER: Pulso Engine === -->
+  <g filter="url(#shadow)">
+    <rect x="250" y="200" width="400" height="90" rx="12" fill="#FF512F" fill-opacity="0.08" stroke="#FF512F" stroke-opacity="0.3"/>
+    <rect x="250" y="200" width="400" height="2" rx="1" fill="url(#accent2)"/>
+    <text x="450" y="235" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="800" fill="#ffffff" letter-spacing="1">PULSO ENGINE</text>
+    <text x="450" y="258" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#999999" letter-spacing="0.5">Agent Orchestration · Smart Routing · Memory · Security</text>
+    <text x="450" y="278" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#666666" letter-spacing="0.5">Global Edge Network · Sub-50ms Latency · V8 Isolates</text>
+  </g>
+
+  <!-- Connection lines down from engine -->
+  <g stroke="url(#accent2)" stroke-width="1.5" opacity="0.4">
+    <line x1="340" y1="290" x2="160" y2="340"/>
+    <line x1="400" y1="290" x2="370" y2="340"/>
+    <line x1="500" y1="290" x2="530" y2="340"/>
+    <line x1="560" y1="290" x2="740" y2="340"/>
+  </g>
+
+  <!-- === BOTTOM ROW: Capabilities === -->
+  <!-- Agent Teams -->
+  <g filter="url(#shadow)">
+    <rect x="50" y="340" width="190" height="80" rx="8" fill="url(#card)" stroke="#2a2a2a"/>
+    <circle cx="78" cy="365" r="10" fill="#FF512F" fill-opacity="0.15" stroke="#FF512F" stroke-opacity="0.3"/>
+    <text x="78" y="369" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#FF512F">A</text>
+    <text x="100" y="369" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#ffffff">Agent Teams</text>
+    <text x="78" y="388" font-family="system-ui, sans-serif" font-size="9" fill="#666666">Parallel multi-agent swarms</text>
+    <text x="78" y="402" font-family="system-ui, sans-serif" font-size="9" fill="#666666">140+ templates · Visual builder</text>
+  </g>
+
+  <!-- Memory -->
+  <g filter="url(#shadow)">
+    <rect x="260" y="340" width="190" height="80" rx="8" fill="url(#card)" stroke="#2a2a2a"/>
+    <circle cx="288" cy="365" r="10" fill="#3b82f6" fill-opacity="0.15" stroke="#3b82f6" stroke-opacity="0.3"/>
+    <text x="288" y="369" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#3b82f6">M</text>
+    <text x="310" y="369" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#ffffff">Memory</text>
+    <text x="288" y="388" font-family="system-ui, sans-serif" font-size="9" fill="#666666">Knowledge graph · Semantic search</text>
+    <text x="288" y="402" font-family="system-ui, sans-serif" font-size="9" fill="#666666">Auto-extraction · Natural decay</text>
+  </g>
+
+  <!-- Companion -->
+  <g filter="url(#shadow)">
+    <rect x="470" y="340" width="190" height="80" rx="8" fill="url(#card)" stroke="#2a2a2a"/>
+    <circle cx="498" cy="365" r="10" fill="#22c55e" fill-opacity="0.15" stroke="#22c55e" stroke-opacity="0.3"/>
+    <text x="498" y="369" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#22c55e">C</text>
+    <text x="520" y="369" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#ffffff">Companion</text>
+    <text x="498" y="388" font-family="system-ui, sans-serif" font-size="9" fill="#666666">Shell · Files · Apps · Browser</text>
+    <text x="498" y="402" font-family="system-ui, sans-serif" font-size="9" fill="#666666">macOS · Windows · Linux</text>
+  </g>
+
+  <!-- AI Models -->
+  <g filter="url(#shadow)">
+    <rect x="680" y="340" width="190" height="80" rx="8" fill="url(#card)" stroke="#2a2a2a"/>
+    <circle cx="708" cy="365" r="10" fill="#f59e0b" fill-opacity="0.15" stroke="#f59e0b" stroke-opacity="0.3"/>
+    <text x="708" y="369" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#f59e0b">AI</text>
+    <text x="733" y="369" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#ffffff">200+ Models</text>
+    <text x="708" y="388" font-family="system-ui, sans-serif" font-size="9" fill="#666666">Anthropic · OpenAI · Google</text>
+    <text x="708" y="402" font-family="system-ui, sans-serif" font-size="9" fill="#666666">DeepSeek · Mistral · Ollama</text>
+  </g>
+
+  <!-- === BOTTOM: Security bar === -->
+  <g>
+    <rect x="30" y="450" width="840" height="44" rx="8" fill="#ffffff" fill-opacity="0.02" stroke="#222222"/>
+    <text x="450" y="467" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" font-weight="500" fill="#444444" letter-spacing="2">AES-256-GCM  ·  TLS 1.3  ·  V8 ISOLATES  ·  2FA  ·  SOC 2  ·  ISO 27001  ·  ZERO TRAINING ON YOUR DATA</text>
+    <text x="450" y="484" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" font-weight="400" fill="#333333" letter-spacing="1.5">SECURITY AUDITED · ALL FINDINGS RESOLVED</text>
+  </g>
+
+  <!-- Copyright -->
+  <text x="450" y="510" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#333333">© 2026 CodeAhead Lda · All rights reserved</text>
+</svg>

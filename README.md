@@ -1,147 +1,221 @@
 <p align="center">
-  <img src="https://app.runpulso.com/icon.png" alt="Pulso" width="120" />
+  <a href="https://app.runpulso.com">
+    <img src="assets/banner.svg" alt="Pulso — AI agents that actually do things" width="100%" />
+  </a>
 </p>
 
-<h1 align="center">Pulso</h1>
-
-<h3 align="center">AI agents that actually do things.</h3>
-
 <p align="center">
-  <a href="https://app.runpulso.com"><strong>Get Started Free</strong></a>
-</p>
-
-<br />
-
-<p align="center">
-  <a href="https://app.runpulso.com"><img src="https://img.shields.io/badge/Try_Pulso-Free-FF512F?style=for-the-badge&logoColor=white" alt="Try Pulso" /></a>
+  <a href="https://app.runpulso.com"><img src="https://img.shields.io/badge/Launch_Dashboard-FF512F?style=for-the-badge&logoColor=white" alt="Launch" /></a>
   &nbsp;
-  <a href="https://www.npmjs.com/package/@pulso/companion"><img src="https://img.shields.io/badge/npm-@pulso/companion-cb3837?style=for-the-badge&logo=npm&logoColor=white" alt="npm" /></a>
+  <a href="https://www.npmjs.com/package/@pulso/companion"><img src="https://img.shields.io/badge/npm_install-@pulso/companion-cb3837?style=for-the-badge&logo=npm&logoColor=white" alt="npm" /></a>
   &nbsp;
-  <a href="https://x.com/usepulso"><img src="https://img.shields.io/badge/@usepulso-000000?style=for-the-badge&logo=x&logoColor=white" alt="Twitter" /></a>
+  <a href="https://x.com/usepulso"><img src="https://img.shields.io/badge/Follow-@usepulso-000000?style=for-the-badge&logo=x&logoColor=white" alt="Twitter" /></a>
 </p>
+
+<br />
+
+> **Tired of AI that just talks?** Every chatbot in 2026 does the same thing — you type, it types back, you still do everything yourself. Heavy, bloated, insecure apps that promise automation and deliver autocomplete.
+>
+> **Pulso agents execute.** They check your email, deploy your code, message your team, control your computer, and work together — from any device, any channel, any AI model.
+
+<br />
+
+---
+
+<br />
+
+## See what's possible
+
+<br />
+
+### Deploy an app from your phone
+
+```
+You (WhatsApp, 11:47 PM):
+    "Run the test suite for the backend, if everything passes
+     build and deploy to production. Send me the URL when done."
+
+Pulso (3 agents, 38 seconds):
+
+    Test Agent
+    ├─ Ran 247 tests via Companion
+    ├─ 247 passed, 0 failed
+    └─ Coverage: 94.2%
+
+    Build Agent
+    ├─ Built production bundle (3.2 MB gzipped)
+    └─ Deployed to Cloudflare Pages
+
+    Verification Agent
+    ├─ Health check: 200 OK (34ms)
+    └─ All 12 API endpoints responding
+
+    ✓ Live at https://your-app.pages.dev
+    ✓ Deploy log saved to your drive
+```
+
+<br />
+
+### Research and write a 20-page report while you sleep
+
+```
+You (Telegram, before bed):
+    "Research the European AI regulation landscape for 2026.
+     Compare at least 8 countries. Write a professional report
+     with executive summary, charts data, and recommendations."
+
+Pulso (5 agents, 4 minutes, $0.12):
+
+    3 Research Agents (running in parallel)
+    ├─ Deep web search across 140+ sources
+    ├─ Analyzed regulations in 11 EU countries
+    └─ Cross-referenced with published legal databases
+
+    Analysis Agent
+    ├─ Identified 7 key regulatory trends
+    ├─ Built comparison matrix
+    └─ Mapped compliance timelines
+
+    Writer Agent
+    ├─ 22-page PDF with executive summary
+    ├─ 6 data visualizations
+    └─ Saved to your Google Drive
+
+    ✓ Report delivered to your email
+    ✓ Notification sent to Slack #research
+```
+
+<br />
+
+### Set up a new developer machine in one command
+
+```
+You (Web Chat):
+    "Configure this new MacBook for full-stack development.
+     Install everything I usually use."
+
+Pulso (Companion Agent, 6 minutes):
+
+    ├─ Installed Homebrew, Node 22, Python 3.12, Rust, Go
+    ├─ Installed VS Code + 14 extensions from your preferences
+    ├─ Cloned your 8 pinned GitHub repos
+    ├─ Configured git (name, email, GPG key)
+    ├─ Set up SSH keys for GitHub and your servers
+    ├─ Installed Docker Desktop, Postgres, Redis
+    ├─ Applied your dotfiles (.zshrc, .gitconfig, .vimrc)
+    ├─ Set dark mode, Dock preferences, keyboard shortcuts
+    └─ Set up 1Password CLI integration
+
+    ✓ Ready to code. Total: 47 packages, 14 extensions, 8 repos.
+```
+
+<br />
+
+### Monitor your infrastructure 24/7
+
+```
+Automation (runs every 5 minutes, $0.001/check):
+
+    Trigger: Scheduled health check
+    Agent:   Check all production endpoints
+
+    ├─ api.yourapp.com: 200 OK (23ms)
+    ├─ app.yourapp.com: 200 OK (45ms)
+    ├─ db.yourapp.com:  200 OK (12ms)
+    ╰─ cdn.yourapp.com: ⚠️ 503 (timeout)
+
+    → Agent detected CDN issue
+    → Automatically restarted CDN origin
+    → Verified recovery: 200 OK (38ms)
+    → Alert sent to Telegram + Slack with full timeline
+```
+
+<br />
+
+### Manage your life from Telegram
+
+```
+You (Telegram):
+    "What's my week looking like? Cancel anything that's not
+     essential and book a dentist appointment for Thursday."
+
+Pulso (2 agents, 8 seconds):
+
+    Calendar Agent
+    ├─ Monday: 3 meetings (kept: client call, standup)
+    ├─ Tuesday: 2 meetings (cancelled: optional sync)
+    ├─ Wednesday: 4 meetings (cancelled: 2 low-priority)
+    ├─ Thursday: 1 meeting → booked dentist at 2 PM
+    └─ Friday: clear
+
+    Communication Agent
+    ├─ Sent cancellation emails with apologies
+    ├─ Found Dr. Silva with Thursday availability
+    └─ Booked appointment, confirmation in your inbox
+
+    ✓ Freed up 4.5 hours this week
+```
+
+<br />
+
+---
 
 <br />
 
 <p align="center">
-  <img src="https://img.shields.io/badge/channels-12-22c55e.svg?style=flat-square" alt="12 Channels" />
-  <img src="https://img.shields.io/badge/tools-350+-3b82f6.svg?style=flat-square" alt="350+ Tools" />
-  <img src="https://img.shields.io/badge/platforms-6-8b5cf6.svg?style=flat-square" alt="6 Platforms" />
-  <img src="https://img.shields.io/badge/models-200+-f59e0b.svg?style=flat-square" alt="200+ Models" />
-  <img src="https://img.shields.io/badge/uptime-99.9%25-10b981.svg?style=flat-square" alt="99.9% Uptime" />
+  <img src="assets/features.svg" alt="Pulso Capabilities" width="100%" />
 </p>
 
----
-
-<br />
-
-> **Tired of AI assistants that just talk?**
->
-> Every AI tool in 2026 does the same thing — you ask, it answers, you do the work yourself. Chatbots that can't send an email. Agents that can't click a button. Workflows that break when you need them most.
->
-> We built something different.
-
-<br />
-
-## Your AI team. Always on.
-
-Pulso agents don't just answer questions — they **execute**. They check your email, manage your calendar, message your team, control your computer, deploy your code, and work together in parallel. From any device. Through any channel. 24/7.
-
-```
-You (from Telegram, 2:13 AM):
-
-    "Check my inbox. Anything urgent from the client?
-     If yes, draft a reply and block time on my calendar."
-
-Pulso (3 agents, 4.2 seconds, $0.003):
-
-    ✓  Scanned 47 emails — found 3 urgent from Acme Corp
-    ✓  Drafted 3 replies matching your tone (saved as drafts)
-    ✓  Blocked 2h tomorrow at 10 AM for "Contract Review"
-    ✓  Summary sent to your Slack #urgent channel
-```
-
-Three AI models. Working in parallel. While you sleep.
-
 <br />
 
 ---
 
 <br />
 
-## What makes Pulso different
+## Download
 
-<br />
-
-### Talk to your agents from anywhere
-
-Not just another web chat. Pulso connects to **12 messaging channels** natively — Telegram, WhatsApp, Slack, Discord, Signal, iMessage, Teams, Google Chat, Matrix, Instagram, Messenger, LINE.
-
-Your agents have full capabilities on every channel. Tool execution, multi-step reasoning, image generation, memory — not just text forwarding.
-
-<br />
-
-### Your computer, their hands
-
-Install the **Companion daemon** and your agents can control your machine:
-
-```bash
-npm install -g @pulso/companion
-```
-
-Shell commands. File management. App control. Browser automation. System monitoring. Smart home. iMessage. Native on **macOS, Windows, and Linux**.
-
-Also available as a **native macOS menu bar app**.
-
-> *"My staging server is slow."*
->
-> Agent checks CPU usage, finds a stuck process eating 94% CPU, kills it, verifies the server recovered, and reports back — all from a Telegram message.
-
-<br />
-
-### Multiple agents, one task
-
-Define teams of specialized agents that work together. Agents without dependencies run **in parallel** — a research agent and a data agent can work simultaneously, then feed their results to a writing agent.
-
-Build with YAML, a visual drag-and-drop builder, or plain English. **140+ ready-made templates** across 15 categories.
-
-Smart routing automatically picks the right model for each task — fast models for simple lookups, powerful models for complex reasoning. You set the budget, Pulso optimizes the cost.
-
-<br />
-
-### Your AI remembers
-
-Pulso builds a **knowledge graph** from your conversations — entities, relationships, preferences, context. Agents find relevant memories by meaning, not keywords. Old memories naturally fade. New ones strengthen.
-
-Up to **100,000 memory items** that make every interaction smarter than the last.
-
-<br />
-
-### Any model. Your keys. Your data.
-
-Connect your existing API keys from **Anthropic, OpenAI, Google, DeepSeek, Mistral, Ollama**, or access **200+ models through OpenRouter**. Your keys, your billing, your control.
-
-Or use **Pulso Credits** — prepaid credit packs with transparent per-request cost tracking. No surprises.
-
-**We never train on your data. Your conversations are yours.**
-
-<br />
-
-### Image generation built in
-
-Your agents generate images using the latest multimodal models — Gemini Imagen, GPT Image, FLUX, Seedream. Auto-detects your available providers.
-
-<br />
-
-### Event-driven automations
-
-Set triggers that run 24/7. New email from an important client? Agent summarizes it, checks your calendar, drafts a reply, and notifies you on Slack. Automatically. Up to **100 triggers** on the Fleet plan.
-
-<br />
-
-### Standards-first
-
-- **MCP** (Model Context Protocol) — Connect any MCP-compatible tool server
-- **A2A** (Agent-to-Agent) — Google's agent interoperability protocol
+<table>
+  <tr>
+    <td align="center" width="180">
+      <a href="https://app.runpulso.com">
+        <img src="https://img.shields.io/badge/Web-Launch_App-FF512F?style=for-the-badge" alt="Web App" />
+      </a>
+      <br /><sub>Dashboard · Chat · Builder</sub>
+    </td>
+    <td align="center" width="180">
+      <a href="https://apps.apple.com/app/pulso-ai-agents/id6740000000">
+        <img src="https://img.shields.io/badge/iOS-App_Store-000000?style=for-the-badge&logo=apple&logoColor=white" alt="iOS" />
+      </a>
+      <br /><sub>iPhone · iPad</sub>
+    </td>
+    <td align="center" width="180">
+      <a href="https://play.google.com/store/apps/details?id=com.runpulso.app">
+        <img src="https://img.shields.io/badge/Android-Google_Play-3DDC84?style=for-the-badge&logo=googleplay&logoColor=white" alt="Android" />
+      </a>
+      <br /><sub>Phone · Tablet</sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <a href="https://www.npmjs.com/package/@pulso/companion">
+        <img src="https://img.shields.io/badge/Companion-npm_install-cb3837?style=for-the-badge&logo=npm&logoColor=white" alt="Companion" />
+      </a>
+      <br /><sub>macOS · Windows · Linux</sub>
+    </td>
+    <td align="center">
+      <a href="https://github.com/usepulso/pulso/releases">
+        <img src="https://img.shields.io/badge/Menu_Bar-Download-8b5cf6?style=for-the-badge&logo=apple&logoColor=white" alt="Menu Bar" />
+      </a>
+      <br /><sub>Native macOS app</sub>
+    </td>
+    <td align="center">
+      <a href="https://api.runpulso.com">
+        <img src="https://img.shields.io/badge/API-Documentation-3b82f6?style=for-the-badge" alt="API" />
+      </a>
+      <br /><sub>REST · SSE · WebSocket</sub>
+    </td>
+  </tr>
+</table>
 
 <br />
 
@@ -149,35 +223,9 @@ Set triggers that run 24/7. New email from an important client? Agent summarizes
 
 <br />
 
-## Platform
-
-| | |
-|---|---|
-| **Web** | Full dashboard — chat, visual workflow builder, analytics, memory explorer |
-| **iOS & Android** | Native mobile app with voice, push notifications, full agent access |
-| **Companion** | Cross-platform daemon for computer control — [npm](https://www.npmjs.com/package/@pulso/companion) |
-| **Menu Bar** | Native macOS app — always one click away |
-| **API** | REST + SSE + WebSocket on a global edge network — sub-50ms worldwide |
-
-<br />
-
----
-
-<br />
-
-## Security
-
-| | |
-|---|---|
-| **Encryption** | AES-256-GCM for all stored credentials. TLS 1.3 everywhere. |
-| **Isolation** | Every request runs in its own V8 isolate. No shared memory. No container escapes. |
-| **Auth** | JWT + refresh tokens, 2FA (TOTP), secure device code flow for Companion |
-| **BYOK** | Your API keys stay under your control. We proxy, not store. |
-| **Data** | Conversations never used for training. Period. |
-| **Infrastructure** | Runs on Cloudflare — SOC 2 Type II, ISO 27001, PCI DSS certified |
-| **Audit** | Full security audit completed. All findings resolved. |
-
-No exposed ports. No self-hosted attack surface. No servers to patch.
+<p align="center">
+  <img src="assets/platform.svg" alt="Pulso Platform Architecture" width="100%" />
+</p>
 
 <br />
 
@@ -191,14 +239,14 @@ No exposed ports. No self-hosted attack surface. No servers to patch.
 |---|:---:|:---:|:---:|
 | | Free | **$19**/mo | **$49**/mo |
 | Channels | 1 | 12 | Unlimited |
-| Agent Teams | — | Up to 10 agents | Up to 20 agents |
+| Agent Teams | — | Up to 10 | Up to 20 |
 | Memory | 100 | 10,000 | 100,000 |
 | Companion | — | Included | Included |
 | Automations | — | 10 triggers | 100 triggers |
 | MCP Servers | — | 5 | 50 |
 | Credits | — | $5/mo included | $20/mo included |
 
-All plans include BYOK at zero cost.
+<p align="center"><sub>All plans include BYOK (Bring Your Own Key) at zero cost. Your keys, your models, your data.</sub></p>
 
 <br />
 
@@ -206,16 +254,18 @@ All plans include BYOK at zero cost.
 
 <br />
 
-## Quick start
+## Get started in 60 seconds
 
-**1.** Sign up at [app.runpulso.com](https://app.runpulso.com)
-
-**2.** Add your API keys (Settings → Providers)
-
-**3.** Start chatting — your agent is ready with 350+ tools
-
-**4.** *(Optional)* Install the Companion:
 ```bash
+# 1. Sign up (free)
+open https://app.runpulso.com
+
+# 2. Add your API keys → Settings → Providers
+#    (Anthropic, OpenAI, Google, DeepSeek, Mistral, Ollama, OpenRouter)
+
+# 3. Start chatting — your agent is ready
+
+# 4. Want computer control? Install the Companion:
 npm install -g @pulso/companion
 pulso-companion login
 ```
@@ -226,21 +276,17 @@ pulso-companion login
 
 <br />
 
-## Community
-
-- [Report a bug](https://github.com/usepulso/pulso/issues/new?template=bug_report.md)
-- [Request a feature](https://github.com/usepulso/pulso/issues/new?template=feature_request.md)
-- [Discussions](https://github.com/usepulso/pulso/discussions)
-- [Security](SECURITY.md)
-
-<br />
-
----
-
-<br />
+<p align="center">
+  <a href="https://app.runpulso.com"><img src="https://img.shields.io/badge/Start_Free-FF512F?style=for-the-badge&logoColor=white" alt="Start Free" /></a>
+</p>
 
 <p align="center">
-  <a href="https://app.runpulso.com"><strong>Get started free →</strong></a>
+  <sub>
+    <a href="https://github.com/usepulso/pulso/issues/new?template=bug_report.md">Report Bug</a> ·
+    <a href="https://github.com/usepulso/pulso/issues/new?template=feature_request.md">Request Feature</a> ·
+    <a href="https://github.com/usepulso/pulso/discussions">Discussions</a> ·
+    <a href="SECURITY.md">Security</a>
+  </sub>
 </p>
 
 <p align="center">
@@ -251,6 +297,8 @@ pulso-companion login
     <a href="https://app.runpulso.com/acceptable-use">Acceptable Use</a>
   </sub>
 </p>
+
+<br />
 
 <p align="center">
   <sub>Built by <a href="https://codeahead.pt">CodeAhead</a> in Portugal · © 2026 CodeAhead Lda · All rights reserved</sub>
