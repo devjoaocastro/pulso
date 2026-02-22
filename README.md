@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://app.runpulso.com">
-    <img src=".github/header.png" alt="Pulso" width="100%" />
+    <img src="docs/header.png" alt="Pulso" width="200" />
   </a>
 </p>
 
@@ -118,22 +118,13 @@ The `login` command opens your browser for secure device authorization ([RFC 862
 
 Agents work together. Pulso uses a DAG (Directed Acyclic Graph) to schedule agent execution. Agents with no dependencies run in parallel. Results flow through the graph automatically.
 
-```
-                    ┌──────────┐
-               ┌───>│  Luna    │───┐
-               │    │ Security │   │
-               │    └──────────┘   │     ┌──────────┐
-  ┌────────┐   │                   ├────>│  Nova    │
-  │  Task  │───┤                   │     │ Reporter │
-  │  Input │   │    ┌──────────┐   │     └──────────┘
-  └────────┘   ├───>│  Atlas   │───┘
-               │    │ Reviewer │
-               │    └──────────┘
-               │
-               │    ┌──────────┐
-               └───>│  Hermes  │──────> (independent)
-                    │ Notifier │
-                    └──────────┘
+```mermaid
+graph LR
+    Input[Task Input] --> Luna[Luna<br/>Security]
+    Input --> Atlas[Atlas<br/>Reviewer]
+    Input --> Hermes[Hermes<br/>Notifier]
+    Luna --> Nova[Nova<br/>Reporter]
+    Atlas --> Nova
 ```
 
 Luna + Atlas + Hermes run simultaneously. Nova waits for Luna and Atlas to finish, then synthesizes their results. All with budget enforcement — if any agent hits its spending limit, execution stops gracefully.
@@ -228,37 +219,43 @@ Three-tier memory architecture:
 
 ## Architecture
 
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                          PULSO                                  │
-│                                                                 │
-│  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────────┐   │
-│  │  Mobile   │  │   Web    │  │Companion │  │   Cloud API  │   │
-│  │  (iOS /   │  │  (React) │  │ (Node.js)│  │  (Edge)      │   │
-│  │  Android) │  │          │  │          │  │              │   │
-│  └─────┬─────┘  └─────┬────┘  └─────┬────┘  └──────┬───────┘   │
-│        └──────────────┴──────┬───────┴───────────────┘          │
-│                              │                                   │
-│            ┌─────────────────▼─────────────────┐                │
-│            │       Orchestration Engine         │                │
-│            │                                    │                │
-│            │  DAG Scheduler · Model Router      │                │
-│            │  Budget Enforcement · Agent Sandbox │                │
-│            │  Memory · Tool Execution           │                │
-│            └─────────────────┬─────────────────┘                │
-│                              │                                   │
-│     ┌────────────┬───────────┴──────────┬──────────────┐        │
-│  ┌──▼────────┐ ┌─▼──────────┐ ┌────────▼──────┐ ┌─────▼──────┐│
-│  │ Providers │ │   Tools    │ │    Memory     │ │ Protocols  ││
-│  │           │ │            │ │               │ │            ││
-│  │ Claude    │ │ 350+ tools │ │ Session       │ │ MCP Server ││
-│  │ GPT      │ │ Web search │ │ Persistent    │ │ MCP Client ││
-│  │ Gemini   │ │ Image gen  │ │ Knowledge     │ │            ││
-│  │ DeepSeek │ │ Browser    │ │   Graph       │ │            ││
-│  │ Ollama   │ │ Shell/FS   │ │ Semantic      │ │            ││
-│  │ +200     │ │ Companion  │ │   Search      │ │            ││
-│  └──────────┘ └────────────┘ └───────────────┘ └────────────┘ │
-└─────────────────────────────────────────────────────────────────┘
+```mermaid
+graph TD
+    subgraph Clients
+        A[Mobile<br/>iOS / Android]
+        B[Web<br/>React]
+        C[Companion<br/>Node.js]
+        D[Cloud API<br/>Edge]
+    end
+
+    subgraph Engine[Orchestration Engine]
+        E[DAG Scheduler]
+        F[Model Router]
+        G[Budget Enforcement]
+        H[Agent Sandbox]
+    end
+
+    subgraph Providers
+        I[Claude · GPT · Gemini<br/>DeepSeek · Ollama · +200]
+    end
+
+    subgraph Tools
+        J[350+ tools · Web search<br/>Image gen · Browser<br/>Shell · Companion]
+    end
+
+    subgraph Memory
+        K[Session · Persistent<br/>Knowledge Graph<br/>Semantic Search]
+    end
+
+    subgraph Protocols
+        L[MCP Server<br/>MCP Client]
+    end
+
+    A & B & C & D --> Engine
+    Engine --> Providers
+    Engine --> Tools
+    Engine --> Memory
+    Engine --> Protocols
 ```
 
 ## Pricing
