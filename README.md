@@ -1,3 +1,9 @@
+<p align="center">
+  <a href="https://app.runpulso.com">
+    <img src=".github/header.png" alt="Pulso" width="100%" />
+  </a>
+</p>
+
 <h1 align="center">Pulso</h1>
 
 <p align="center">
