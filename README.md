@@ -28,132 +28,269 @@
 
 <br />
 
-### Deploy an app from your phone
+### Your agent sees your screen, clicks, types — like a human
+
+The Companion daemon gives agents **computer vision**. They take screenshots, read text via OCR, move the mouse, click buttons, type text, drag elements, and use keyboard shortcuts. Any app. Any workflow.
+
+```
+You (Telegram):
+    "Open Photoshop, create a new 1920x1080 canvas, add the
+     company logo from my Desktop, center it, add the text
+     'Q1 Report 2026' below it in Helvetica Bold, and export as PNG."
+
+Pulso (Companion — screenshot + mouse + keyboard):
+
+    ├─ Launched Photoshop
+    ├─ 📸 Screenshot → identified menu bar, tools
+    ├─ File → New → 1920x1080 → Create
+    ├─ File → Place Embedded → navigated to Desktop/logo.png
+    ├─ Centered logo with Cmd+A → align center
+    ├─ Selected Type tool → clicked below logo
+    ├─ Typed "Q1 Report 2026" → set Helvetica Bold 48pt
+    ├─ Aligned text center
+    ├─ File → Export → Quick Export as PNG
+    └─ Saved to Desktop/q1-report-cover.png
+
+    ✓ "Here's your cover. Want me to adjust anything?"
+```
+
+<br />
+
+### Control your entire desktop from WhatsApp
+
+```
+You (WhatsApp, from the airport):
+    "Close all my open browser tabs, save any unsaved docs,
+     put Spotify on my chill playlist, dim the office lights
+     to 30%, and lock my Mac."
+
+Pulso (Companion):
+
+    ├─ Listed 34 Chrome tabs → saved 3 with unsaved forms
+    ├─ Closed all Chrome tabs
+    ├─ Found 2 unsaved TextEdit docs → saved both
+    ├─ 🎵 Spotify → playing "Chill Vibes" playlist
+    ├─ 💡 Philips Hue → office lights dimmed to 30%
+    ├─ 🔒 Screen locked
+
+    ✓ Office secured. Music playing. Lights dimmed.
+      Safe travels.
+```
+
+<br />
+
+### Deploy from your phone at midnight
 
 ```
 You (WhatsApp, 11:47 PM):
-    "Run the test suite for the backend, if everything passes
-     build and deploy to production. Send me the URL when done."
+    "Run tests on the backend, if green deploy to production,
+     then verify everything works."
 
 Pulso (3 agents, 38 seconds):
 
     Test Agent
-    ├─ Ran 247 tests via Companion
+    ├─ Ran 247 tests via Companion shell
     ├─ 247 passed, 0 failed
     └─ Coverage: 94.2%
 
     Build Agent
     ├─ Built production bundle (3.2 MB gzipped)
-    └─ Deployed to Cloudflare Pages
+    └─ Deployed to production
 
     Verification Agent
     ├─ Health check: 200 OK (34ms)
-    └─ All 12 API endpoints responding
+    └─ All endpoints responding
 
-    ✓ Live at https://your-app.pages.dev
-    ✓ Deploy log saved to your drive
+    ✓ Live. Deploy log saved.
 ```
 
 <br />
 
-### Research and write a 20-page report while you sleep
+### Research report while you sleep — 5 agents in parallel
 
 ```
 You (Telegram, before bed):
-    "Research the European AI regulation landscape for 2026.
-     Compare at least 8 countries. Write a professional report
-     with executive summary, charts data, and recommendations."
+    "Research EU AI regulation 2026. Compare 8+ countries.
+     Professional report with executive summary."
 
 Pulso (5 agents, 4 minutes, $0.12):
 
-    3 Research Agents (running in parallel)
+    3 Research Agents (parallel)
     ├─ Deep web search across 140+ sources
-    ├─ Analyzed regulations in 11 EU countries
-    └─ Cross-referenced with published legal databases
+    ├─ 11 EU countries analyzed
+    └─ Cross-referenced legal databases
 
     Analysis Agent
-    ├─ Identified 7 key regulatory trends
-    ├─ Built comparison matrix
-    └─ Mapped compliance timelines
+    ├─ 7 key regulatory trends identified
+    └─ Compliance timeline mapped
 
     Writer Agent
-    ├─ 22-page PDF with executive summary
-    ├─ 6 data visualizations
-    └─ Saved to your Google Drive
+    ├─ 22-page report with executive summary
+    └─ Saved to Google Drive, sent to your email
 
-    ✓ Report delivered to your email
-    ✓ Notification sent to Slack #research
+    ✓ Notification on Slack #research
 ```
 
 <br />
 
-### Set up a new developer machine in one command
+### Browse the web, extract data, fill forms — no extensions
+
+```
+You (Slack):
+    "Go to our competitor's pricing page, screenshot it,
+     extract all their plan prices, and put them in a
+     spreadsheet on my Desktop."
+
+Pulso (Companion — browser + OCR + files):
+
+    ├─ Opened Chrome → navigated to competitor site
+    ├─ 📸 Screenshot of pricing page
+    ├─ OCR extracted 4 plans with prices and features
+    ├─ Cross-checked with 2 other competitor sites
+    ├─ Created competitor-pricing.csv on Desktop
+    └─ Formatted with plan name, price, key features
+
+    ✓ "Spreadsheet ready. They raised prices 15% since
+       last quarter. Want me to compare with ours?"
+```
+
+<br />
+
+### Smart home from any channel
+
+```
+You (Telegram, arriving home):
+    "I'm home. Movie night setup."
+
+Pulso (Companion — Hue + Sonos + system):
+
+    ├─ 💡 Living room lights → "Movie" scene (10% warm)
+    ├─ 💡 Kitchen lights → off
+    ├─ 🔊 Sonos → volume 40%, ambient soundtrack
+    ├─ 🖥️ Mac → Do Not Disturb on
+    ├─ 🖥️ Mac → dark mode enabled
+    └─ 📱 Notification: "Movie night ready. Enjoy."
+```
+
+<br />
+
+### Set up a new Mac in one command
 
 ```
 You (Web Chat):
-    "Configure this new MacBook for full-stack development.
-     Install everything I usually use."
+    "Set up this MacBook for full-stack dev."
 
-Pulso (Companion Agent, 6 minutes):
+Pulso (Companion, 6 minutes):
 
     ├─ Installed Homebrew, Node 22, Python 3.12, Rust, Go
-    ├─ Installed VS Code + 14 extensions from your preferences
-    ├─ Cloned your 8 pinned GitHub repos
-    ├─ Configured git (name, email, GPG key)
-    ├─ Set up SSH keys for GitHub and your servers
-    ├─ Installed Docker Desktop, Postgres, Redis
-    ├─ Applied your dotfiles (.zshrc, .gitconfig, .vimrc)
-    ├─ Set dark mode, Dock preferences, keyboard shortcuts
-    └─ Set up 1Password CLI integration
+    ├─ Installed VS Code + 14 extensions (from your memory)
+    ├─ Cloned 8 pinned GitHub repos
+    ├─ Configured git, SSH keys, GPG
+    ├─ Installed Docker, Postgres, Redis
+    ├─ Applied dotfiles (.zshrc, .gitconfig, .vimrc)
+    ├─ Set dark mode, Dock, keyboard shortcuts
+    └─ Added apps to login items
 
-    ✓ Ready to code. Total: 47 packages, 14 extensions, 8 repos.
+    ✓ Ready to code. 47 packages. 14 extensions. 8 repos.
 ```
 
 <br />
 
-### Monitor your infrastructure 24/7
+### 24/7 infrastructure monitoring
 
 ```
-Automation (runs every 5 minutes, $0.001/check):
-
-    Trigger: Scheduled health check
-    Agent:   Check all production endpoints
+Automation (every 5 min, $0.001/check):
 
     ├─ api.yourapp.com: 200 OK (23ms)
     ├─ app.yourapp.com: 200 OK (45ms)
-    ├─ db.yourapp.com:  200 OK (12ms)
     ╰─ cdn.yourapp.com: ⚠️ 503 (timeout)
 
-    → Agent detected CDN issue
-    → Automatically restarted CDN origin
-    → Verified recovery: 200 OK (38ms)
-    → Alert sent to Telegram + Slack with full timeline
+    → Detected CDN failure
+    → Auto-restarted origin server via shell
+    → Verified: 200 OK (38ms)
+    → Alert → Telegram + Slack with timeline
 ```
 
 <br />
 
-### Manage your life from Telegram
+### Message your contacts via iMessage
+
+```
+You (Web Chat):
+    "Send Maria a message on iMessage saying I'll be
+     15 minutes late for lunch."
+
+Pulso (Companion — iMessage + Contacts):
+
+    ├─ Searched contacts → found Maria Santos
+    ├─ 💬 iMessage sent: "Hey Maria, running about
+    │   15 minutes late for lunch. Be there soon!"
+    └─ ✓ Delivered
+
+    "Done. Message sent to Maria."
+```
+
+<br />
+
+### Manage your music from Telegram
 
 ```
 You (Telegram):
-    "What's my week looking like? Cancel anything that's not
-     essential and book a dentist appointment for Thursday."
+    "Play something chill on Spotify. And put the living
+     room Sonos on the same vibe, lower volume."
+
+Pulso (Companion — Spotify + Sonos):
+
+    ├─ 🎵 Spotify → searched "chill lo-fi beats"
+    ├─ Playing "Lo-Fi Chill Beats" playlist
+    ├─ 🔊 Sonos Living Room → same playlist via Spotify URI
+    ├─ Sonos volume → 25%
+    └─ Mac Spotify volume → 60%
+
+    ✓ "Vibes set. Want me to queue anything specific?"
+```
+
+<br />
+
+### Manage your week from anywhere
+
+```
+You (Telegram):
+    "Cancel non-essential meetings this week. Book a
+     dentist Thursday afternoon."
 
 Pulso (2 agents, 8 seconds):
 
     Calendar Agent
-    ├─ Monday: 3 meetings (kept: client call, standup)
-    ├─ Tuesday: 2 meetings (cancelled: optional sync)
-    ├─ Wednesday: 4 meetings (cancelled: 2 low-priority)
-    ├─ Thursday: 1 meeting → booked dentist at 2 PM
-    └─ Friday: clear
+    ├─ Cancelled 3 low-priority meetings
+    ├─ Kept: client call, standup, sprint review
+    └─ Booked dentist Thu 2 PM (Dr. Silva)
 
     Communication Agent
     ├─ Sent cancellation emails with apologies
-    ├─ Found Dr. Silva with Thursday availability
-    └─ Booked appointment, confirmation in your inbox
+    └─ Confirmation in your inbox
 
     ✓ Freed up 4.5 hours this week
+```
+
+<br />
+
+### Run any macOS Shortcut
+
+```
+You (Discord):
+    "Run my 'End of Day' shortcut."
+
+Pulso (Companion — Shortcuts):
+
+    ├─ Triggered "End of Day" Shortcut
+    │   ├─ Closed all open apps
+    │   ├─ Emptied Downloads folder
+    │   ├─ Backed up Desktop to iCloud
+    │   └─ Set tomorrow's focus schedule
+    └─ ✓ Shortcut completed
+
+    "Done. Tomorrow's schedule is set. Have a good night."
 ```
 
 <br />
