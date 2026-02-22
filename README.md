@@ -117,21 +117,18 @@ The `login` command opens your browser for secure device authorization ([RFC 862
 
 Agents work together. Pulso uses a DAG (Directed Acyclic Graph) to schedule agent execution. Agents with no dependencies run in parallel. Results flow through the graph automatically.
 
-```mermaid
-graph LR
-    Input[Task Input] --> Luna[Luna<br/>Security]
-    Input --> Atlas[Atlas<br/>Reviewer]
-    Input --> Hermes[Hermes<br/>Notifier]
-    Luna --> Nova[Nova<br/>Reporter]
-    Atlas --> Nova
-
-    classDef input fill:#6366f1,stroke:#4f46e5,color:#fff
-    classDef agent fill:#0ea5e9,stroke:#0284c7,color:#fff
-    classDef output fill:#10b981,stroke:#059669,color:#fff
-
-    class Input input
-    class Luna,Atlas,Hermes agent
-    class Nova output
+```
+                         ┌─────────────────┐
+                    ┌───▶│  Luna (Security) │───┐
+                    │    └─────────────────┘    │
+┌──────────┐       │    ┌─────────────────┐    │    ┌─────────────────┐
+│   Task   │───────┼───▶│ Atlas (Reviewer) │───┼───▶│ Nova (Reporter) │
+│  Input   │       │    └─────────────────┘    │    └─────────────────┘
+└──────────┘       │    ┌─────────────────┐    │
+                    └───▶│Hermes (Notifier) │    │
+                         └─────────────────┘    │
+                                                │
+                         Parallel agents ───────┘
 ```
 
 Luna + Atlas + Hermes run simultaneously. Nova waits for Luna and Atlas to finish, then synthesizes their results. All with budget enforcement — if any agent hits its spending limit, execution stops gracefully.
@@ -226,57 +223,26 @@ Three-tier memory architecture:
 
 ## Architecture
 
-```mermaid
-graph TD
-    subgraph Clients[" Clients "]
-        A[Mobile<br/>iOS / Android]
-        B[Web<br/>React]
-        C[Companion<br/>Node.js]
-        D[Cloud API<br/>Edge]
-    end
-
-    subgraph Engine[" Orchestration Engine "]
-        E[DAG Scheduler]
-        F[Model Router]
-        G[Budget Enforcement]
-        H[Agent Sandbox]
-    end
-
-    subgraph Providers[" Providers "]
-        I[Claude · GPT · Gemini<br/>DeepSeek · Ollama · +200]
-    end
-
-    subgraph Tools[" Tools "]
-        J[350+ tools · Web search<br/>Image gen · Browser<br/>Shell · Companion]
-    end
-
-    subgraph Memory[" Memory "]
-        K[Session · Persistent<br/>Knowledge Graph<br/>Semantic Search]
-    end
-
-    subgraph Protocols[" Protocols "]
-        L[MCP Server<br/>MCP Client]
-    end
-
-    A & B & C & D --> Engine
-    Engine --> Providers
-    Engine --> Tools
-    Engine --> Memory
-    Engine --> Protocols
-
-    classDef client fill:#6366f1,stroke:#4f46e5,color:#fff
-    classDef engine fill:#f59e0b,stroke:#d97706,color:#fff
-    classDef provider fill:#0ea5e9,stroke:#0284c7,color:#fff
-    classDef tool fill:#10b981,stroke:#059669,color:#fff
-    classDef memory fill:#8b5cf6,stroke:#7c3aed,color:#fff
-    classDef protocol fill:#ec4899,stroke:#db2777,color:#fff
-
-    class A,B,C,D client
-    class E,F,G,H engine
-    class I provider
-    class J tool
-    class K memory
-    class L protocol
+```
+  Mobile / Web / Companion / Cloud API
+                    │
+                    ▼
+  ┌─────────────────────────────────────┐
+  │       Orchestration Engine          │
+  │                                     │
+  │  ├─ DAG Scheduler                   │
+  │  ├─ Model Router                    │
+  │  ├─ Budget Enforcement              │
+  │  └─ Agent Sandbox                   │
+  └──────────┬──────────────────────────┘
+             │
+     ┌───────┼───────┬──────────┐
+     ▼       ▼       ▼          ▼
+ Providers  Tools  Memory   Protocols
+ Claude     350+   Session  MCP Server
+ GPT        Web    Graph    MCP Client
+ Gemini     Shell  Vectors
+ +200       ...
 ```
 
 ## Pricing
