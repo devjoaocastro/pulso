@@ -64,10 +64,15 @@ pulso-companion login
 
 ## Downloads
 
+Desktop app + CLI: [GitHub Releases](https://github.com/usepulso/pulso/releases).
+
 | Platform | Download |
 |:--|:--|
-| **macOS** (menu bar app) | [GitHub Releases](https://github.com/usepulso/pulso/releases) — `.dmg` |
-| **Companion CLI** (macOS, Windows, Linux) | `npm install -g @pulso/companion` |
+| **macOS** (Apple Silicon) | [`.dmg`](https://github.com/usepulso/pulso/releases/latest) |
+| **macOS** (Intel) | [`.dmg`](https://github.com/usepulso/pulso/releases/latest) |
+| **Windows** (x64) | [`.msi`](https://github.com/usepulso/pulso/releases/latest) |
+| **Linux** (x64) | [`.AppImage`](https://github.com/usepulso/pulso/releases/latest) / [`.deb`](https://github.com/usepulso/pulso/releases/latest) |
+| **Companion CLI** (all platforms) | `npm install -g @pulso/companion` |
 | **Web** | [app.runpulso.com](https://app.runpulso.com) |
 | **iOS** | [App Store](https://apps.apple.com/app/pulso-ai-agents/id6740000000) |
 | **Android** | [Google Play](https://play.google.com/store/apps/details?id=com.runpulso.app) |
