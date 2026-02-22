@@ -105,14 +105,13 @@ The `login` command opens your browser for secure device authorization ([RFC 862
 
 | Platform | Download |
 |:--|:--|
-| **macOS** (Apple Silicon) | [`.dmg`](https://github.com/usepulso/pulso/releases/latest) |
-| **macOS** (Intel) | [`.dmg`](https://github.com/usepulso/pulso/releases/latest) |
-| **Windows** (x64) | [`.msi`](https://github.com/usepulso/pulso/releases/latest) |
-| **Linux** (x64) | [`.AppImage`](https://github.com/usepulso/pulso/releases/latest) / [`.deb`](https://github.com/usepulso/pulso/releases/latest) |
-| **Companion CLI** (all platforms) | `npm install -g @pulso/companion` |
+| **macOS** | [Apple Silicon `.dmg`](https://github.com/usepulso/pulso/releases/latest) · [Intel `.dmg`](https://github.com/usepulso/pulso/releases/latest) |
+| **Windows** | [`.msi`](https://github.com/usepulso/pulso/releases/latest) |
+| **Linux** | [`.AppImage`](https://github.com/usepulso/pulso/releases/latest) · [`.deb`](https://github.com/usepulso/pulso/releases/latest) |
+| **Android** | [Google Play](https://play.google.com/store/apps/details?id=com.runpulso.app) · [`.apk`](https://github.com/usepulso/pulso/releases/latest) |
+| **iOS** | Coming soon |
 | **Web** | [app.runpulso.com](https://app.runpulso.com) |
-| **iOS** | [App Store](https://apps.apple.com/app/pulso-ai-agents/id6740000000) |
-| **Android** | [Google Play](https://play.google.com/store/apps/details?id=com.runpulso.app) |
+| **Companion CLI** | `npm install -g @pulso/companion` |
 
 ## Multi-Agent Orchestration
 
@@ -125,6 +124,14 @@ graph LR
     Input --> Hermes[Hermes<br/>Notifier]
     Luna --> Nova[Nova<br/>Reporter]
     Atlas --> Nova
+
+    classDef input fill:#6366f1,stroke:#4f46e5,color:#fff
+    classDef agent fill:#0ea5e9,stroke:#0284c7,color:#fff
+    classDef output fill:#10b981,stroke:#059669,color:#fff
+
+    class Input input
+    class Luna,Atlas,Hermes agent
+    class Nova output
 ```
 
 Luna + Atlas + Hermes run simultaneously. Nova waits for Luna and Atlas to finish, then synthesizes their results. All with budget enforcement — if any agent hits its spending limit, execution stops gracefully.
@@ -221,33 +228,33 @@ Three-tier memory architecture:
 
 ```mermaid
 graph TD
-    subgraph Clients
+    subgraph Clients[" Clients "]
         A[Mobile<br/>iOS / Android]
         B[Web<br/>React]
         C[Companion<br/>Node.js]
         D[Cloud API<br/>Edge]
     end
 
-    subgraph Engine[Orchestration Engine]
+    subgraph Engine[" Orchestration Engine "]
         E[DAG Scheduler]
         F[Model Router]
         G[Budget Enforcement]
         H[Agent Sandbox]
     end
 
-    subgraph Providers
+    subgraph Providers[" Providers "]
         I[Claude · GPT · Gemini<br/>DeepSeek · Ollama · +200]
     end
 
-    subgraph Tools
+    subgraph Tools[" Tools "]
         J[350+ tools · Web search<br/>Image gen · Browser<br/>Shell · Companion]
     end
 
-    subgraph Memory
+    subgraph Memory[" Memory "]
         K[Session · Persistent<br/>Knowledge Graph<br/>Semantic Search]
     end
 
-    subgraph Protocols
+    subgraph Protocols[" Protocols "]
         L[MCP Server<br/>MCP Client]
     end
 
@@ -256,6 +263,20 @@ graph TD
     Engine --> Tools
     Engine --> Memory
     Engine --> Protocols
+
+    classDef client fill:#6366f1,stroke:#4f46e5,color:#fff
+    classDef engine fill:#f59e0b,stroke:#d97706,color:#fff
+    classDef provider fill:#0ea5e9,stroke:#0284c7,color:#fff
+    classDef tool fill:#10b981,stroke:#059669,color:#fff
+    classDef memory fill:#8b5cf6,stroke:#7c3aed,color:#fff
+    classDef protocol fill:#ec4899,stroke:#db2777,color:#fff
+
+    class A,B,C,D client
+    class E,F,G,H engine
+    class I provider
+    class J tool
+    class K memory
+    class L protocol
 ```
 
 ## Pricing
