@@ -108,7 +108,7 @@ The `login` command opens your browser for secure device authorization ([RFC 862
 | **macOS** | [Apple Silicon `.dmg`](https://github.com/devjoaocastro/pulso/releases/latest) · [Intel `.dmg`](https://github.com/devjoaocastro/pulso/releases/latest) |
 | **Windows** | [`.msi`](https://github.com/devjoaocastro/pulso/releases/latest) |
 | **Linux** | [`.AppImage`](https://github.com/devjoaocastro/pulso/releases/latest) · [`.deb`](https://github.com/devjoaocastro/pulso/releases/latest) |
-| **Android** | [Google Play](https://play.google.com/store/apps/details?id=com.runpulso.app) · [`.apk`](https://github.com/devjoaocastro/pulso/releases/latest) |
+| **Android** | [`.apk`](https://github.com/devjoaocastro/pulso/releases/latest) |
 | **iOS** | Coming soon |
 | **Web** | [app.runpulso.com](https://app.runpulso.com) |
 | **Companion CLI** | `npm install -g @pulso/companion` |
