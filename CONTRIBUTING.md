@@ -10,7 +10,7 @@ Pulso is proprietary software. The source code is not available for public contr
 
 ### Report Bugs
 
-Found a bug? Please [open an issue](https://github.com/usepulso/pulso/issues/new?template=bug_report.md) with:
+Found a bug? Please [open an issue](https://github.com/devjoaocastro/pulso/issues/new?template=bug_report.md) with:
 
 - Steps to reproduce
 - Expected behavior
@@ -19,7 +19,7 @@ Found a bug? Please [open an issue](https://github.com/usepulso/pulso/issues/new
 
 ### Request Features
 
-Have an idea? [Open a feature request](https://github.com/usepulso/pulso/issues/new?template=feature_request.md) with:
+Have an idea? [Open a feature request](https://github.com/devjoaocastro/pulso/issues/new?template=feature_request.md) with:
 
 - Description of the feature
 - Use case and motivation

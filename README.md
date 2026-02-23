@@ -12,17 +12,17 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/usepulso/pulso/releases"><img src="https://img.shields.io/github/v/release/usepulso/pulso?include_prereleases&style=for-the-badge" alt="GitHub release"></a>
+  <a href="https://github.com/devjoaocastro/pulso/releases"><img src="https://img.shields.io/github/v/release/usepulso/pulso?include_prereleases&style=for-the-badge" alt="GitHub release"></a>
   <a href="https://www.npmjs.com/package/@pulso/companion"><img src="https://img.shields.io/npm/v/@pulso/companion?style=for-the-badge&logo=npm&logoColor=white&color=cb3837" alt="npm"></a>
-  <a href="https://github.com/usepulso/pulso/discussions"><img src="https://img.shields.io/github/discussions/usepulso/pulso?style=for-the-badge&logo=github" alt="Discussions"></a>
+  <a href="https://github.com/devjoaocastro/pulso/discussions"><img src="https://img.shields.io/github/discussions/usepulso/pulso?style=for-the-badge&logo=github" alt="Discussions"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-Proprietary-blue.svg?style=for-the-badge" alt="License"></a>
 </p>
 
 <p align="center">
   <a href="https://app.runpulso.com">Try the App</a> ·
   <a href="#quick-start">Quick Start</a> ·
-  <a href="https://github.com/usepulso/pulso/releases">Downloads</a> ·
-  <a href="https://github.com/usepulso/pulso/discussions">Discussions</a> ·
+  <a href="https://github.com/devjoaocastro/pulso/releases">Downloads</a> ·
+  <a href="https://github.com/devjoaocastro/pulso/discussions">Discussions</a> ·
   <a href="https://x.com/usepulso">Twitter</a>
 </p>
 
@@ -105,10 +105,10 @@ The `login` command opens your browser for secure device authorization ([RFC 862
 
 | Platform | Download |
 |:--|:--|
-| **macOS** | [Apple Silicon `.dmg`](https://github.com/usepulso/pulso/releases/latest) · [Intel `.dmg`](https://github.com/usepulso/pulso/releases/latest) |
-| **Windows** | [`.msi`](https://github.com/usepulso/pulso/releases/latest) |
-| **Linux** | [`.AppImage`](https://github.com/usepulso/pulso/releases/latest) · [`.deb`](https://github.com/usepulso/pulso/releases/latest) |
-| **Android** | [Google Play](https://play.google.com/store/apps/details?id=com.runpulso.app) · [`.apk`](https://github.com/usepulso/pulso/releases/latest) |
+| **macOS** | [Apple Silicon `.dmg`](https://github.com/devjoaocastro/pulso/releases/latest) · [Intel `.dmg`](https://github.com/devjoaocastro/pulso/releases/latest) |
+| **Windows** | [`.msi`](https://github.com/devjoaocastro/pulso/releases/latest) |
+| **Linux** | [`.AppImage`](https://github.com/devjoaocastro/pulso/releases/latest) · [`.deb`](https://github.com/devjoaocastro/pulso/releases/latest) |
+| **Android** | [Google Play](https://play.google.com/store/apps/details?id=com.runpulso.app) · [`.apk`](https://github.com/devjoaocastro/pulso/releases/latest) |
 | **iOS** | Coming soon |
 | **Web** | [app.runpulso.com](https://app.runpulso.com) |
 | **Companion CLI** | `npm install -g @pulso/companion` |
@@ -194,7 +194,7 @@ pulso-companion login
 - **macOS Shortcuts** — Trigger any Shortcut by name
 - **System** — Notifications, clipboard, dark mode, Do Not Disturb, lock screen
 
-**Cross-platform:** macOS, Windows, Linux. Also available as a **native menu bar app** ([download](https://github.com/usepulso/pulso/releases)).
+**Cross-platform:** macOS, Windows, Linux. Also available as a **native menu bar app** ([download](https://github.com/devjoaocastro/pulso/releases)).
 
 ## Memory System
 
@@ -264,8 +264,8 @@ All plans include **BYOK** (Bring Your Own Key) — your keys, your models, your
 
 ## Community
 
-- [GitHub Issues](https://github.com/usepulso/pulso/issues) — Bug reports and feature requests
-- [GitHub Discussions](https://github.com/usepulso/pulso/discussions) — Questions, ideas, feedback
+- [GitHub Issues](https://github.com/devjoaocastro/pulso/issues) — Bug reports and feature requests
+- [GitHub Discussions](https://github.com/devjoaocastro/pulso/discussions) — Questions, ideas, feedback
 - [@usepulso](https://x.com/usepulso) — Updates and announcements
 
 ## License
@@ -285,7 +285,7 @@ Proprietary. See [LICENSE](LICENSE).
 <p align="center">
   <sub>
     <a href="https://app.runpulso.com">Website</a> ·
-    <a href="https://github.com/usepulso/pulso">GitHub</a> ·
+    <a href="https://github.com/devjoaocastro/pulso">GitHub</a> ·
     <a href="https://x.com/usepulso">Twitter</a>
   </sub>
 </p>
