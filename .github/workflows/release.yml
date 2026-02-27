@@ -184,8 +184,8 @@ jobs:
             | **Linux** | `.AppImage` + `.deb` |
             | **Companion CLI** (all platforms) | `npm install -g @pulso/companion` |
             | **Web** | [app.runpulso.com](https://app.runpulso.com) |
-            | **iOS** | [App Store](https://apps.apple.com/app/pulso-ai-agents/id6740000000) |
-            | **Android** | [Google Play](https://play.google.com/store/apps/details?id=com.runpulso.app) |
+            | **iOS** | Coming soon (App Store) |
+            | **Android** | `.apk` in assets below · Coming soon (Play Store) |
 
             ## Install
 
