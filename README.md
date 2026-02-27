@@ -179,6 +179,31 @@ Use any LLM. Mix different models in the same workflow:
 
 **Native image generation** — Pulso auto-detects which image models you have access to: Gemini Flash Image, GPT Image, FLUX 1.1 Pro, Seedream 4.5, FLUX Schnell (free via Workers AI).
 
+## Service Integrations
+
+Connect your tools via OAuth. Agents can read, write, and manage your accounts directly:
+
+| Service | What agents can do |
+|:--|:--|
+| **Google Workspace** | Gmail, Calendar, Sheets, Drive — 37 actions |
+| **GitHub** | Issues, PRs, repos, code search — 19 actions |
+| **Notion** | Pages, databases, search — 15 actions |
+| **Slack** | Messages, channels, threads — 15 actions |
+| **Linear** | Issues, projects, teams — 14 actions |
+| **Spotify** | Playback, search, playlists — 10 actions |
+| **Trello** | Cards, boards, lists — 9 actions |
+| **Jira** | Issues, sprints, projects — 8 actions |
+| **HubSpot** | Contacts, deals, companies — 8 actions |
+| **Discord** | Messages, channels, guilds — 6 actions |
+| **Todoist** | Tasks, projects, labels — 6 actions |
+| **Smart Home** | Hue, Sonos, Home Assistant — 21 actions |
+
+**Total: 371 tools** available to your agents — and growing.
+
+## Workflow Builder
+
+Drag-and-drop visual workflow editor. 13 node types including LLM calls, conditionals, code execution, HTTP requests, and loops. Build complex automations without writing YAML — or let AI generate the workflow from a description.
+
 ## Companion Daemon
 
 [`@pulso/companion`](https://www.npmjs.com/package/@pulso/companion) — a local daemon that bridges your machine to Pulso.
@@ -213,6 +238,14 @@ Three-tier memory architecture:
 | **Semantic** | Forever | Similarity search, knowledge retrieval |
 
 **Knowledge graph** — Beyond flat memory, Pulso maintains entities and relationships extracted from conversations. When you mention "John is my CTO" and later "John prefers async standups", Pulso connects these facts into a queryable graph with importance scoring and automatic decay.
+
+## More Capabilities
+
+- **Voice** — Talk to your agents. ElevenLabs real-time voice, OpenAI TTS, browser speech recognition.
+- **Code execution** — Agents run Python, JavaScript, and Bash in secure E2B sandboxes. No local setup needed.
+- **Browser extension** — Chrome extension with 13 tools: screenshot, click, type, scroll, fill forms, read pages. Visual overlays show what the agent is doing without stealing focus.
+- **Scheduled automations** — Cron-based triggers with 33+ templates. Agents run on schedule and deliver results to Telegram, WhatsApp, email, or your Workspace.
+- **Skill builder** — Create custom tools with JavaScript in a sandboxed runtime. Your agents learn new abilities as you build them.
 
 ## Security
 
@@ -252,7 +285,7 @@ Three-tier memory architecture:
 │  ┌──▼────────┐ ┌─▼──────────┐ ┌────────▼──────┐ ┌─────▼──────┐│
 │  │ Providers │ │   Tools    │ │    Memory     │ │ Protocols  ││
 │  │           │ │            │ │               │ │            ││
-│  │ Claude    │ │ 350+ tools │ │ Session       │ │ MCP Server ││
+│  │ Claude    │ │ 371 tools │ │ Session       │ │ MCP Server ││
 │  │ GPT      │ │ Web search │ │ Persistent    │ │ MCP Client ││
 │  │ Gemini   │ │ Image gen  │ │ Knowledge     │ │            ││
 │  │ DeepSeek │ │ Browser    │ │   Graph       │ │            ││
