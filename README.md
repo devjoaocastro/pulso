@@ -32,16 +32,16 @@
 
 ## The Problem
 
-Every AI tool in 2026 is the same: you ask a question, it gives you an answer.
+I kept copying AI answers into my browser, my calendar, my WhatsApp. Every "intelligent assistant" gave me instructions and then watched while I did the work. So I built one that doesn't.
 
 _"How do I unsubscribe from marketing emails?"_ — here are 5 steps.
 _"When is my next meeting?"_ — I don't have access to your calendar.
 
-You end up doing everything yourself anyway.
+You end up doing everything yourself anyway. Pulso ends that.
 
 ## What Pulso Does
 
-Pulso is a cloud-native multi-agent orchestration platform that connects to your services and executes tasks. Not instructions. Not suggestions. **Actions.**
+Pulso connects to your services and executes tasks. Not instructions. Not suggestions. **Actions.** It runs 24/7 on the cloud — your Mac can be off and your agents keep working.
 
 ```
 You:    "Check my email, summarize anything urgent, and block my calendar
@@ -298,9 +298,11 @@ Available on Swarm and Fleet plans.
 
 ## Agent Identity Portability (AIP)
 
-Your agent knows you. Your agent is yours.
+Your agent knows you — your style, your projects, your decisions, the context behind every workflow. Months of interaction. Then you want to switch platforms.
 
-AIP is an open standard we're proposing so you can export your complete agent identity — memory, personality, learned behaviors, business configurations — and import it anywhere.
+You lose everything. Memory. Personality. The relationship you built. That's not a feature — it's a failure.
+
+AIP is an open standard so you can export your complete agent identity and import it anywhere. Like porting a phone number.
 
 ```bash
 # Export your agent (coming Q1 2026)
@@ -345,8 +347,10 @@ All plans include **BYOK** (Bring Your Own Key) — your keys, your models, your
 
 ## Community
 
+We read every issue and every discussion. If you're building something with Pulso, we want to know.
+
 - [GitHub Issues](https://github.com/usepulso/pulso/issues) — Bug reports and feature requests
-- [GitHub Discussions](https://github.com/usepulso/pulso/discussions) — Questions, ideas, feedback
+- [GitHub Discussions](https://github.com/usepulso/pulso/discussions) — Questions, ideas, show what you built
 - [@usepulso](https://x.com/usepulso) — Updates and announcements
 
 ## Security
@@ -360,11 +364,11 @@ Proprietary. See [LICENSE](LICENSE).
 ---
 
 <p align="center">
-  <strong>Pulso</strong> — The AI agent platform that works for you, not the other way around.
+  <strong>Pulso</strong> — Your agent, your memory, your autonomy.
 </p>
 
 <p align="center">
-  <sub>Built by <a href="https://codeahead.pt">CodeAhead</a> in Portugal · © 2026 CodeAhead Lda</sub>
+  <sub>Built by <a href="https://github.com/devjoaocastro">João Castro</a> in Portugal · <a href="https://codeahead.pt">CodeAhead</a> · © 2026</sub>
 </p>
 
 <p align="center">
