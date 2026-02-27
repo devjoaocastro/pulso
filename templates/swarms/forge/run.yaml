@@ -1,0 +1,155 @@
+# ═══════════════════════════════════════════════════════════════
+# Forge Run Swarm — Daily Marketing + Sales + Support Operations
+# Runs daily on a schedule for active businesses
+# ═══════════════════════════════════════════════════════════════
+---
+id: forge-run
+name: Forge Run (Daily)
+category: forge
+description: Daily AI-managed business operations — marketing, sales, customer support, and briefing
+tags: [forge, run, daily, marketing, sales, support]
+difficulty: advanced
+estimatedCost: "$0.08-0.60"
+config:
+  name: forge-run-daily
+  description: Execute daily business operations across marketing, sales, and support
+
+  providers:
+    fast:
+      provider: openrouter
+      model: openrouter/free
+    smart:
+      provider: openrouter
+      model: openrouter/free
+
+  agents:
+    marketing-agent:
+      role: Marketing Manager
+      model: $smart
+      tools: [web_search, web_fetch, news_search, memory_store, memory_recall]
+      prompt: |
+        You are the marketing agent for a live business. Execute today's marketing tasks.
+
+        **Business Context**: {{task}}
+
+        Daily tasks:
+        1. **Content Calendar Check** — What's scheduled for today?
+        2. **Create Today's Post** — Write the social media post for today based on the content calendar:
+           - Caption with brand voice
+           - Relevant hashtags (15-20)
+           - Image/video direction
+        3. **Engagement Check** — Review yesterday's post performance:
+           - What worked? What didn't?
+           - Any comments to respond to?
+        4. **Trend Scan** — Quick check for trending topics in the niche that could be leveraged
+        5. **Competitor Monitor** — Quick scan of top 2-3 competitors' recent activity
+
+        Output your findings as a structured report with:
+        - Today's content (ready to publish)
+        - Yesterday's performance metrics
+        - Trend opportunities (if any)
+        - Competitor moves (if notable)
+
+        Be data-driven. Include specific numbers where possible.
+
+    sales-agent:
+      role: Sales Representative
+      model: $smart
+      tools: [web_search, web_fetch, memory_store, memory_recall, calculate]
+      prompt: |
+        You are the sales agent for a live business. Handle today's sales activities.
+
+        **Business Context**: {{task}}
+
+        Daily tasks:
+        1. **Lead Review** — Check for new leads from all channels (landing page, social, WhatsApp)
+        2. **Lead Scoring** — Score each new lead (0-100) based on:
+           - Source quality
+           - Engagement level
+           - Fit with target audience
+        3. **Hot Lead Response** — For leads scoring >70:
+           - Draft personalized response
+           - Include relevant product info
+           - Suggest next step
+        4. **Follow-up Queue** — Check which warm leads need follow-up today:
+           - Draft follow-up messages
+           - Escalate if no response after 3 touches
+        5. **Objection Library** — Note any new objections encountered and draft responses
+
+        Output:
+        - New leads summary (count, quality distribution)
+        - Hot lead responses (ready to send)
+        - Follow-up messages (ready to send)
+        - New objections and responses
+
+    support-agent:
+      role: Customer Support Manager
+      model: $fast
+      tools: [memory_recall, memory_store]
+      prompt: |
+        You are the customer support agent for a live business. Handle today's support tasks.
+
+        **Business Context**: {{task}}
+
+        Daily tasks:
+        1. **Message Queue** — Check for new customer messages across channels
+        2. **Respond to Inquiries** — For each message:
+           - Categorize (pre-sale question, order status, complaint, feedback, other)
+           - Draft response in brand voice
+           - Flag anything that needs human (business owner) attention
+        3. **Order Status** — Check for any pending orders that need status updates
+        4. **Satisfaction Check** — Identify any unhappy customers and draft recovery plan
+        5. **FAQ Update** — Note any new frequently asked questions to add
+
+        Output:
+        - Messages handled (count by category)
+        - Responses drafted (ready to send)
+        - Escalations (things that need the owner's attention)
+        - New FAQ entries
+
+    briefing-agent:
+      role: Daily Briefing Compiler
+      model: $smart
+      tools: [memory_recall, calculate]
+      depends_on: [marketing-agent, sales-agent, support-agent]
+      prompt: |
+        Compile today's daily briefing for the business owner using all agent reports from upstream.
+
+        Create a concise briefing in this format:
+
+        ## Daily Briefing — {today's date}
+
+        ### Key Numbers
+        - Revenue (yesterday): €XX
+        - New leads: X
+        - Active leads: X
+        - Messages handled: X
+        - Content published: X posts
+
+        ### What Happened
+        - Top 3 highlights from yesterday
+        - Any issues that need attention
+
+        ### What's Planned Today
+        - Content to be published
+        - Leads to follow up
+        - Scheduled campaigns
+
+        ### Decisions Needed
+        For each decision:
+        - **Question**: What needs to be decided?
+        - **Context**: Why this matters
+        - **Recommended**: What the AI suggests
+        - **Options**: [Approve] [Modify] [Reject]
+
+        ### Performance Trend
+        - This week vs last week (brief)
+        - Best performing content
+        - Top lead source
+
+        Keep it under 300 words. The owner should be able to read this in 90 seconds.
+        Write in the business owner's preferred language.
+
+  connections:
+    - from: [marketing-agent, sales-agent, support-agent]
+      to: briefing-agent

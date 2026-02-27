@@ -1,0 +1,139 @@
+# ═══════════════════════════════════════════════════════════════
+# Forge Etsy Car Posters Fast Launch — Revenue-first blueprint
+# Built to get first sales signal fast (views/favorites/orders)
+# ═══════════════════════════════════════════════════════════════
+---
+id: forge-etsy-car-posters-fast-launch
+name: Forge Etsy Car Posters Fast Launch
+category: forge
+description: Build a revenue-first Etsy plan for digital car posters with concrete listing pack, pricing, and 14-day launch ops
+tags: [forge, etsy, car-posters, digital-product, monetization, launch]
+difficulty: intermediate
+estimatedCost: "$0.20-0.80"
+featured: true
+config:
+  name: forge-etsy-car-posters-fast-launch
+  description: Validate demand and generate a launch pack for selling digital car posters on Etsy now.
+
+  agents:
+    demand-scout:
+      role: Car Poster Demand Scout
+      model:
+        provider: openrouter
+        model: openrouter/free
+      tools: [web_search, web_fetch, news_search]
+      prompt: |
+        Validate demand for digital car posters on Etsy in Portugal + Europe.
+
+        Analyze these segments:
+        1) Porsche silhouette posters
+        2) JDM wall art bundles
+        3) Custom blueprint posters (buyer submits car model)
+        4) Motorsport retro posters (rally/F1/classic)
+
+        Output:
+        - Demand score (0-100) per segment
+        - Competition density (low/medium/high)
+        - Typical price range
+        - 3 winning angles with best speed-to-first-sale
+        - Final recommendation: which 1 segment to launch first
+
+        Keep output in Portuguese (PT-PT), direct and numeric.
+
+    offer-engine:
+      role: Offer & Unit Economics Builder
+      model:
+        provider: openrouter
+        model: openrouter/free
+      tools: [calculate, web_fetch]
+      depends_on: [demand-scout]
+      prompt: |
+        Build the offer stack and economics for the winning segment from upstream.
+
+        Return:
+        1) Offer ladder:
+           - Entry product (single poster)
+           - Core bundle (3-5 posters)
+           - Premium personalized variant
+        2) Exact prices in EUR for each tier
+        3) Etsy fee model assumptions and net margin estimate
+        4) Breakeven math:
+           - sales needed for €100, €500, €1,000 revenue
+           - minimum conversion rate needed at 100, 300, 1,000 visits
+        5) Profit-killer sensitivity:
+           - which variable breaks the model first
+
+        No generic language. Show numbers clearly.
+        Output format required:
+        - "### Offer Ladder"
+        - "### Price Table"
+        - "### Unit Economics (Base Case)"
+        - "### Breakeven Thresholds"
+        - "### Sensitivity (What breaks first)"
+        Never return empty output. If data is missing, state assumptions explicitly and continue with calculated estimates.
+
+    listing-pack-builder:
+      role: Etsy Listing Pack Builder
+      model:
+        provider: openrouter
+        model: openrouter/free
+      tools: [memory_store, memory_recall]
+      depends_on: [demand-scout, offer-engine]
+      prompt: |
+        Create a complete launch listing pack for Etsy.
+
+        Mandatory output:
+        - 15 listing titles (SEO-friendly, <=140 chars)
+        - 15 subtitle/hooks for image mockups
+        - 15 sets of Etsy tags (13 tags each)
+        - 5 listing descriptions (long-form, conversion-ready)
+        - 5 thumbnail style directions (visual style per niche angle)
+        - 10 FAQ answers for buyer objections
+
+        Save the structured pack in memory key: etsy_car_posters_listing_pack.
+        ALSO return the full pack in this response (do not summarize), using these headers:
+        - "## 15 Listing Titles"
+        - "## 15 Subtitle Hooks"
+        - "## 15 Tag Sets (13 tags)"
+        - "## 5 Long Descriptions"
+        - "## 5 Thumbnail Directions"
+        - "## 10 FAQ Answers"
+        Language: Portuguese (PT-PT), with keywords in English when useful for Etsy SEO.
+
+    launch-ops-manager:
+      role: 14-Day Launch Operations Manager
+      model:
+        provider: openrouter
+        model: openrouter/free
+      tools: [memory_recall, memory_store, calculate]
+      depends_on: [listing-pack-builder]
+      prompt: |
+        Build an execution plan focused on real sales signals in 14 days.
+
+        Use memory key etsy_car_posters_listing_pack and upstream outputs.
+
+        Deliver exactly:
+        1) Launch verdict: GO / PIVOT / NO-GO
+        2) Day-by-day plan (D1..D14) with concrete tasks
+        3) Publish cadence:
+           - how many listings per day
+           - when to run Etsy ads
+        4) KPI board:
+           - impressions, CTR, favorites, add-to-cart, orders, CVR, CAC
+           - decision thresholds for keep/kill listings
+        5) Recovery actions if zero sales by D7
+        6) First-month revenue range with confidence (low/base/high)
+
+        Final section: "What to do in the next 60 minutes" (checklist).
+        Keep it direct and tactical.
+
+  connections:
+    - from: demand-scout
+      to: offer-engine
+    - from: [demand-scout, offer-engine]
+      to: listing-pack-builder
+    - from: listing-pack-builder
+      to: launch-ops-manager
+
+  budget:
+    max_usd: 0.8

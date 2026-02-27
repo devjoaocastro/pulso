@@ -1,0 +1,59 @@
+# Research Team — Multi-agent research pipeline
+# Run: pulso swarm "Research the best practices for TypeScript monorepos in 2026"
+
+name: research-team
+description: Three agents research, fact-check, and synthesize information
+
+providers:
+  researcher:
+    provider: openai
+    model: gpt-4.1
+  editor:
+    provider: anthropic
+    model: claude-sonnet-4-5
+
+agents:
+  deep-researcher:
+    role: Conducts deep research on the topic
+    model: $researcher
+    tools: [read, fetch, grep, glob]
+    prompt: |
+      You are a thorough researcher. Investigate the topic by:
+      - Searching for relevant files and documentation
+      - Fetching information from the web
+      - Gathering data from multiple sources
+      Output a detailed research document with citations.
+
+  fact-checker:
+    role: Verifies claims and checks accuracy
+    model: $researcher
+    tools: [read, fetch]
+    prompt: |
+      You are a fact-checker. Review the research findings and:
+      - Verify key claims against available sources
+      - Flag any unsubstantiated statements
+      - Check for outdated information
+      - Rate confidence level for each finding (High/Medium/Low)
+
+  synthesizer:
+    role: Synthesizes findings into a polished report
+    model: $editor
+    tools: [read, write]
+    prompt: |
+      You are an editor and synthesizer. Take the research and
+      fact-checking results and produce a clear, well-structured
+      report that includes:
+      - Executive summary
+      - Key findings (with confidence ratings)
+      - Recommendations
+      - Sources and references
+      Write the report to research-report.md
+
+connections:
+  - from: deep-researcher
+    to: fact-checker
+  - from: fact-checker
+    to: synthesizer
+
+budget:
+  max_usd: 3.00

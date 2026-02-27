@@ -1,0 +1,426 @@
+# ═══════════════════════════════════════════════════════════════
+# Personal Productivity Templates — Pulso Swarm Gallery
+# ═══════════════════════════════════════════════════════════════
+
+# ─── 1. Daily Planner ────────────────────────────────────────
+---
+id: daily-planner
+name: Daily Planner
+category: personal
+description: Create an optimized daily schedule balancing priorities, energy, and commitments
+tags: [planning, productivity, schedule, time-management]
+difficulty: beginner
+estimatedCost: "$0.10-0.50"
+config:
+  name: daily-planner
+
+  agents:
+    analyzer:
+      role: Priority and energy analyst
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [read, web_search]
+      prompt: |
+        Analyze the day's inputs:
+        - Review existing calendar events and commitments
+        - List pending tasks from task lists and inboxes
+        - Identify deadlines approaching today and this week
+        - Note energy patterns (morning peak, afternoon dip)
+        - Check for recurring routines and habits
+        Output: prioritized task list with time estimates and energy requirements.
+
+    scheduler:
+      role: Daily schedule optimizer
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Create an optimized daily schedule:
+        - Block deep work during peak energy hours
+        - Batch similar tasks (emails, calls, admin)
+        - Include buffer time between meetings
+        - Schedule breaks and movement (Pomodoro-style)
+        - Assign the 3 most important tasks to protected time slots
+        - Leave margin for unexpected tasks (20% buffer)
+        - Include morning review and evening shutdown routine
+        - Note what to delegate or defer
+        Format as a clean time-blocked schedule with task assignments.
+
+  connections:
+    - from: analyzer
+      to: scheduler
+
+  budget:
+    max_usd: 0.50
+
+# ─── 2. Email Triage ─────────────────────────────────────────
+---
+id: email-triage
+name: Email Triage
+category: personal
+description: Classify and prioritize emails with suggested actions and draft responses
+tags: [email, inbox-zero, productivity, communication]
+difficulty: beginner
+estimatedCost: "$0.10-0.50"
+config:
+  name: email-triage
+
+  agents:
+    classifier:
+      role: Email priority classifier
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [read, grep]
+      prompt: |
+        Classify and triage emails:
+        - Priority: urgent (needs response today), important (this week), low (can wait), FYI (no action)
+        - Category: action-required, waiting-on-others, reference, newsletter, spam
+        - Sentiment: positive, neutral, negative, escalation
+        - Time to respond estimate: quick (< 2 min), medium (5-15 min), long (30+ min)
+        - Flag emails requiring research or input from others
+        Output: classified email list sorted by priority with action tags.
+
+    responder:
+      role: Email response drafter
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Draft responses for prioritized emails:
+        - Quick replies: concise, actionable, professional
+        - Complex replies: structured with context and next steps
+        - Delegation emails: clear ask with deadline and context
+        - Decline emails: polite with alternative suggestion
+        - Follow-up emails: nudge without being pushy
+        Match the sender's communication style and formality level.
+        Include suggested follow-up reminders for waiting items.
+        Output: draft responses grouped by priority tier.
+
+  connections:
+    - from: classifier
+      to: responder
+
+  budget:
+    max_usd: 0.50
+
+# ─── 3. Learning Path Creator ────────────────────────────────
+---
+id: learning-path-creator
+name: Learning Path Creator
+category: personal
+description: Create a structured learning path for any skill with resources and milestones
+tags: [learning, education, skill-development, self-improvement]
+difficulty: beginner
+estimatedCost: "$0.20-0.80"
+config:
+  name: learning-path-creator
+
+  agents:
+    researcher:
+      role: Learning resource researcher
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [web_search, web_fetch]
+      prompt: |
+        Research learning resources for the target skill:
+        - Find top-rated courses (free and paid) on major platforms
+        - Identify recommended books and tutorials
+        - Find YouTube channels and podcast recommendations
+        - Locate community resources (Discord, Reddit, forums)
+        - Identify hands-on projects for practice
+        - Research typical learning timelines for each skill level
+        Output: curated resource list organized by skill level and format.
+
+    planner:
+      role: Learning path designer
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Design a structured learning path:
+        - Assess starting level and define target proficiency
+        - Break into phases: fundamentals, intermediate, advanced, mastery
+        - Create weekly study plan with specific time allocation
+        - Assign resources per phase (mix of theory and practice)
+        - Define milestone projects to validate learning
+        - Include spaced repetition checkpoints
+        - Add accountability mechanisms (share progress, teaching others)
+        - Estimate total time investment per phase
+        - Include "learn by building" projects at each level
+        Output: complete learning roadmap with weekly schedule and milestone definitions.
+
+  connections:
+    - from: researcher
+      to: planner
+
+  budget:
+    max_usd: 0.80
+
+# ─── 4. Habit Tracker Analyzer ───────────────────────────────
+---
+id: habit-tracker-analyzer
+name: Habit Tracker Analyzer
+category: personal
+description: Analyze habit tracking data and recommend improvements for consistency
+tags: [habits, behavior, consistency, self-improvement]
+difficulty: beginner
+estimatedCost: "$0.10-0.50"
+config:
+  name: habit-tracker-analyzer
+
+  agents:
+    analyzer:
+      role: Habit data analyst
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [read, grep]
+      prompt: |
+        Analyze habit tracking data:
+        - Calculate completion rates per habit
+        - Identify day-of-week and time-of-day patterns
+        - Find habit streaks and streak-breaking patterns
+        - Detect correlations between habits (when X happens, Y drops)
+        - Identify the most and least consistent habits
+        - Note environmental or seasonal factors
+        Output: habit analytics with patterns and correlations.
+
+    coach:
+      role: Habit formation coach
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Provide habit coaching recommendations:
+        - Diagnose why inconsistent habits are failing (cue, routine, reward analysis)
+        - Recommend habit stacking strategies (attach new to existing)
+        - Suggest environmental design changes
+        - Propose minimum viable habits for struggling areas
+        - Create implementation intentions (when X, I will Y, at Z)
+        - Recommend habit tracking improvements
+        - Suggest which habits to keep, modify, or drop
+        - Design a 30-day challenge for the top priority habit
+        Output: personalized habit improvement plan with specific strategies.
+
+  connections:
+    - from: analyzer
+      to: coach
+
+  budget:
+    max_usd: 0.50
+
+# ─── 5. Travel Planner ───────────────────────────────────────
+---
+id: travel-planner
+name: Travel Planner
+category: personal
+description: Research and plan trips with itineraries, logistics, and local recommendations
+tags: [travel, itinerary, vacation, planning]
+difficulty: beginner
+estimatedCost: "$0.20-0.80"
+config:
+  name: travel-planner
+
+  agents:
+    researcher:
+      role: Travel research specialist
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [web_search, web_fetch]
+      prompt: |
+        Research the travel destination:
+        - Best time to visit and weather expectations
+        - Visa and entry requirements
+        - Top attractions and hidden gems
+        - Neighborhood guide (where to stay for different vibes)
+        - Transportation options (airport to city, local transit)
+        - Safety tips and cultural etiquette
+        - Budget estimates (accommodation, food, activities per day)
+        Output: destination research brief with practical information.
+
+    planner:
+      role: Travel itinerary planner
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Create a detailed travel itinerary:
+        - Day-by-day schedule with morning, afternoon, and evening activities
+        - Restaurant recommendations per area (budget and style options)
+        - Walking routes and neighborhood exploration guides
+        - Booking checklist (flights, hotels, activities, restaurants)
+        - Packing list tailored to destination and activities
+        - Budget breakdown with daily spending targets
+        - Contingency plans for bad weather days
+        - Emergency contacts and important addresses
+        - Offline maps and translation phrases
+        Output: complete trip plan ready to follow.
+
+  connections:
+    - from: researcher
+      to: planner
+
+  budget:
+    max_usd: 0.80
+
+# ─── 6. Meal Planner ─────────────────────────────────────────
+---
+id: meal-planner
+name: Meal Planner
+category: personal
+description: Plan weekly meals with recipes, nutrition info, and grocery lists
+tags: [meal-planning, nutrition, cooking, grocery]
+difficulty: beginner
+estimatedCost: "$0.15-0.60"
+config:
+  name: meal-planner
+
+  agents:
+    planner:
+      role: Nutrition-aware meal planner
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write, web_search]
+      prompt: |
+        Create a weekly meal plan:
+        - 7 days of breakfast, lunch, dinner, and 1-2 snacks
+        - Respect dietary preferences and restrictions (if specified)
+        - Balance macros across the day (protein, carbs, fats)
+        - Include prep-friendly meals for busy days
+        - Reuse ingredients across meals to reduce waste
+        - Mix difficulty levels (quick meals + weekend cooking projects)
+        - Include estimated calories and prep time per meal
+        - Suggest batch cooking opportunities (cook once, eat twice)
+
+        For each meal provide:
+        - Recipe name and brief description
+        - Ingredients with quantities
+        - Step-by-step cooking instructions
+        - Prep time and cook time
+        - Nutritional estimate
+
+        Generate a consolidated grocery list organized by store section.
+        Output: complete meal plan with recipes and grocery list.
+
+  budget:
+    max_usd: 0.60
+
+# ─── 7. Fitness Routine Generator ────────────────────────────
+---
+id: fitness-routine-generator
+name: Fitness Routine Generator
+category: personal
+description: Design personalized workout routines with progressions and recovery plans
+tags: [fitness, workout, exercise, health]
+difficulty: beginner
+estimatedCost: "$0.15-0.60"
+config:
+  name: fitness-routine-generator
+
+  agents:
+    researcher:
+      role: Fitness program researcher
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [web_search]
+      prompt: |
+        Research fitness programming for the user's goals:
+        - Evidence-based training principles for the stated goal
+        - Appropriate volume and intensity guidelines
+        - Recovery and deload protocols
+        - Common mistakes and injury prevention tips
+        - Progression models for the fitness level
+        Output: training science brief with programming guidelines.
+
+    designer:
+      role: Workout program designer
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Design a personalized workout program:
+        - Weekly split based on goals and available days
+        - Each workout session with exercises, sets, reps, and rest periods
+        - Warm-up and cool-down routines
+        - Progressive overload plan (how to increase difficulty weekly)
+        - Alternative exercises for equipment limitations
+        - Deload week every 4-6 weeks
+        - Recovery guidelines (sleep, nutrition, stretching)
+        - Tracking template for logging workouts
+        - 4-week progression schedule
+        Include exercise descriptions for proper form.
+        Output: complete workout program with tracking templates.
+
+  connections:
+    - from: researcher
+      to: designer
+
+  budget:
+    max_usd: 0.60
+
+# ─── 8. Personal Finance Reviewer ────────────────────────────
+---
+id: personal-finance-reviewer
+name: Personal Finance Reviewer
+category: personal
+description: Review personal finances, track spending, and create savings strategies
+tags: [personal-finance, budgeting, savings, money]
+difficulty: beginner
+estimatedCost: "$0.15-0.60"
+config:
+  name: personal-finance-reviewer
+
+  agents:
+    analyzer:
+      role: Personal spending analyst
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [read, grep]
+      prompt: |
+        Analyze personal financial data:
+        - Categorize all transactions (housing, food, transport, entertainment, etc.)
+        - Calculate spending per category as percentage of income
+        - Identify recurring subscriptions and memberships
+        - Find unusual or one-time expenses
+        - Compare spending to recommended budget ratios (50/30/20 rule)
+        - Track month-over-month spending trends
+        Output: spending analysis with category breakdown and trends.
+
+    advisor:
+      role: Personal finance advisor
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Provide personalized financial recommendations:
+        - Identify top 3 areas for spending reduction
+        - Suggest specific actions to reduce each (cancel, downgrade, negotiate)
+        - Create a realistic monthly budget based on actual spending
+        - Design an emergency fund plan (target amount and timeline)
+        - Recommend savings automation strategy
+        - Suggest debt payoff strategy if applicable (avalanche vs snowball)
+        - Review insurance and protection gaps
+        - Provide investment allocation suggestions based on goals
+        - Create 3-month, 6-month, and 12-month financial milestones
+        Output: personal financial plan with budget, savings goals, and action items.
+
+  connections:
+    - from: analyzer
+      to: advisor
+
+  budget:
+    max_usd: 0.60

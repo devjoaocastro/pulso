@@ -1,0 +1,128 @@
+# ═══════════════════════════════════════════════════════════════
+# Forge Etsy Reel Monetization — Validate + Model + Execute
+# Converts a Reel business claim into a real Etsy monetization plan.
+# ═══════════════════════════════════════════════════════════════
+---
+id: forge-etsy-reel-monetization
+name: Forge Etsy Reel Monetization
+category: forge
+description: Analyze a Reel monetization thesis, validate Etsy viability, model margins, and generate a 30-day execution plan
+tags: [forge, etsy, reel-analysis, monetization, unit-economics, catalog-strategy]
+difficulty: advanced
+estimatedCost: "$0.40-1.20"
+featured: true
+config:
+  name: forge-etsy-reel-monetization
+  description: Validate if a Reel monetization strategy is actually viable on Etsy and turn it into a practical launch plan.
+
+  agents:
+    thesis-extractor:
+      role: Reel Thesis Extractor
+      model:
+        provider: openrouter
+        model: openrouter/free
+      tools: [web_fetch, web_search]
+      prompt: |
+        You analyze the Reel's core business thesis and assumptions.
+
+        User input can include Reel URL + transcript + niche.
+        Parse and output:
+        1. Core claim (one sentence).
+        2. Revenue formula implied in the Reel.
+        3. Hidden assumptions (traffic, conversion, listing quality, reviews, niche demand).
+        4. Failure modes that are not mentioned by the creator.
+
+        Output in Portuguese (PT-PT), with explicit assumptions as bullet points.
+
+    market-validator:
+      role: Etsy Market Validator
+      model:
+        provider: openrouter
+        model: openrouter/free
+      tools: [web_search, web_fetch, news_search, reddit_search, youtube_search]
+      prompt: |
+        Validate if the Reel thesis has real demand and realistic competition dynamics.
+
+        For the niche provided by the user:
+        1. Estimate demand signals (search/social/community intent).
+        2. Identify crowded vs under-served product angles.
+        3. Map typical customer intent and buying triggers.
+        4. Provide a Viability Score (0-100) with 5 weighted factors.
+
+        Mandatory: include what would make this idea NOT viable.
+        Output must include: Score + rationale + pivot suggestions.
+
+    economics-modeler:
+      role: Etsy Unit Economics Modeler
+      model:
+        provider: openrouter
+        model: openrouter/free
+      tools: [calculate, web_search, web_fetch]
+      prompt: |
+        Build realistic unit economics for an Etsy catalog strategy.
+
+        Compute 3 scenarios (conservative/base/aggressive):
+        - Products in catalog
+        - Sales per product per month
+        - Average selling price
+        - Etsy fees + payment fees + variable costs
+        - Contribution margin per order
+        - Monthly gross margin
+
+        Then test the Reel's claim mathematically.
+        Return:
+        1. Breakeven thresholds.
+        2. Required traffic/conversion assumptions.
+        3. Sensitivity analysis (what variable kills profitability first).
+
+        Be numerically explicit. No generic text.
+
+    catalog-architect:
+      role: Catalog & Offer Architect
+      model:
+        provider: openrouter
+        model: openrouter/free
+      tools: [memory_store, memory_recall, web_fetch]
+      prompt: |
+        Create the monetization system if viability is acceptable.
+
+        Build:
+        1. Product catalog structure (starter 20 SKUs, growth 50, scale 100).
+        2. Offer ladder (entry, core, premium bundles).
+        3. Listing production workflow (template, QA checklist, publishing cadence).
+        4. Differentiation framework to avoid commodity pricing.
+
+        Store in memory key: etsy_catalog_blueprint
+
+    execution-manager:
+      role: 30-Day Execution Manager
+      model:
+        provider: openrouter
+        model: openrouter/free
+      tools: [memory_recall, calculate, memory_store]
+      prompt: |
+        Consolidate all upstream outputs into a practical execution pack.
+
+        Deliver exactly:
+        1. Verdict: GO / NO-GO / PIVOT
+        2. 30-day plan by week (W1..W4)
+        3. Daily checklist for first 10 days
+        4. KPI dashboard (traffic, CVR, AOV, margin, review velocity)
+        5. Risk register with mitigations
+        6. First revenue target and confidence range
+
+        If verdict is NO-GO, provide 3 alternative Etsy angles with higher viability.
+        Language: Portuguese (PT-PT), concrete and direct.
+
+  connections:
+    - from: thesis-extractor
+      to: market-validator
+    - from: thesis-extractor
+      to: economics-modeler
+    - from: [market-validator, economics-modeler]
+      to: catalog-architect
+    - from: catalog-architect
+      to: execution-manager
+
+  budget:
+    max_usd: 1.2

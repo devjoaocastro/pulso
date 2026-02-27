@@ -1,0 +1,442 @@
+# ═══════════════════════════════════════════════════════════════
+# Security & Compliance Templates — Pulso Swarm Gallery
+# ═══════════════════════════════════════════════════════════════
+
+# ─── 1. OWASP Audit ──────────────────────────────────────────
+---
+id: owasp-audit
+name: OWASP Top 10 Audit
+category: security
+description: Audit web application against OWASP Top 10 vulnerability categories
+tags: [owasp, web-security, vulnerabilities, audit]
+difficulty: advanced
+estimatedCost: "$0.50-2.00"
+config:
+  name: owasp-audit
+
+  agents:
+    scanner:
+      role: OWASP vulnerability scanner
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, grep, glob]
+      prompt: |
+        Scan the codebase for OWASP Top 10 vulnerabilities:
+        1. Broken Access Control — check auth middleware, role checks, IDOR
+        2. Cryptographic Failures — check encryption, hashing, key management
+        3. Injection — SQL injection, XSS, command injection, LDAP injection
+        4. Insecure Design — missing rate limiting, business logic flaws
+        5. Security Misconfiguration — default configs, verbose errors, missing headers
+        6. Vulnerable Components — check dependency versions for known CVEs
+        7. Authentication Failures — weak passwords, missing MFA, session issues
+        8. Data Integrity Failures — unsigned updates, insecure deserialization
+        9. Logging Failures — missing audit logs, log injection
+        10. SSRF — unchecked URL fetching, internal network access
+        Output: findings per OWASP category with code references and severity.
+
+    reporter:
+      role: Security audit report writer
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Create a comprehensive OWASP audit report:
+        - Executive summary with overall risk rating
+        - Detailed findings per OWASP category
+        - Risk rating per finding (Critical/High/Medium/Low)
+        - Proof of concept or code snippet for each finding
+        - Remediation steps with code examples
+        - Priority matrix (impact vs effort)
+        - Compliance implications
+        Output: professional security audit report ready for stakeholder review.
+
+  connections:
+    - from: scanner
+      to: reporter
+
+  budget:
+    max_usd: 2.00
+
+# ─── 2. Penetration Test Planner ─────────────────────────────
+---
+id: pentest-planner
+name: Penetration Test Planner
+category: security
+description: Plan a structured penetration testing engagement with scope and methodology
+tags: [pentest, offensive-security, testing, methodology]
+difficulty: advanced
+estimatedCost: "$0.50-2.00"
+config:
+  name: pentest-planner
+
+  agents:
+    scope-analyst:
+      role: Penetration test scope analyst
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [read, grep, glob, web_search]
+      prompt: |
+        Define the penetration test scope:
+        - Inventory all endpoints, APIs, and attack surfaces
+        - Identify authentication mechanisms and entry points
+        - Map technology stack and versions
+        - List third-party integrations and data flows
+        - Identify out-of-scope systems and constraints
+        - Note compliance requirements (PCI-DSS, HIPAA, SOC2)
+        Output: scope document with asset inventory and test boundaries.
+
+    test-planner:
+      role: Penetration test methodology planner
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Create a detailed penetration test plan:
+        - Define test phases (reconnaissance, scanning, exploitation, post-exploitation)
+        - List specific test cases per attack surface
+        - Include OWASP Testing Guide references per test
+        - Plan social engineering tests if in scope
+        - Define tools and techniques for each phase
+        - Create rules of engagement (timing, notification, escalation)
+        - Design reporting template with severity definitions
+        - Plan retesting procedures for found vulnerabilities
+        Output: complete pentest plan with test cases, tools, and rules of engagement.
+
+  connections:
+    - from: scope-analyst
+      to: test-planner
+
+  budget:
+    max_usd: 2.00
+
+# ─── 3. SOC2 Compliance Checker ──────────────────────────────
+---
+id: soc2-compliance-checker
+name: SOC2 Compliance Checker
+category: security
+description: Assess SOC2 Trust Service Criteria compliance gaps and remediation steps
+tags: [soc2, compliance, audit, governance]
+difficulty: advanced
+estimatedCost: "$0.50-2.00"
+config:
+  name: soc2-compliance-checker
+
+  agents:
+    assessor:
+      role: SOC2 compliance assessor
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, grep, glob, web_search]
+      prompt: |
+        Assess SOC2 Trust Service Criteria compliance:
+        - Security: access controls, encryption, network security, monitoring
+        - Availability: uptime SLAs, disaster recovery, capacity planning
+        - Processing Integrity: data validation, error handling, quality assurance
+        - Confidentiality: data classification, retention, disposal
+        - Privacy: consent, data collection, use limitation, disclosure
+        For each criterion, check code, configs, and documentation.
+        Output: compliance gap analysis per Trust Service Criterion.
+
+    remediator:
+      role: SOC2 remediation planner
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Create a SOC2 remediation plan:
+        - Prioritize gaps by audit risk and implementation effort
+        - Write specific policies and procedures for each gap
+        - Recommend technical controls to implement
+        - Create evidence collection templates
+        - Design continuous monitoring controls
+        - Estimate timeline and resources for remediation
+        - Map controls to SOC2 criteria references
+        Output: remediation roadmap with policies, technical controls, and evidence requirements.
+
+  connections:
+    - from: assessor
+      to: remediator
+
+  budget:
+    max_usd: 2.00
+
+# ─── 4. Incident Response Playbook ───────────────────────────
+---
+id: incident-response-playbook
+name: Incident Response Playbook
+category: security
+description: Create security incident response playbooks for common attack scenarios
+tags: [incident-response, playbook, breach, security-operations]
+difficulty: intermediate
+estimatedCost: "$0.30-1.50"
+config:
+  name: incident-response-playbook
+
+  agents:
+    threat-modeler:
+      role: Threat scenario analyst
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [read, grep, glob, web_search]
+      prompt: |
+        Identify incident scenarios requiring playbooks:
+        - Data breach (PII exposure, credential leak)
+        - Ransomware attack
+        - DDoS attack
+        - Account compromise (admin, user, service account)
+        - Supply chain attack (compromised dependency)
+        - Insider threat
+        - API abuse and scraping
+        For each, outline the typical attack vector and indicators of compromise.
+        Output: threat scenario inventory with IOCs per scenario.
+
+    playbook-writer:
+      role: Incident response playbook author
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Write detailed incident response playbooks:
+        For each scenario, include:
+        - Detection: indicators, alert sources, triage criteria
+        - Containment: immediate actions to limit blast radius
+        - Eradication: steps to remove the threat
+        - Recovery: restoration procedures and validation
+        - Communication: who to notify, templates, legal obligations
+        - Post-incident: evidence preservation, lessons learned
+        - Escalation matrix with contact details
+        - Decision trees for common judgment calls
+        Output: complete playbook set ready for the security team.
+
+  connections:
+    - from: threat-modeler
+      to: playbook-writer
+
+  budget:
+    max_usd: 1.50
+
+# ─── 5. API Security Audit ───────────────────────────────────
+---
+id: api-security-audit
+name: API Security Audit
+category: security
+description: Audit API endpoints for authentication, authorization, and input validation
+tags: [api, security, authentication, authorization]
+difficulty: intermediate
+estimatedCost: "$0.30-1.50"
+config:
+  name: api-security-audit
+
+  agents:
+    scanner:
+      role: API security scanner
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, grep, glob]
+      prompt: |
+        Scan all API endpoints for security issues:
+        - Authentication: missing auth on sensitive endpoints, weak token validation
+        - Authorization: broken object-level authorization (BOLA/IDOR)
+        - Input validation: missing sanitization, type coercion issues
+        - Rate limiting: unprotected endpoints, brute-force vulnerable
+        - Data exposure: excessive data in responses, stack traces, debug info
+        - Mass assignment: uncontrolled property binding
+        - CORS: overly permissive origins
+        - Security headers: missing HSTS, CSP, X-Frame-Options
+        Output: findings per endpoint with severity and code references.
+
+    fixer:
+      role: API security hardening specialist
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write, grep]
+      prompt: |
+        Fix identified API security issues:
+        - Add missing authentication middleware
+        - Implement proper authorization checks
+        - Add input validation schemas (Zod)
+        - Configure rate limiting for sensitive endpoints
+        - Strip excessive data from responses
+        - Fix CORS configuration
+        - Add security headers middleware
+        - Write regression tests for each fix
+        Output: code fixes with explanations and test coverage.
+
+  connections:
+    - from: scanner
+      to: fixer
+
+  budget:
+    max_usd: 1.50
+
+# ─── 6. Dependency Vulnerability Scan ────────────────────────
+---
+id: dependency-vulnerability-scan
+name: Dependency Vulnerability Scan
+category: security
+description: Scan project dependencies for known vulnerabilities and outdated packages
+tags: [dependencies, cve, supply-chain, npm]
+difficulty: beginner
+estimatedCost: "$0.10-0.50"
+config:
+  name: dependency-vulnerability-scan
+
+  agents:
+    scanner:
+      role: Dependency vulnerability scanner
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [read, grep, glob, web_search]
+      prompt: |
+        Scan project dependencies for vulnerabilities:
+        - Read package.json, package-lock.json, or pnpm-lock.yaml
+        - Check each dependency against known CVE databases
+        - Identify packages with no recent maintenance (abandoned)
+        - Flag packages with known malicious versions
+        - Check for typosquatting risks
+        - Verify lockfile integrity
+        Output: vulnerability report with CVE IDs and affected versions.
+
+    remediator:
+      role: Dependency remediation specialist
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Create a dependency remediation plan:
+        - Prioritize by CVSS score and exploitability
+        - Provide safe upgrade paths for each vulnerable package
+        - Identify breaking changes in upgrade paths
+        - Suggest alternative packages for abandoned dependencies
+        - Write npm override/resolution configs for transitive deps
+        - Recommend automated scanning setup (Dependabot, Snyk)
+        Output: remediation plan with upgrade commands and breaking change notes.
+
+  connections:
+    - from: scanner
+      to: remediator
+
+  budget:
+    max_usd: 0.50
+
+# ─── 7. Access Control Reviewer ──────────────────────────────
+---
+id: access-control-reviewer
+name: Access Control Reviewer
+category: security
+description: Review access control implementation for proper authorization enforcement
+tags: [access-control, rbac, authorization, permissions]
+difficulty: intermediate
+estimatedCost: "$0.30-1.00"
+config:
+  name: access-control-reviewer
+
+  agents:
+    mapper:
+      role: Access control mapper
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [read, grep, glob]
+      prompt: |
+        Map the current access control implementation:
+        - Identify all roles and permission levels
+        - List all protected endpoints/resources and their required permissions
+        - Find endpoints missing authorization checks
+        - Document the authorization middleware flow
+        - Identify service-to-service authentication mechanisms
+        - Check for privilege escalation paths
+        Output: access control matrix (role x resource x permission).
+
+    reviewer:
+      role: Access control security reviewer
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Review and improve access control:
+        - Apply principle of least privilege to each role
+        - Identify over-permissioned roles
+        - Check for horizontal privilege escalation (user A accessing user B data)
+        - Verify admin functions are properly restricted
+        - Recommend RBAC improvements
+        - Suggest permission inheritance structure
+        - Create access control test cases
+        - Write access control policy documentation
+        Output: access control review with findings and improved role definitions.
+
+  connections:
+    - from: mapper
+      to: reviewer
+
+  budget:
+    max_usd: 1.00
+
+# ─── 8. Security Training Generator ─────────────────────────
+---
+id: security-training-generator
+name: Security Training Generator
+category: security
+description: Generate security awareness training materials tailored to your stack
+tags: [training, awareness, education, phishing]
+difficulty: beginner
+estimatedCost: "$0.20-0.80"
+config:
+  name: security-training-generator
+
+  agents:
+    researcher:
+      role: Security threat researcher
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [web_search, web_fetch]
+      prompt: |
+        Research current security threats relevant to the team:
+        - Find recent attack vectors targeting similar tech stacks
+        - Research latest phishing techniques and social engineering
+        - Identify common developer security mistakes
+        - Gather real-world breach examples for case studies
+        - Find security best practice guidelines
+        Output: threat intelligence brief for training content.
+
+    content-creator:
+      role: Security training content author
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Create security training materials:
+        - Module 1: Secure coding practices (input validation, auth, encryption)
+        - Module 2: Phishing and social engineering awareness
+        - Module 3: Secrets management and credential hygiene
+        - Module 4: Incident reporting procedures
+        - Module 5: Data handling and privacy
+        For each module include:
+        - Learning objectives
+        - Key concepts with real-world examples
+        - Interactive scenarios (what would you do?)
+        - Quiz questions with explanations
+        - Quick reference cheat sheet
+        Output: complete training curriculum with all modules and quizzes.
+
+  connections:
+    - from: researcher
+      to: content-creator
+
+  budget:
+    max_usd: 0.80

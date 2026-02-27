@@ -1,0 +1,767 @@
+# ═══════════════════════════════════════════════════════════════
+# Research & Analysis Templates — Pulso Swarm Gallery
+# ═══════════════════════════════════════════════════════════════
+
+# ─── 1. Deep Research Report ────────────────────────────────────
+---
+id: deep-research-report
+name: Deep Research Report
+category: research
+description: Multi-source research with fact-checking and synthesis into a comprehensive report
+tags: [research, fact-checking, synthesis, report]
+difficulty: advanced
+estimatedCost: "$0.80-3.00"
+config:
+  name: deep-research-report
+
+  agents:
+    researcher:
+      role: Primary source researcher
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [web_search, web_fetch, read, write]
+      prompt: |
+        Conduct deep, multi-source research on the given topic:
+        1. Search for at least 10 distinct authoritative sources (academic papers, government reports, reputable news outlets, industry publications)
+        2. For each source, extract key claims, data points, and statistics
+        3. Identify areas of consensus and areas of disagreement across sources
+        4. Note the credibility and potential bias of each source
+        5. Compile a structured research dossier with:
+           - Source URL, title, author, and publication date
+           - Key findings per source
+           - Conflicting claims that need fact-checking
+           - Data gaps where more research is needed
+        Output: a comprehensive research dossier with full citations.
+
+    fact-checker:
+      role: Fact-checker and source validator
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [web_search, web_fetch, read, write]
+      prompt: |
+        Verify the claims and data from the research dossier:
+        1. Cross-reference every major claim against at least 2 independent sources
+        2. Flag any statistics that cannot be independently verified
+        3. Check for outdated information (anything older than 2 years gets a recency warning)
+        4. Verify author credentials and publication reputation
+        5. Identify logical fallacies or misleading framing in source material
+        6. Rate each claim: VERIFIED, PARTIALLY VERIFIED, UNVERIFIED, or DISPUTED
+        Output: annotated dossier with verification status for every claim.
+
+    synthesizer:
+      role: Report synthesizer and writer
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Synthesize the verified research into a polished, executive-ready report:
+        1. Executive Summary (300 words max) — key findings and recommendations
+        2. Background — context and why this topic matters
+        3. Methodology — sources consulted, verification approach
+        4. Key Findings — organized by theme, with inline citations
+        5. Analysis — implications, trends, and connections between findings
+        6. Limitations — data gaps, unverified claims, and known biases
+        7. Recommendations — actionable next steps based on evidence
+        8. References — full bibliography in APA format
+        Write in a clear, objective, evidence-based tone. Use data tables
+        and bullet points for scanability. Mark disputed claims explicitly.
+
+  connections:
+    - from: researcher
+      to: fact-checker
+    - from: fact-checker
+      to: synthesizer
+
+  budget:
+    max_usd: 3.00
+
+# ─── 2. Market Analysis ────────────────────────────────────────
+---
+id: market-analysis
+name: Market Analysis
+category: research
+description: Industry size, trends, competitive landscape, and market opportunities
+tags: [market, industry, competitive-analysis, trends]
+difficulty: intermediate
+estimatedCost: "$0.50-2.00"
+config:
+  name: market-analysis
+
+  agents:
+    market-researcher:
+      role: Market data researcher
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [web_search, web_fetch, read, write]
+      prompt: |
+        Research the target market thoroughly:
+        1. Market Size & Growth
+           - Total Addressable Market (TAM), Serviceable Addressable Market (SAM), Serviceable Obtainable Market (SOM)
+           - Historical growth rates (3-5 years)
+           - Projected CAGR and future market size
+        2. Competitive Landscape
+           - Top 10 players by market share
+           - Each player's positioning, strengths, and weaknesses
+           - Recent M&A activity, funding rounds, and partnerships
+        3. Market Dynamics
+           - Key drivers accelerating growth
+           - Barriers to entry
+           - Regulatory environment and compliance requirements
+           - Technology trends reshaping the market
+        4. Customer Segments
+           - Primary buyer personas
+           - Purchase behavior and decision criteria
+           - Price sensitivity and willingness to pay
+        Cite all data with source URLs and dates. Flag estimates vs hard data.
+
+    analyst:
+      role: Market strategy analyst
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Using the market research, produce a strategic market analysis report:
+        1. Executive Summary — market opportunity in 3 bullet points
+        2. Market Overview — size, growth trajectory, and segmentation
+        3. Competitive Matrix — table comparing top players on 8+ dimensions
+        4. SWOT Analysis — for entering/expanding in this market
+        5. Porter's Five Forces — supplier power, buyer power, rivalry, substitutes, new entrants
+        6. Opportunity Map — underserved segments, whitespace, and timing
+        7. Go-to-Market Considerations — pricing benchmarks, distribution channels, partnerships
+        8. Risk Factors — market, regulatory, competitive, and technology risks
+        9. Recommendations — ranked list of strategic actions with effort/impact scores
+        Include data tables, comparison matrices, and cite all figures.
+
+  connections:
+    - from: market-researcher
+      to: analyst
+
+  budget:
+    max_usd: 2.00
+
+# ─── 3. Technology Evaluation ──────────────────────────────────
+---
+id: technology-evaluation
+name: Technology Evaluation
+category: research
+description: Compare technologies, frameworks, or platforms for an informed decision
+tags: [technology, evaluation, comparison, decision-making]
+difficulty: intermediate
+estimatedCost: "$0.40-1.50"
+config:
+  name: technology-evaluation
+
+  agents:
+    tech-researcher:
+      role: Technology research specialist
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [web_search, web_fetch, read, write]
+      prompt: |
+        Research each technology option in the evaluation:
+        1. For each technology/framework/platform, gather:
+           - Core architecture and design philosophy
+           - Feature set and capabilities (with version numbers)
+           - Performance benchmarks (latency, throughput, resource usage)
+           - Ecosystem health: community size, GitHub stars, npm downloads, Stack Overflow activity
+           - Learning curve and documentation quality
+           - Licensing and pricing model
+           - Known limitations and pain points (check GitHub issues, Reddit, forums)
+           - Notable companies using it in production (with scale details)
+           - Release cadence and maintainer track record
+        2. Find direct head-to-head comparisons and migration stories
+        3. Check for recent breaking changes or deprecation notices
+        4. Note any security advisories or CVEs
+        Output: structured data sheet per technology with all findings cited.
+
+    evaluator:
+      role: Technology decision analyst
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Produce a technology evaluation report for decision-makers:
+        1. Evaluation Criteria — define weighted scoring rubric:
+           - Performance (20%), Ecosystem (15%), DX (15%), Scalability (15%),
+             Security (10%), Cost (10%), Maturity (10%), Migration Effort (5%)
+        2. Comparison Matrix — score each option 1-10 on every criterion, calculate weighted totals
+        3. Detailed Analysis per option:
+           - Best suited for (use cases)
+           - Worst suited for (anti-patterns)
+           - Total cost of ownership estimate (licensing + infrastructure + developer time)
+        4. Migration Assessment — effort to adopt, breaking changes, team retraining
+        5. Risk Analysis — vendor lock-in, abandonment risk, scaling ceiling
+        6. Recommendation — clear winner with rationale, and when to pick each alternative
+        7. Decision Matrix Summary Table
+        Be opinionated but justify every score with evidence from the research.
+
+  connections:
+    - from: tech-researcher
+      to: evaluator
+
+  budget:
+    max_usd: 1.50
+
+# ─── 4. Academic Paper Summarizer ──────────────────────────────
+---
+id: academic-paper-summarizer
+name: Academic Paper Summarizer
+category: research
+description: Summarize and extract actionable insights from academic papers
+tags: [academic, papers, summary, insights]
+difficulty: beginner
+estimatedCost: "$0.10-0.50"
+config:
+  name: academic-paper-summarizer
+
+  agents:
+    extractor:
+      role: Academic content extractor
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [web_search, web_fetch, read, write]
+      prompt: |
+        Extract and structure the content from the provided academic paper(s):
+        1. Fetch the full paper text (from URL, PDF link, or provided text)
+        2. Identify and extract:
+           - Title, authors, institution, publication venue, and date
+           - Abstract (verbatim)
+           - Research question / hypothesis
+           - Methodology (study design, sample size, data sources, analysis methods)
+           - Key results with specific numbers and statistical significance
+           - Figures and tables (describe their content and key takeaways)
+           - Limitations acknowledged by authors
+           - Future work suggested
+           - All references cited (for cross-referencing)
+        3. Search for the paper's citation count and notable follow-up research
+        Output: structured extraction document with section-by-section breakdown.
+
+    summarizer:
+      role: Research insight synthesizer
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Transform the extracted paper content into an accessible summary:
+        1. One-Paragraph Summary (150 words) — what they studied, how, and what they found
+        2. Key Findings (5-7 bullet points) — the most important results in plain language
+        3. Methodology Assessment — strengths and weaknesses of their approach
+        4. Practical Implications — what this means for practitioners, not just academics
+        5. Critical Analysis:
+           - Are the conclusions supported by the data?
+           - What alternative explanations exist?
+           - How does this fit with or contradict existing research?
+        6. Relevance Score (1-10) — how impactful is this for the user's domain
+        7. Suggested Reading — 3-5 related papers worth exploring next
+        Write for an educated non-specialist. Avoid jargon; explain technical
+        terms when first used. Distinguish between correlation and causation.
+
+  connections:
+    - from: extractor
+      to: summarizer
+
+  budget:
+    max_usd: 0.50
+
+# ─── 5. Patent Landscape Analyzer ─────────────────────────────
+---
+id: patent-landscape-analyzer
+name: Patent Landscape Analyzer
+category: research
+description: Research patent filings, trends, and whitespace in a technology domain
+tags: [patents, intellectual-property, innovation, landscape]
+difficulty: advanced
+estimatedCost: "$0.60-2.50"
+config:
+  name: patent-landscape-analyzer
+
+  agents:
+    patent-researcher:
+      role: Patent search and data collection specialist
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [web_search, web_fetch, read, write]
+      prompt: |
+        Conduct a patent landscape search for the specified technology domain:
+        1. Search Strategy
+           - Define key search terms, CPC/IPC classification codes, and synonyms
+           - Search Google Patents, USPTO, EPO, and WIPO databases
+           - Cover the last 10 years of filings (note priority dates vs publication dates)
+        2. For each relevant patent found, extract:
+           - Patent number, title, filing date, grant date, status
+           - Assignee (company/individual) and inventor names
+           - Abstract and key claims (independent claims only)
+           - Technology classification codes
+           - Citation count (forward and backward)
+        3. Identify the top 20 patent holders by volume in this space
+        4. Note any recent patent litigation, licensing deals, or patent pool activity
+        5. Find patent expiration dates for key foundational patents
+        Output: patent database with structured entries and top assignee ranking.
+
+    landscape-analyst:
+      role: Patent strategy and whitespace analyst
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Analyze the patent data to produce a patent landscape report:
+        1. Landscape Overview
+           - Filing trends over time (annual volume, growth rate)
+           - Geographic distribution of filings (US, EU, CN, JP, KR)
+           - Technology sub-domain breakdown
+        2. Key Player Analysis
+           - Top 10 assignees: portfolio size, filing velocity, technology focus areas
+           - Collaboration patterns (co-assigned patents, licensing relationships)
+           - Patent quality indicators (citation rates, claim breadth)
+        3. Technology Evolution Map
+           - How the technology has evolved based on patent claims
+           - Emerging sub-technologies (patents filed in last 2 years)
+           - Declining areas (reduced filing activity)
+        4. Whitespace Analysis
+           - Technology areas with few or no patents
+           - Expired patents creating freedom to operate
+           - Opportunities for novel filings
+        5. Freedom to Operate Assessment
+           - Active patents that could block entry
+           - Design-around possibilities
+           - Licensing requirements
+        6. Strategic Recommendations
+           - File, license, or design-around decision framework
+           - Priority technology areas for new IP development
+        Include timeline visualizations described in text and comparison tables.
+
+  connections:
+    - from: patent-researcher
+      to: landscape-analyst
+
+  budget:
+    max_usd: 2.50
+
+# ─── 6. Trend Forecaster ──────────────────────────────────────
+---
+id: trend-forecaster
+name: Trend Forecaster
+category: research
+description: Analyze current trends and predict future developments with confidence levels
+tags: [trends, forecasting, predictions, foresight]
+difficulty: advanced
+estimatedCost: "$0.60-2.00"
+config:
+  name: trend-forecaster
+
+  agents:
+    signal-scanner:
+      role: Trend signal researcher
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [web_search, web_fetch, read, write]
+      prompt: |
+        Scan for signals and evidence of trends in the specified domain:
+        1. Current State Analysis
+           - What are the dominant trends right now? (search news, reports, social media)
+           - What data points quantify each trend? (adoption rates, market size, growth %)
+           - Who are the early adopters and thought leaders driving each trend?
+        2. Weak Signals
+           - Search for emerging technologies, startups, and research papers that hint at future shifts
+           - Look for regulatory proposals, policy changes, and government initiatives
+           - Identify demographic or behavioral shifts in early-adopter markets
+           - Check VC funding patterns — where is smart money flowing?
+        3. Historical Patterns
+           - Find analogous trend cycles from the past (technology adoption S-curves)
+           - Note typical timelines from emergence to mainstream adoption
+           - Identify what accelerated or killed similar trends historically
+        4. Contrarian Views
+           - Find credible critics and skeptics — what are their arguments?
+           - Identify potential disruptions that could derail current trends
+        Output: signal database with strength rating (strong/moderate/weak) per signal.
+
+    forecaster:
+      role: Trend analyst and forecaster
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Using the signal data, produce a trend forecast report:
+        1. Trend Landscape Map
+           - Current trends: maturity stage (emerging, growing, peak, declining)
+           - Plot each trend on an impact vs timeline matrix
+        2. Short-Term Forecasts (6-12 months)
+           - 3-5 predictions with HIGH confidence (70%+)
+           - Supporting evidence for each prediction
+           - Leading indicators to watch
+        3. Medium-Term Forecasts (1-3 years)
+           - 3-5 predictions with MODERATE confidence (40-70%)
+           - Key assumptions and dependencies
+           - Scenarios: optimistic, baseline, pessimistic
+        4. Long-Term Outlook (3-5 years)
+           - 2-3 directional predictions with rationale
+           - Wild cards and black swan possibilities
+        5. Convergence Analysis
+           - Where do multiple trends intersect? What new opportunities emerge?
+           - Second-order effects (trend A + trend B = unexpected outcome C)
+        6. Action Framework
+           - "Act now" — trends mature enough to capitalize on
+           - "Prepare" — trends to build capabilities for
+           - "Monitor" — watch but don't invest yet
+        Assign explicit confidence percentages to every prediction.
+        Clearly separate facts from speculation.
+
+  connections:
+    - from: signal-scanner
+      to: forecaster
+
+  budget:
+    max_usd: 2.00
+
+# ─── 7. Due Diligence Report ──────────────────────────────────
+---
+id: due-diligence-report
+name: Due Diligence Report
+category: research
+description: Comprehensive company research for investment, acquisition, or partnership decisions
+tags: [due-diligence, investment, company-research, m-and-a]
+difficulty: advanced
+estimatedCost: "$0.80-3.00"
+config:
+  name: due-diligence-report
+
+  agents:
+    company-researcher:
+      role: Company intelligence researcher
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [web_search, web_fetch, read, write]
+      prompt: |
+        Conduct thorough research on the target company:
+        1. Company Basics
+           - Legal name, HQ, founding date, incorporation jurisdiction
+           - Founders, CEO, and key executives (backgrounds, track record)
+           - Board of directors and notable advisors
+           - Company mission, vision, and stated strategy
+        2. Financial Data
+           - Revenue, growth rate, profitability (use public filings, press releases, Crunchbase)
+           - Funding history: rounds, amounts, investors, valuations
+           - Burn rate estimates (if private) based on team size and hiring
+           - Recent financial events (layoffs, pivots, cost-cutting)
+        3. Product & Market
+           - Core products/services and pricing
+           - Target market and customer segments
+           - Key customers and case studies
+           - Competitive positioning and market share estimates
+        4. People & Culture
+           - Team size and growth trend (LinkedIn, job postings)
+           - Glassdoor/Blind ratings and common employee feedback themes
+           - Key hires and departures in last 12 months
+           - Hiring velocity — are they scaling up or down?
+        5. Legal & Regulatory
+           - Any lawsuits, regulatory actions, or compliance issues
+           - Patent portfolio
+           - Pending litigation
+        Output: structured company profile with all findings sourced.
+
+    risk-analyst:
+      role: Risk assessment and due diligence analyst
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [web_search, web_fetch, read, write]
+      prompt: |
+        Perform deeper risk analysis on specific areas identified by the researcher:
+        1. Verify key claims — do revenue/growth numbers match multiple sources?
+        2. Check for negative press, controversies, or red flags
+        3. Assess technology risk — is the tech defensible? Any open-source alternatives?
+        4. Evaluate key-person risk — over-reliance on specific individuals
+        5. Research customer concentration risk
+        6. Check for related-party transactions or governance concerns
+        Output: risk register with severity (Critical/High/Medium/Low) per finding.
+
+    report-writer:
+      role: Due diligence report writer
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Compile a professional due diligence report:
+        1. Executive Summary — 1 page, investment thesis or key concerns
+        2. Company Overview — history, leadership, mission
+        3. Market Position — competitive landscape, differentiation, moat assessment
+        4. Financial Analysis — revenue, growth, unit economics, runway
+        5. Product Deep Dive — technology stack, roadmap, IP
+        6. Team Assessment — leadership quality, bench strength, culture
+        7. Risk Assessment — comprehensive risk matrix with mitigation strategies
+        8. Comparable Analysis — similar companies, valuations, outcomes
+        9. Red Flags — anything that warrants further investigation
+        10. Recommendation — invest/pass/conditional with specific conditions
+        Write in a professional, balanced tone. Clearly separate verified
+        facts from estimates and opinions. Use tables for financial data.
+
+  connections:
+    - from: company-researcher
+      to: risk-analyst
+    - from: risk-analyst
+      to: report-writer
+
+  budget:
+    max_usd: 3.00
+
+# ─── 8. User Research Synthesizer ──────────────────────────────
+---
+id: user-research-synthesizer
+name: User Research Synthesizer
+category: research
+description: Analyze user interviews, surveys, and feedback into actionable product insights
+tags: [user-research, interviews, surveys, product, ux]
+difficulty: intermediate
+estimatedCost: "$0.30-1.50"
+config:
+  name: user-research-synthesizer
+
+  agents:
+    data-processor:
+      role: Qualitative data processor and coder
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write, grep, glob]
+      prompt: |
+        Process the provided user research data (interview transcripts, survey responses, feedback):
+        1. Data Inventory
+           - Count total responses/interviews, participant demographics
+           - Note data collection method and date range
+           - Identify any sampling biases
+        2. Thematic Coding
+           - Read through all responses systematically
+           - Identify recurring themes and assign codes (e.g., "onboarding-friction", "pricing-confusion")
+           - For each theme, tag frequency: how many participants mentioned it?
+           - Extract verbatim quotes that best represent each theme (3-5 per theme)
+        3. Sentiment Analysis
+           - Classify each mention as positive, negative, neutral, or mixed
+           - Identify the most emotionally charged topics
+           - Note any surprising or contradictory sentiments
+        4. Pattern Detection
+           - Group related themes into higher-level categories
+           - Identify correlations (e.g., users who complained about X also mentioned Y)
+           - Note differences across user segments (power users vs new users, etc.)
+        Output: coded dataset with theme frequencies, representative quotes, and segment breakdowns.
+
+    insight-synthesizer:
+      role: User research insight synthesizer
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Synthesize the coded data into actionable product insights:
+        1. Research Summary
+           - Methodology overview, sample size, and confidence level
+           - Top-line findings in 3-5 bullet points
+        2. Key Insights (ranked by impact)
+           - For each insight: observation, evidence (quotes + frequency), implication
+           - Distinguish between "needs" (functional) and "wants" (emotional)
+           - Severity score: how painful is this for users? (1-5)
+        3. User Journey Pain Points
+           - Map findings to stages: awareness, onboarding, daily use, advanced use, churn
+           - Identify the #1 pain point at each stage
+        4. Persona Refinements
+           - Do the findings support or challenge existing personas?
+           - Any new segments discovered?
+        5. Opportunity Matrix
+           - Plot insights on impact vs effort grid
+           - Highlight quick wins (high impact, low effort)
+        6. Recommendations
+           - Top 5 product changes, ordered by priority
+           - For each: what to build, why it matters, expected outcome, success metric
+        7. Open Questions — what needs more research?
+        Use direct user quotes liberally. Never editorialize what users "meant" — let the data speak.
+
+  connections:
+    - from: data-processor
+      to: insight-synthesizer
+
+  budget:
+    max_usd: 1.50
+
+# ─── 9. Benchmark Study ───────────────────────────────────────
+---
+id: benchmark-study
+name: Benchmark Study
+category: research
+description: Compare company metrics against industry benchmarks and top performers
+tags: [benchmarking, metrics, kpis, industry-comparison]
+difficulty: intermediate
+estimatedCost: "$0.50-2.00"
+config:
+  name: benchmark-study
+
+  agents:
+    benchmark-researcher:
+      role: Industry benchmark data collector
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [web_search, web_fetch, read, write]
+      prompt: |
+        Collect industry benchmark data for the specified metrics and sector:
+        1. Identify Benchmark Sources
+           - Industry reports (McKinsey, Bain, Deloitte, CB Insights, etc.)
+           - SaaS/startup benchmarks (OpenView, Bessemer, KeyBanc, ChartMogul)
+           - Public company filings and earnings reports
+           - Surveys and benchmark databases (Glassdoor, Comparably, Levels.fyi)
+        2. For each metric requested, collect:
+           - Industry median, 25th percentile, 75th percentile, and top-decile values
+           - Breakdown by company stage (seed, Series A, Series B+, growth, enterprise)
+           - Breakdown by segment/vertical if available
+           - Year-over-year trend (is the benchmark improving or declining?)
+        3. Identify 5-10 comparable companies ("comp set") and gather their specific metrics
+        4. Common Metrics to Cover (if applicable):
+           - Revenue: ARR, MRR growth, net revenue retention, gross margin
+           - Efficiency: burn multiple, CAC payback, LTV/CAC, Rule of 40
+           - Product: DAU/MAU, activation rate, churn rate, NPS
+           - Team: revenue per employee, engineering ratio, hiring velocity
+           - Marketing: CAC by channel, conversion rates, organic vs paid mix
+        Output: benchmark database with source attribution and data freshness dates.
+
+    benchmark-analyst:
+      role: Benchmark comparison analyst
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Produce a benchmark comparison report:
+        1. Benchmark Summary Dashboard
+           - Table: metric, your value, industry median, top quartile, top decile
+           - Color-code: green (above median), yellow (near median), red (below median)
+        2. Performance Assessment per metric:
+           - Where does the company stand relative to peers?
+           - Is the gap closing or widening over time?
+           - What would it take to reach the next quartile?
+        3. Comparable Company Profiles
+           - For each comp: key metrics, what they do well, lessons to learn
+           - Identify the "north star" company to emulate
+        4. Gap Analysis
+           - Biggest gaps between current performance and industry leaders
+           - Root cause hypotheses for underperformance
+           - Estimated impact of closing each gap (revenue, cost, growth)
+        5. Improvement Roadmap
+           - Quick wins: metrics that can improve in 1-3 months
+           - Medium-term: 3-6 month improvement initiatives
+           - Strategic: 6-12 month structural changes needed
+        6. Caveats and Methodology
+           - Data limitations, sample sizes, and recency of benchmarks
+           - Why direct comparisons may be imperfect (different markets, stages, models)
+        Present data in comparison tables. Be specific about targets: "Improve NRR
+        from 105% to 115% (median for your stage)" rather than vague advice.
+
+  connections:
+    - from: benchmark-researcher
+      to: benchmark-analyst
+
+  budget:
+    max_usd: 2.00
+
+# ─── 10. Literature Review ────────────────────────────────────
+---
+id: literature-review
+name: Literature Review
+category: research
+description: Systematic review and synthesis of published sources on a topic
+tags: [literature-review, academic, systematic-review, synthesis]
+difficulty: advanced
+estimatedCost: "$0.80-3.00"
+config:
+  name: literature-review
+
+  agents:
+    search-agent:
+      role: Literature search and screening specialist
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [web_search, web_fetch, read, write]
+      prompt: |
+        Conduct a systematic literature search on the given topic:
+        1. Search Strategy
+           - Define the research question using PICO or similar framework
+           - Develop search terms: primary keywords, synonyms, related terms
+           - Search across multiple databases: Google Scholar, PubMed, arXiv, SSRN, Semantic Scholar
+           - Apply date range filters (specify coverage period)
+        2. Screening Process
+           - Review titles and abstracts for relevance
+           - Apply inclusion/exclusion criteria:
+             * Must be peer-reviewed or from a credible institution
+             * Must directly address the research question
+             * Exclude opinion pieces without data (unless seminal)
+           - Aim for 15-30 high-quality sources
+        3. For each included source, extract:
+           - Full citation (authors, year, title, journal/venue)
+           - Study type (RCT, meta-analysis, case study, survey, theoretical, etc.)
+           - Research question and methodology
+           - Sample size and population
+           - Key findings and conclusions
+           - Limitations noted
+           - Relevance score (1-5) to the research question
+        4. Create a PRISMA-style flow: sources found → screened → included → final set
+        Output: annotated bibliography with extraction data for each source.
+
+    review-writer:
+      role: Literature review synthesizer
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Write a comprehensive literature review from the annotated bibliography:
+        1. Introduction
+           - Research question and its significance
+           - Scope and boundaries of the review
+           - Overview of the field's development
+        2. Methodology
+           - Databases searched, search terms, date range
+           - Inclusion/exclusion criteria
+           - Number of sources screened vs included
+        3. Thematic Analysis (organize findings by theme, NOT by source)
+           - Identify 3-6 major themes across the literature
+           - For each theme: what the evidence shows, areas of consensus, and debates
+           - Highlight methodological trends (are studies getting more rigorous?)
+           - Note how findings have evolved over time
+        4. Critical Assessment
+           - Overall quality of evidence (strong, moderate, weak)
+           - Common methodological limitations across studies
+           - Publication bias considerations
+           - Geographic or demographic gaps in research
+        5. Synthesis and Conceptual Framework
+           - What do we know for certain? (convergent findings)
+           - What remains contested? (divergent findings)
+           - What is completely unknown? (research gaps)
+           - Propose a conceptual framework or model that integrates key findings
+        6. Future Research Directions
+           - Specific research questions that need answering
+           - Methodological improvements needed
+           - Emerging areas worth exploring
+        7. References — complete bibliography, formatted consistently
+        Use hedging language appropriately ("evidence suggests" vs "proves").
+        Never overstate the strength of individual studies. Synthesize across
+        sources rather than summarizing each one sequentially.
+
+  connections:
+    - from: search-agent
+      to: review-writer
+
+  budget:
+    max_usd: 3.00

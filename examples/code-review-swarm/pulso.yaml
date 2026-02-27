@@ -1,0 +1,57 @@
+# Code Review Swarm — Multi-agent code review pipeline
+# Run: pulso swarm "Review the src/ directory for bugs and improvements"
+
+name: code-review-swarm
+description: Three agents collaborate to review code
+
+providers:
+  fast:
+    provider: anthropic
+    model: claude-haiku-4-5
+  smart:
+    provider: anthropic
+    model: claude-sonnet-4-5
+
+agents:
+  security-scanner:
+    role: Scans for security vulnerabilities
+    model: $smart
+    tools: [read, grep, glob]
+    prompt: |
+      Scan the codebase for security vulnerabilities.
+      Focus on: SQL injection, XSS, CSRF, auth flaws,
+      hardcoded secrets, insecure dependencies.
+      Rate each finding: Critical, High, Medium, Low.
+
+  test-checker:
+    role: Evaluates test coverage and quality
+    model: $fast
+    tools: [read, grep, glob]
+    prompt: |
+      Analyze the test suite. Check for:
+      - Missing test coverage
+      - Weak assertions
+      - Untested edge cases
+      - Flaky test patterns
+      Suggest specific tests that should be added.
+
+  code-reviewer:
+    role: Reviews overall code quality
+    model: $smart
+    tools: [read, grep, glob]
+    prompt: |
+      Review the code holistically considering:
+      - The security findings from the security scan
+      - The test coverage analysis
+      - Code quality and readability
+      - Architecture and design patterns
+      Provide a final review summary with prioritized action items.
+
+connections:
+  - from: [security-scanner, test-checker]
+    to: code-reviewer
+
+budget:
+  max_usd: 2.00
+
+maxConcurrent: 2

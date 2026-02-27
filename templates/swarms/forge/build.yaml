@@ -1,0 +1,176 @@
+# ═══════════════════════════════════════════════════════════════
+# Forge Build Swarm — Brand + Content + Landing Page + Automation
+# Runs once after user approves the business plan
+# ═══════════════════════════════════════════════════════════════
+---
+id: forge-build
+name: Forge Build
+category: forge
+description: Generate complete business presence — brand identity, content, landing page, and automation
+tags: [forge, build, brand, content, landing-page]
+difficulty: advanced
+estimatedCost: "$0.20-1.20"
+config:
+  name: forge-build
+  description: Build a complete business presence from an approved business plan
+
+  providers:
+    fast:
+      provider: openrouter
+      model: openrouter/free
+    smart:
+      provider: openrouter
+      model: openrouter/free
+
+  agents:
+    brand-creator:
+      role: Brand Identity Designer
+      model: $smart
+      tools: [web_search, web_fetch]
+      prompt: |
+        Create a complete brand identity for this business.
+
+        **Business Plan**: {{task}}
+
+        Generate:
+        1. **Business Name** — Pick the best name from the plan (or suggest better if needed)
+        2. **Logo Concept** — Describe the logo in detail (shape, colors, style). Generate an SVG logo.
+        3. **Color Palette** — 5 colors:
+           - Primary (main brand color)
+           - Secondary (accent)
+           - Background
+           - Text
+           - Highlight/CTA
+           Provide hex codes.
+        4. **Typography** — Recommend Google Fonts (heading + body)
+        5. **Brand Voice** — Define tone, personality, communication style
+        6. **Tagline** — A memorable one-liner
+
+        Output as structured JSON:
+        ```json
+        {
+          "name": "...",
+          "tagline": "...",
+          "logo_svg": "<svg>...</svg>",
+          "colors": {"primary": "#...", "secondary": "#...", "bg": "#...", "text": "#...", "cta": "#..."},
+          "fonts": {"heading": "...", "body": "..."},
+          "voice": {"tone": "...", "personality": "...", "style": "..."}
+        }
+        ```
+
+    content-creator:
+      role: Content Strategist & Creator
+      model: $smart
+      tools: [web_search, web_fetch]
+      depends_on: [brand-creator]
+      prompt: |
+        Create initial content for the business launch using the brand identity from upstream.
+
+        Generate:
+        1. **Social Media Bio** — For Instagram/Facebook/TikTok (150 chars max)
+        2. **10 Social Media Posts** — Mix of:
+           - Introduction post (who we are)
+           - Behind-the-scenes (process)
+           - Product showcase (3 posts)
+           - Customer benefit (2 posts)
+           - Engagement/question posts (2 posts)
+           - Social proof/testimonial template (1 post)
+           For each: caption + hashtags + suggested image description
+        3. **3 Video Scripts** — Short-form (15-60s) for TikTok/Reels:
+           - Hook + value + CTA format
+           - Include visual direction notes
+        4. **Email Templates**:
+           - Welcome email (new subscriber)
+           - Order confirmation
+           - Follow-up (3 days after purchase)
+           - Review request (7 days after purchase)
+
+        Write in the business's target language. Match the brand voice.
+
+    page-builder:
+      role: Landing Page Developer
+      model: $smart
+      tools: [web_fetch]
+      depends_on: [brand-creator, content-creator]
+      prompt: |
+        Build a complete, production-ready landing page using the brand identity and content from upstream.
+
+        Generate a single HTML file with inline CSS and minimal JS. The page MUST:
+
+        1. **Hero Section**
+           - Headline (value proposition)
+           - Subheadline (benefit)
+           - CTA button
+           - Hero image placeholder
+
+        2. **Products/Services Section**
+           - Grid of offerings
+           - Each with: image, name, price, description, buy button
+
+        3. **About Section**
+           - Brand story
+           - Why choose us
+
+        4. **Social Proof**
+           - Testimonial placeholders (3 slots)
+           - Trust badges
+
+        5. **FAQ Section**
+           - 5 common questions
+
+        6. **Contact/CTA Section**
+           - Email capture form
+           - WhatsApp link
+           - Social media links
+
+        7. **Footer**
+           - Copyright, links
+
+        Technical requirements:
+        - Mobile-first responsive design
+        - Use the brand colors and fonts from upstream
+        - Fast loading (no external dependencies except Google Fonts)
+        - Include Open Graph meta tags
+        - Include a placeholder for Stripe checkout integration
+        - Clean, modern design (Apple-style minimalism)
+        - Add smooth scroll and subtle animations via CSS
+
+    automation-builder:
+      role: Workflow Automation Architect
+      model: $fast
+      tools: [web_fetch]
+      depends_on: [brand-creator, content-creator]
+      prompt: |
+        Design the automation workflows for this business based on the brand and content strategy.
+
+        Create a JSON configuration for each workflow:
+
+        1. **New Order Workflow**
+           - Trigger: Stripe payment received
+           - Actions: Send confirmation email → Notify owner via WhatsApp → Update lead status → Log revenue
+
+        2. **Welcome Sequence**
+           - Trigger: Email captured on landing page
+           - Actions: Send welcome email (Day 0) → Value email (Day 2) → Offer email (Day 5)
+
+        3. **Post-Purchase Follow-up**
+           - Trigger: 3 days after order
+           - Actions: Send follow-up email → Check satisfaction → If good, request review
+
+        4. **Lead Nurture**
+           - Trigger: New lead from any channel
+           - Actions: Score lead → If hot (>70), notify sales agent → If warm (40-70), add to nurture sequence
+
+        5. **Content Calendar**
+           - Weekly schedule: which content types on which days
+           - Best posting times for the target audience
+
+        Output as structured JSON with trigger conditions, actions, and timing.
+
+  connections:
+    - from: brand-creator
+      to: content-creator
+    - from: [brand-creator, content-creator]
+      to: page-builder
+    - from: [brand-creator, content-creator]
+      to: automation-builder

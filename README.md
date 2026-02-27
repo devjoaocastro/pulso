@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://app.runpulso.com">
-    <img src="docs/header.png" alt="Pulso" width="200" />
+    <img src=".github/header.png" alt="Pulso" width="100%" />
   </a>
 </p>
 
@@ -12,17 +12,19 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/devjoaocastro/pulso/releases"><img src="https://img.shields.io/github/v/release/usepulso/pulso?include_prereleases&style=for-the-badge" alt="GitHub release"></a>
+  <a href="https://github.com/usepulso/pulso/releases"><img src="https://img.shields.io/github/v/release/usepulso/pulso?include_prereleases&style=for-the-badge&color=6366f1" alt="GitHub release"></a>
   <a href="https://www.npmjs.com/package/@pulso/companion"><img src="https://img.shields.io/npm/v/@pulso/companion?style=for-the-badge&logo=npm&logoColor=white&color=cb3837" alt="npm"></a>
-  <a href="https://github.com/devjoaocastro/pulso/discussions"><img src="https://img.shields.io/github/discussions/usepulso/pulso?style=for-the-badge&logo=github" alt="Discussions"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/badge/License-Proprietary-blue.svg?style=for-the-badge" alt="License"></a>
+  <a href="https://www.npmjs.com/package/@pulso/companion"><img src="https://img.shields.io/npm/dw/@pulso/companion?style=for-the-badge&color=cb3837" alt="npm downloads"></a>
+  <a href="https://github.com/usepulso/pulso/discussions"><img src="https://img.shields.io/github/discussions/usepulso/pulso?style=for-the-badge&logo=github" alt="Discussions"></a>
+  <a href="docs/agent-identity-portability.md"><img src="https://img.shields.io/badge/AIP-Open_Standard-22c55e?style=for-the-badge" alt="AIP"></a>
 </p>
 
 <p align="center">
   <a href="https://app.runpulso.com">Try the App</a> ·
   <a href="#quick-start">Quick Start</a> ·
-  <a href="https://github.com/devjoaocastro/pulso/releases">Downloads</a> ·
-  <a href="https://github.com/devjoaocastro/pulso/discussions">Discussions</a> ·
+  <a href="https://github.com/usepulso/pulso/releases">Downloads</a> ·
+  <a href="docs/agent-identity-portability.md">AIP Standard</a> ·
+  <a href="https://github.com/usepulso/pulso/discussions">Discussions</a> ·
   <a href="https://x.com/usepulso">Twitter</a>
 </p>
 
@@ -105,30 +107,34 @@ The `login` command opens your browser for secure device authorization ([RFC 862
 
 | Platform | Download |
 |:--|:--|
-| **macOS** | [Apple Silicon `.dmg`](https://github.com/devjoaocastro/pulso/releases/latest) · [Intel `.dmg`](https://github.com/devjoaocastro/pulso/releases/latest) |
-| **Windows** | [`.msi`](https://github.com/devjoaocastro/pulso/releases/latest) |
-| **Linux** | [`.AppImage`](https://github.com/devjoaocastro/pulso/releases/latest) · [`.deb`](https://github.com/devjoaocastro/pulso/releases/latest) |
-| **Android** | [`.apk`](https://github.com/devjoaocastro/pulso/releases/latest) |
-| **iOS** | Coming soon |
+| **macOS** (Apple Silicon + Intel) | [`.dmg`](https://github.com/usepulso/pulso/releases/latest) |
+| **Windows** (x64) | [`.msi`](https://github.com/usepulso/pulso/releases/latest) |
+| **Linux** (x64) | [`.AppImage`](https://github.com/usepulso/pulso/releases/latest) · [`.deb`](https://github.com/usepulso/pulso/releases/latest) |
+| **Companion daemon** (all platforms) | `npm install -g @pulso/companion` |
 | **Web** | [app.runpulso.com](https://app.runpulso.com) |
-| **Companion CLI** | `npm install -g @pulso/companion` |
+| **iOS** | Coming soon (App Store) |
+| **Android** | [`.apk`](https://github.com/usepulso/pulso/releases/latest) · Coming soon (Play Store) |
 
 ## Multi-Agent Orchestration
 
 Agents work together. Pulso uses a DAG (Directed Acyclic Graph) to schedule agent execution. Agents with no dependencies run in parallel. Results flow through the graph automatically.
 
 ```
-                         ┌─────────────────┐
-                    ┌───▶│  Luna (Security) │───┐
-                    │    └─────────────────┘    │
-┌──────────┐       │    ┌─────────────────┐    │    ┌─────────────────┐
-│   Task   │───────┼───▶│ Atlas (Reviewer) │───┼───▶│ Nova (Reporter) │
-│  Input   │       │    └─────────────────┘    │    └─────────────────┘
-└──────────┘       │    ┌─────────────────┐    │
-                    └───▶│Hermes (Notifier) │    │
-                         └─────────────────┘    │
-                                                │
-                         Parallel agents ───────┘
+                    ┌──────────┐
+               ┌───>│  Luna    │───┐
+               │    │ Security │   │
+               │    └──────────┘   │     ┌──────────┐
+  ┌────────┐   │                   ├────>│  Nova    │
+  │  Task  │───┤                   │     │ Reporter │
+  │  Input │   │    ┌──────────┐   │     └──────────┘
+  └────────┘   ├───>│  Atlas   │───┘
+               │    │ Reviewer │
+               │    └──────────┘
+               │
+               │    ┌──────────┐
+               └───>│  Hermes  │──────> (independent)
+                    │ Notifier │
+                    └──────────┘
 ```
 
 Luna + Atlas + Hermes run simultaneously. Nova waits for Luna and Atlas to finish, then synthesizes their results. All with budget enforcement — if any agent hits its spending limit, execution stops gracefully.
@@ -194,7 +200,7 @@ pulso-companion login
 - **macOS Shortcuts** — Trigger any Shortcut by name
 - **System** — Notifications, clipboard, dark mode, Do Not Disturb, lock screen
 
-**Cross-platform:** macOS, Windows, Linux. Also available as a **native menu bar app** ([download](https://github.com/devjoaocastro/pulso/releases)).
+**Cross-platform:** macOS, Windows, Linux. Also available as a **native menu bar app** ([download](https://github.com/usepulso/pulso/releases)).
 
 ## Memory System
 
@@ -221,31 +227,106 @@ Three-tier memory architecture:
 | **Hardened** | 21 vulnerabilities found and fixed (3 critical, 5 high) |
 | **BYOK** | Your API keys, your models, your data. Zero shared credentials |
 
-Found a vulnerability? Please report it responsibly. See [SECURITY.md](SECURITY.md).
-
 ## Architecture
 
 ```
-  Mobile / Web / Companion / Cloud API
-                    │
-                    ▼
-  ┌─────────────────────────────────────┐
-  │       Orchestration Engine          │
-  │                                     │
-  │  ├─ DAG Scheduler                   │
-  │  ├─ Model Router                    │
-  │  ├─ Budget Enforcement              │
-  │  └─ Agent Sandbox                   │
-  └──────────┬──────────────────────────┘
-             │
-     ┌───────┼───────┬──────────┐
-     ▼       ▼       ▼          ▼
- Providers  Tools  Memory   Protocols
- Claude     350+   Session  MCP Server
- GPT        Web    Graph    MCP Client
- Gemini     Shell  Vectors
- +200       ...
+┌─────────────────────────────────────────────────────────────────┐
+│                          PULSO                                  │
+│                                                                 │
+│  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────────┐   │
+│  │  Mobile   │  │   Web    │  │Companion │  │   Cloud API  │   │
+│  │  (iOS /   │  │  (React) │  │ (Node.js)│  │  (Edge)      │   │
+│  │  Android) │  │          │  │          │  │              │   │
+│  └─────┬─────┘  └─────┬────┘  └─────┬────┘  └──────┬───────┘   │
+│        └──────────────┴──────┬───────┴───────────────┘          │
+│                              │                                   │
+│            ┌─────────────────▼─────────────────┐                │
+│            │       Orchestration Engine         │                │
+│            │                                    │                │
+│            │  DAG Scheduler · Model Router      │                │
+│            │  Budget Enforcement · Agent Sandbox │                │
+│            │  Memory · Tool Execution           │                │
+│            └─────────────────┬─────────────────┘                │
+│                              │                                   │
+│     ┌────────────┬───────────┴──────────┬──────────────┐        │
+│  ┌──▼────────┐ ┌─▼──────────┐ ┌────────▼──────┐ ┌─────▼──────┐│
+│  │ Providers │ │   Tools    │ │    Memory     │ │ Protocols  ││
+│  │           │ │            │ │               │ │            ││
+│  │ Claude    │ │ 350+ tools │ │ Session       │ │ MCP Server ││
+│  │ GPT      │ │ Web search │ │ Persistent    │ │ MCP Client ││
+│  │ Gemini   │ │ Image gen  │ │ Knowledge     │ │            ││
+│  │ DeepSeek │ │ Browser    │ │   Graph       │ │            ││
+│  │ Ollama   │ │ Shell/FS   │ │ Semantic      │ │            ││
+│  │ +200     │ │ Companion  │ │   Search      │ │            ││
+│  └──────────┘ └────────────┘ └───────────────┘ └────────────┘ │
+└─────────────────────────────────────────────────────────────────┘
 ```
+
+## Forge — AI Business Engine
+
+Describe what you know how to do. Pulso builds and runs a micro-business around it.
+
+```
+You:   "I design Notion templates"
+
+Forge: Creating your business...
+
+       ✓ Business identity created
+       ✓ Product catalog drafted (3 templates, suggested pricing)
+       ✓ Landing page copy generated
+       ✓ Marketing strategy for Gumroad + Etsy
+       ✓ Social content calendar for next 30 days
+       ✓ Revenue tracking configured
+
+       Your Stripe Connect account is ready.
+       Pulso takes 15% of revenue — only when you earn.
+       You keep 85%. Always.
+```
+
+Forge agents run autonomously: they monitor your business, generate content, respond to leads, and report back to your Workspace for approval. You review. They execute.
+
+**What Forge manages:**
+- Product listings (Gumroad, Etsy, your own site)
+- Social media presence and posting
+- Customer support workflows
+- Daily performance briefings
+- Revenue optimization suggestions
+
+Available on Swarm and Fleet plans.
+
+---
+
+## Agent Identity Portability (AIP)
+
+Your agent knows you. Your agent is yours.
+
+AIP is an open standard we're proposing so you can export your complete agent identity — memory, personality, learned behaviors, business configurations — and import it anywhere.
+
+```bash
+# Export your agent (coming Q1 2026)
+pulso agent export --output my-agent.aip
+
+# Import to any AIP-compatible platform
+pulso agent import my-agent.aip
+```
+
+**What moves with you:**
+- Knowledge graph (everything your agent learned about you)
+- Personality calibration
+- Behavioral preferences (what you approve, what you reject)
+- Swarm templates you built
+- Forge business configurations
+
+**What never leaves:**
+- API keys
+- OAuth tokens
+- Payment information
+
+We're releasing this as an **open standard (CC0 — public domain)**. No license. No royalties. Any platform can implement it. We want every AI agent platform to adopt it — because user trust is built through ownership, not lock-in.
+
+[Read the full AIP spec →](docs/agent-identity-portability.md)
+
+---
 
 ## Pricing
 
@@ -264,9 +345,13 @@ All plans include **BYOK** (Bring Your Own Key) — your keys, your models, your
 
 ## Community
 
-- [GitHub Issues](https://github.com/devjoaocastro/pulso/issues) — Bug reports and feature requests
-- [GitHub Discussions](https://github.com/devjoaocastro/pulso/discussions) — Questions, ideas, feedback
+- [GitHub Issues](https://github.com/usepulso/pulso/issues) — Bug reports and feature requests
+- [GitHub Discussions](https://github.com/usepulso/pulso/discussions) — Questions, ideas, feedback
 - [@usepulso](https://x.com/usepulso) — Updates and announcements
+
+## Security
+
+Found a vulnerability? Please report it responsibly. See [SECURITY.md](SECURITY.md).
 
 ## License
 
@@ -285,7 +370,7 @@ Proprietary. See [LICENSE](LICENSE).
 <p align="center">
   <sub>
     <a href="https://app.runpulso.com">Website</a> ·
-    <a href="https://github.com/devjoaocastro/pulso">GitHub</a> ·
+    <a href="https://github.com/usepulso/pulso">GitHub</a> ·
     <a href="https://x.com/usepulso">Twitter</a>
   </sub>
 </p>

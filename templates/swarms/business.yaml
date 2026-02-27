@@ -1,0 +1,1074 @@
+# ═══════════════════════════════════════════════════════════════
+# Business Operations Templates — Pulso Swarm Gallery
+# ═══════════════════════════════════════════════════════════════
+
+# ─── 1. CEO Daily Briefing ───────────────────────────────────
+---
+id: ceo-daily-briefing
+name: CEO Daily Briefing
+category: business
+description: Compile reports from sales, engineering, support, and finance into an executive summary
+tags: [executive, briefing, reporting, leadership]
+difficulty: intermediate
+estimatedCost: "$0.30-1.50"
+config:
+  name: ceo-daily-briefing
+  description: Gather cross-functional data and produce a concise morning briefing for the CEO
+
+  providers:
+    fast:
+      provider: anthropic
+      model: claude-haiku-4-5
+    smart:
+      provider: anthropic
+      model: claude-sonnet-4-6
+
+  agents:
+    data-collector:
+      role: Cross-functional data gatherer
+      model: $fast
+      tools: [read, grep, glob, web_search, web_fetch]
+      prompt: |
+        Collect the latest operational data across four departments:
+        1. **Sales** — pipeline value, deals closed yesterday, win rate trend, top 3 deals at risk
+        2. **Engineering** — sprint progress, open P0/P1 bugs, deploys in last 24h, incidents
+        3. **Support** — ticket volume, avg response time, CSAT score, escalations
+        4. **Finance** — daily revenue, burn rate, cash runway, outstanding invoices
+        For each department, produce a structured data block with the numbers and a one-line status (Green/Yellow/Red).
+        If source data is unavailable, flag it as "[DATA NEEDED]" so the CEO knows to follow up.
+
+    briefing-writer:
+      role: Executive briefing compiler
+      model: $smart
+      tools: [read, write]
+      prompt: |
+        Using the data from upstream, write a CEO Daily Briefing in this exact format:
+
+        ## CEO Daily Briefing — {date}
+
+        ### TL;DR (3 bullets max)
+        - Top wins, risks, and decisions needed today
+
+        ### Department Scorecards
+        For each department (Sales, Engineering, Support, Finance):
+        - Status indicator (Green/Yellow/Red)
+        - 3-4 key metrics with trend arrows
+        - One action item if status is Yellow or Red
+
+        ### Decisions Needed Today
+        - List items requiring CEO decision with context and recommended action
+
+        ### Calendar Preview
+        - Key meetings and prep notes for today
+
+        Keep the entire briefing under 500 words. Use bullet points, not paragraphs.
+        Tone: direct, data-driven, no fluff.
+
+    action-tracker:
+      role: Action item extractor and tracker
+      model: $fast
+      tools: [read, write]
+      prompt: |
+        Review the CEO briefing and extract all action items:
+        1. Assign each action to a department owner (Sales, Engineering, Support, Finance)
+        2. Set priority (P0 = today, P1 = this week, P2 = this month)
+        3. Note any blockers or dependencies between items
+        4. Flag any items that carried over from previous briefings
+        Output a clean, trackable action list in Markdown table format:
+        | # | Action | Owner | Priority | Deadline | Status |
+
+  connections:
+    - from: data-collector
+      to: briefing-writer
+    - from: briefing-writer
+      to: action-tracker
+
+  budget:
+    max_usd: 1.50
+
+# ─── 2. Competitive Intelligence ────────────────────────────
+---
+id: competitive-intelligence
+name: Competitive Intelligence
+category: business
+description: Monitor competitors and create detailed analysis reports with strategic recommendations
+tags: [competition, strategy, market-research, intelligence]
+difficulty: advanced
+estimatedCost: "$0.50-2.00"
+config:
+  name: competitive-intelligence
+  description: Research competitors across multiple dimensions and produce actionable intelligence
+
+  agents:
+    researcher:
+      role: Competitive research analyst
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [web_search, web_fetch, read, write]
+      prompt: |
+        Conduct thorough competitive research on the specified competitors:
+        1. **Product updates** — New features, pricing changes, product launches in the last 30 days
+        2. **Hiring signals** — Job postings indicating strategic direction (new roles, team growth areas)
+        3. **Funding & financials** — Recent rounds, revenue estimates, public filings
+        4. **Customer sentiment** — G2/Capterra reviews, Twitter mentions, Reddit discussions
+        5. **Content & positioning** — Blog posts, press releases, messaging changes on website
+        6. **Partnerships** — New integrations, channel partners, strategic alliances
+        For each competitor, produce a structured dossier with sourced data points.
+        Always include the URL source for every claim.
+
+    analyst:
+      role: Strategic intelligence analyst
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Analyze the competitive research and produce a strategic intelligence report:
+
+        ## Competitive Intelligence Report — {date}
+
+        ### Executive Summary
+        - 3-5 bullet points on the most important competitive moves
+
+        ### Competitor Profiles
+        For each competitor:
+        - **Threat level**: Low / Medium / High (with justification)
+        - **Recent moves**: What they did and why it matters
+        - **Strengths vs. us**: Where they are ahead
+        - **Weaknesses vs. us**: Where we have an advantage
+
+        ### Feature Gap Analysis
+        - Table comparing key features across competitors and us
+        - Highlight gaps where we are behind
+
+        ### Strategic Recommendations
+        - 3-5 specific actions we should take in response
+        - Prioritized by urgency and impact
+        - Include estimated effort (Low/Medium/High)
+
+        ### Signals to Watch
+        - Early indicators of future competitive moves to monitor weekly
+
+        Be specific and evidence-based. Avoid vague statements like "they are growing fast" — cite the data.
+
+  connections:
+    - from: researcher
+      to: analyst
+
+  budget:
+    max_usd: 2.00
+
+# ─── 3. Meeting Notes to Actions ────────────────────────────
+---
+id: meeting-notes-to-actions
+name: Meeting Notes to Actions
+category: business
+description: Extract action items, decisions, and follow-ups from meeting notes
+tags: [meetings, action-items, productivity, notes]
+difficulty: beginner
+estimatedCost: "$0.10-0.50"
+config:
+  name: meeting-notes-to-actions
+  description: Parse meeting notes and produce structured outputs with clear ownership
+
+  agents:
+    parser:
+      role: Meeting notes parser and structurer
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [read, grep]
+      prompt: |
+        Parse the provided meeting notes and extract structured data:
+        1. **Attendees** — List all participants mentioned
+        2. **Key decisions** — Statements where a choice was made (look for "decided", "agreed", "will go with")
+        3. **Action items** — Tasks assigned to specific people (look for "will do", "action:", "TODO", names + verbs)
+        4. **Open questions** — Unresolved topics that need follow-up
+        5. **Deadlines** — Any dates or timeframes mentioned
+        6. **Parking lot** — Topics raised but deferred to future discussion
+        Be thorough: scan for implicit commitments, not just explicit ones.
+        If someone said "I'll look into that" — that is an action item.
+
+    formatter:
+      role: Action item formatter and follow-up planner
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Using the parsed meeting data, produce two outputs:
+
+        **Output 1: Meeting Summary**
+        - Meeting title and date
+        - Attendees
+        - 3-5 bullet executive summary
+        - Decisions made (numbered list)
+
+        **Output 2: Action Item Tracker**
+        Markdown table with columns:
+        | # | Action Item | Owner | Deadline | Priority | Dependencies |
+
+        Rules:
+        - Every action MUST have an owner. If the notes are unclear, write "[UNASSIGNED — clarify with {likely person}]"
+        - If no deadline was set, suggest one based on urgency
+        - Add a "Follow-up email draft" section at the bottom — a brief email to send to attendees summarizing decisions and action items
+        - The email should be copy-paste ready, professional but concise
+
+  connections:
+    - from: parser
+      to: formatter
+
+  budget:
+    max_usd: 0.50
+
+# ─── 4. OKR Tracker ─────────────────────────────────────────
+---
+id: okr-tracker
+name: OKR Tracker
+category: business
+description: Review OKR progress and generate status reports with risk flags
+tags: [okr, goals, tracking, quarterly-review]
+difficulty: intermediate
+estimatedCost: "$0.20-1.00"
+config:
+  name: okr-tracker
+  description: Evaluate OKR health, identify at-risk objectives, and recommend course corrections
+
+  agents:
+    evaluator:
+      role: OKR progress evaluator
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [read, grep, glob]
+      prompt: |
+        Analyze the provided OKR data and evaluate progress:
+        For each Objective and its Key Results:
+        1. **Current progress** — percentage complete based on provided metrics
+        2. **Expected progress** — where it should be given time elapsed in the quarter
+        3. **Pace** — On Track / At Risk / Off Track (compare current vs expected)
+        4. **Confidence score** — 0-100% likelihood of hitting the target by quarter end
+        5. **Blockers** — What is preventing progress (if identifiable from the data)
+
+        Score each KR individually, then roll up to an overall Objective score.
+        Use this formula: if current/expected >= 0.9 = On Track, 0.7-0.9 = At Risk, <0.7 = Off Track.
+
+    report-writer:
+      role: OKR status report writer
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Generate a quarterly OKR status report:
+
+        ## OKR Status Report — Q{quarter} {year}
+        **Reporting period**: {start_date} to {current_date}
+        **Days remaining**: {days_left}
+
+        ### Overall Health: {emoji} {score}/100
+
+        ### Objectives Summary
+        For each objective:
+        - Status badge (On Track / At Risk / Off Track)
+        - Progress bar visualization (text-based)
+        - Key Results with individual scores
+        - Owner and team
+
+        ### At-Risk Items (PRIORITY)
+        - List only At Risk and Off Track items
+        - Root cause analysis for each
+        - Recommended corrective action with owner
+
+        ### Wins This Period
+        - Key Results that are ahead of schedule
+        - Notable achievements worth celebrating
+
+        ### Recommendations
+        - Which OKRs to double down on
+        - Which to consider deprioritizing
+        - Resource reallocation suggestions
+
+        Format for executive consumption — scannable, not verbose.
+
+  connections:
+    - from: evaluator
+      to: report-writer
+
+  budget:
+    max_usd: 1.00
+
+# ─── 5. Customer Feedback Analyzer ──────────────────────────
+---
+id: customer-feedback-analyzer
+name: Customer Feedback Analyzer
+category: business
+description: Analyze NPS and customer feedback data to identify themes and actionable insights
+tags: [nps, feedback, customer-voice, analytics]
+difficulty: intermediate
+estimatedCost: "$0.30-1.00"
+config:
+  name: customer-feedback-analyzer
+  description: Process customer feedback at scale and surface actionable patterns
+
+  agents:
+    categorizer:
+      role: Feedback categorization engine
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [read, grep, glob]
+      prompt: |
+        Process the provided customer feedback data (NPS responses, support tickets, reviews, survey answers):
+        1. **Sentiment classification** — Positive / Neutral / Negative for each response
+        2. **Theme tagging** — Assign 1-3 theme tags per response from these categories:
+           - Product quality, Pricing, Onboarding, Support experience, Feature requests,
+             Performance, Reliability, UX/UI, Documentation, Billing, Integration
+        3. **Urgency flag** — Mark churn-risk responses (negative + mentions of cancelling, switching, or frustration)
+        4. **Quote extraction** — Pull the most impactful direct quotes (both positive and negative)
+        5. **NPS calculation** — Compute NPS score if numeric ratings are provided (Promoters 9-10, Passives 7-8, Detractors 0-6)
+        Output structured data that the analyst can work with.
+
+    analyst:
+      role: Customer insights analyst
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Analyze the categorized feedback and produce an insights report:
+
+        ## Customer Feedback Analysis — {period}
+
+        ### NPS Score & Trend
+        - Current NPS: {score}
+        - Breakdown: {promoters}% Promoters, {passives}% Passives, {detractors}% Detractors
+
+        ### Top Themes (by volume)
+        Ranked list of themes with:
+        - Number of mentions
+        - Average sentiment per theme
+        - Trend vs. last period (if available)
+
+        ### Critical Issues (Churn Risk)
+        - Responses flagged as high churn risk
+        - Common patterns among detractors
+        - Recommended immediate actions
+
+        ### Feature Request Ranking
+        - Most requested features with vote counts
+        - Estimated revenue impact (which customer segments are asking)
+
+        ### Positive Highlights
+        - What customers love most
+        - Best quotes for marketing use
+
+        ### Recommendations
+        1. Quick wins (fix this week for immediate NPS impact)
+        2. Strategic improvements (this quarter)
+        3. Long-term investments (next quarter+)
+        Each with expected NPS impact estimate.
+
+  connections:
+    - from: categorizer
+      to: analyst
+
+  budget:
+    max_usd: 1.00
+
+# ─── 6. Sales Proposal Generator ────────────────────────────
+---
+id: sales-proposal-generator
+name: Sales Proposal Generator
+category: business
+description: Research a prospect and generate a customized sales proposal
+tags: [sales, proposal, prospecting, b2b]
+difficulty: intermediate
+estimatedCost: "$0.30-1.50"
+config:
+  name: sales-proposal-generator
+  description: Deep-research a prospect company and produce a tailored proposal
+
+  agents:
+    prospect-researcher:
+      role: Prospect intelligence researcher
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [web_search, web_fetch, read]
+      prompt: |
+        Research the prospect company thoroughly:
+        1. **Company profile** — Industry, size, revenue, funding stage, HQ location
+        2. **Key stakeholders** — CEO, CTO, VP of relevant department (from LinkedIn/About page)
+        3. **Tech stack** — Technologies they use (from job postings, BuiltWith, StackShare)
+        4. **Pain points** — Industry challenges, recent news suggesting needs, competitor tools they use
+        5. **Triggers** — Recent events that create buying urgency (funding, hiring, expansion, leadership change)
+        6. **Existing solutions** — What they currently use for the problem we solve
+        7. **Company culture** — Values, tone of communication (formal vs casual)
+        Output a structured prospect dossier with sourced data.
+        Flag any information you could not verify.
+
+    proposal-writer:
+      role: Sales proposal author
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Using the prospect research, write a customized sales proposal:
+
+        ## Proposal for {company_name}
+
+        ### Executive Summary (1 paragraph)
+        - Reference a specific challenge they face (from research)
+        - State our value proposition in their context
+        - Mention a relevant metric or case study
+
+        ### Understanding Your Challenges
+        - 3-4 pain points specific to their situation
+        - Show we understand their industry and tech environment
+
+        ### Proposed Solution
+        - How our product addresses each pain point
+        - Feature mapping to their specific needs
+        - Integration points with their existing tools
+
+        ### Implementation Plan
+        - Phase 1: Quick wins (Week 1-2)
+        - Phase 2: Full rollout (Week 3-4)
+        - Phase 3: Optimization (Month 2+)
+        - Key milestones and success metrics
+
+        ### Investment
+        - Pricing tier recommendation based on their size
+        - ROI calculation with conservative estimates
+        - Total cost of ownership vs. current solution
+
+        ### Why Us
+        - 3 differentiators most relevant to this prospect
+        - Similar customer success story
+
+        ### Next Steps
+        - Clear CTA with calendar link placeholder
+        - Timeline for decision
+
+        Tone: confident but not pushy, consultative, data-backed.
+        Personalize heavily — this should NOT read like a template.
+
+  connections:
+    - from: prospect-researcher
+      to: proposal-writer
+
+  budget:
+    max_usd: 1.50
+
+# ─── 7. RFP Response Pipeline ───────────────────────────────
+---
+id: rfp-response-pipeline
+name: RFP Response Pipeline
+category: business
+description: Analyze RFP requirements and generate structured response documents
+tags: [rfp, procurement, sales, enterprise]
+difficulty: advanced
+estimatedCost: "$0.50-2.00"
+config:
+  name: rfp-response-pipeline
+  description: Parse RFP requirements, assess fit, and generate compliant responses
+
+  agents:
+    rfp-analyzer:
+      role: RFP requirements analyst
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, grep, glob]
+      prompt: |
+        Analyze the provided RFP document thoroughly:
+        1. **Requirements extraction** — List every requirement (functional, technical, compliance, security)
+        2. **Mandatory vs. optional** — Classify each as Must-Have or Nice-to-Have
+        3. **Compliance matrix** — For each requirement, assess our ability to meet it:
+           - Full Comply / Partial Comply / Non-Comply / Not Applicable
+        4. **Red flags** — Requirements we cannot meet or that suggest a biased RFP
+        5. **Scoring criteria** — How responses will be evaluated (if specified)
+        6. **Timeline** — Key dates (submission deadline, Q&A period, decision date)
+        7. **Competitors** — Any hints about incumbent or preferred vendors
+
+        Output a structured requirements matrix the response writer can use.
+        Highlight any showstoppers that might make this RFP not worth pursuing.
+
+    response-writer:
+      role: RFP response author
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write, web_search]
+      prompt: |
+        Using the requirements analysis, generate the RFP response:
+
+        ### Cover Letter
+        - Address to the specified contact
+        - Reference RFP number and title
+        - Highlight 3 key differentiators
+        - Express commitment and timeline
+
+        ### Compliance Matrix
+        | Req # | Requirement | Response | Evidence |
+        Fill in Full/Partial/Non-comply with supporting details for each.
+
+        ### Technical Response
+        For each functional requirement section:
+        - Describe how our solution meets the requirement
+        - Include architecture diagrams descriptions where relevant
+        - Reference specific product features and capabilities
+        - Provide implementation methodology
+
+        ### Company Profile & References
+        - Company overview relevant to the RFP scope
+        - Team qualifications and certifications
+        - 2-3 similar customer case study summaries
+
+        ### Pricing (Template)
+        - Pricing structure aligned to RFP format
+        - Include implementation, licensing, and support line items
+        - Note any assumptions
+
+        For Partial Comply items, explain our roadmap or workaround.
+        For Non-Comply items, propose alternative approaches.
+        Tone: formal, precise, compliance-focused.
+
+    quality-checker:
+      role: RFP response quality reviewer
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [read, write]
+      prompt: |
+        Review the RFP response for completeness and quality:
+        1. **Requirement coverage** — Verify every requirement has a response
+        2. **Consistency** — Check for contradictions between sections
+        3. **Compliance language** — Ensure "shall", "will", "must" are used correctly
+        4. **Missing evidence** — Flag claims without supporting proof
+        5. **Formatting** — Verify section numbering matches RFP structure
+        6. **Weaknesses** — Identify sections that a reviewer might score poorly
+        7. **Win themes** — Verify key differentiators are reinforced throughout
+        Output a review checklist with pass/fail for each criterion.
+
+  connections:
+    - from: rfp-analyzer
+      to: response-writer
+    - from: response-writer
+      to: quality-checker
+
+  budget:
+    max_usd: 2.00
+
+# ─── 8. Business Plan Writer ────────────────────────────────
+---
+id: business-plan-writer
+name: Business Plan Writer
+category: business
+description: Generate a comprehensive business plan with market analysis, financial projections, and strategy
+tags: [business-plan, strategy, startup, financial-projections]
+difficulty: advanced
+estimatedCost: "$0.50-2.50"
+config:
+  name: business-plan-writer
+  description: Research the market and produce a fundable business plan
+
+  agents:
+    market-researcher:
+      role: Market research and analysis specialist
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [web_search, web_fetch, read]
+      prompt: |
+        Conduct comprehensive market research for the business plan:
+        1. **Market size** — TAM, SAM, SOM with data sources and methodology
+        2. **Market trends** — Growth rate, key drivers, emerging opportunities
+        3. **Competitive landscape** — Direct and indirect competitors, market share, positioning
+        4. **Customer segments** — Demographics, psychographics, buying behavior, willingness to pay
+        5. **Industry dynamics** — Porter's Five Forces analysis
+        6. **Regulatory environment** — Relevant regulations, compliance requirements, barriers to entry
+        7. **Comparable companies** — Similar businesses, their trajectories, multiples for valuation
+        Every data point must include a source. Use recent data (last 12 months preferred).
+        Flag any estimates or extrapolations clearly.
+
+    plan-writer:
+      role: Business plan author
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Using the market research, write a comprehensive business plan:
+
+        ## 1. Executive Summary (1 page)
+        - Problem, solution, market opportunity, business model, ask
+
+        ## 2. Problem & Solution
+        - Customer pain points with evidence
+        - Our solution and unique value proposition
+        - Why now (market timing)
+
+        ## 3. Market Analysis
+        - Market size (TAM/SAM/SOM) with visuals
+        - Target customer personas
+        - Market trends and tailwinds
+
+        ## 4. Business Model
+        - Revenue streams and pricing strategy
+        - Unit economics (CAC, LTV, LTV:CAC ratio)
+        - Path to profitability
+
+        ## 5. Competitive Advantage
+        - Competitive matrix (features, pricing, positioning)
+        - Moat and defensibility
+        - Key differentiators
+
+        ## 6. Go-to-Market Strategy
+        - Launch plan (first 90 days)
+        - Marketing channels and budget allocation
+        - Sales strategy and process
+        - Key partnerships
+
+        ## 7. Operations Plan
+        - Team structure and key hires
+        - Technology stack and development roadmap
+        - Key milestones (12-month timeline)
+
+        ## 8. Financial Projections (3 years)
+        - Revenue forecast (monthly Year 1, quarterly Years 2-3)
+        - Cost structure breakdown
+        - Cash flow projection
+        - Break-even analysis
+        - Key assumptions listed explicitly
+
+        ## 9. Funding Requirements
+        - Amount and use of funds
+        - Expected runway
+        - Future funding milestones
+
+        Be specific with numbers. Investors want to see you can model the business.
+        Include tables for financial projections. Flag assumptions clearly.
+
+  connections:
+    - from: market-researcher
+      to: plan-writer
+
+  budget:
+    max_usd: 2.50
+
+# ─── 9. Investor Update Generator ───────────────────────────
+---
+id: investor-update-generator
+name: Investor Update Generator
+category: business
+description: Compile company metrics and write a polished investor newsletter
+tags: [investor-relations, fundraising, metrics, newsletter]
+difficulty: intermediate
+estimatedCost: "$0.20-1.00"
+config:
+  name: investor-update-generator
+  description: Gather metrics and produce a professional monthly investor update
+
+  agents:
+    metrics-compiler:
+      role: Metrics and data compiler
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [read, grep, glob]
+      prompt: |
+        Compile key business metrics for the investor update:
+        1. **Revenue metrics** — MRR/ARR, MoM growth rate, net revenue retention
+        2. **User metrics** — Total users, MAU/DAU, DAU/MAU ratio, new signups, churn rate
+        3. **Product metrics** — Key feature adoption, NPS, uptime, response time
+        4. **Financial health** — Cash balance, monthly burn, runway in months, gross margin
+        5. **Team** — Headcount, key hires, open positions
+        6. **Fundraising** — If applicable, pipeline or status
+
+        For each metric:
+        - Current value
+        - Previous period value
+        - Trend direction and percentage change
+        - Context for any anomalies
+
+        Flag any metrics that are missing or need manual input as "[NEEDS DATA]".
+
+    update-writer:
+      role: Investor update author
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Write a professional investor update using the compiled metrics:
+
+        ## {Company} — Investor Update {Month} {Year}
+
+        ### Highlights (Top 3)
+        - Lead with the best news: growth, launches, wins
+        - Be specific with numbers
+
+        ### Key Metrics Dashboard
+        | Metric | Current | Previous | Change |
+        Include the core 6-8 metrics investors care most about.
+
+        ### What Went Well
+        - 2-3 wins with context and data
+        - Customer stories or product milestones
+
+        ### Challenges & Learnings
+        - Be honest about setbacks (investors respect transparency)
+        - Frame as learnings with corrective actions taken
+        - Never hide bad news
+
+        ### Product Update
+        - What shipped this month
+        - What is in progress
+        - Key technical milestones
+
+        ### Asks
+        - Specific ways investors can help:
+          - Introductions to specific types of customers or partners
+          - Hiring referrals for specific roles
+          - Strategic advice on specific decisions
+
+        ### Looking Ahead
+        - Top 3 priorities for next month
+        - Key milestones coming up
+
+        Tone: transparent, confident, concise. Under 800 words.
+        Investors read dozens of updates — make yours scannable and honest.
+
+  connections:
+    - from: metrics-compiler
+      to: update-writer
+
+  budget:
+    max_usd: 1.00
+
+# ─── 10. Process Automation Auditor ─────────────────────────
+---
+id: process-automation-auditor
+name: Process Automation Auditor
+category: business
+description: Identify manual processes that can be automated and estimate ROI
+tags: [automation, efficiency, process-improvement, operations]
+difficulty: intermediate
+estimatedCost: "$0.30-1.00"
+config:
+  name: process-automation-auditor
+  description: Audit business processes and create an automation roadmap with ROI estimates
+
+  agents:
+    process-mapper:
+      role: Business process analyst
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, grep, glob, web_search]
+      prompt: |
+        Audit the described business processes for automation opportunities:
+        For each process identified:
+        1. **Current state** — Who does it, how often, how long it takes, tools used
+        2. **Pain points** — Errors, bottlenecks, delays, frustration
+        3. **Automation potential** — Score 1-10 based on:
+           - Repetitiveness (higher = more automatable)
+           - Rule-based vs. judgment-based (rule-based = easier to automate)
+           - Data availability (structured data = easier)
+           - Frequency (daily tasks have higher ROI)
+        4. **Automation approach** — Suggested method:
+           - Workflow tool (Zapier, Make, n8n)
+           - Custom script/API integration
+           - AI agent (Pulso swarm)
+           - RPA (if legacy system with no API)
+        5. **Dependencies** — What other processes or systems are involved
+        6. **Risk assessment** — What could go wrong if automated incorrectly
+
+    roi-calculator:
+      role: Automation ROI analyst and roadmap builder
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Using the process audit, build an automation roadmap with ROI analysis:
+
+        ## Process Automation Roadmap
+
+        ### Automation Opportunity Matrix
+        | Process | Freq | Hours/Month | Automation Score | Est. Setup | Monthly Savings | ROI (months) |
+
+        ### Quick Wins (Automate This Week)
+        - Processes with high automation score + low setup effort
+        - Step-by-step implementation guide for each
+        - Expected time savings
+
+        ### Medium-Term Projects (This Quarter)
+        - More complex automations requiring integration work
+        - Resource requirements (people, tools, budget)
+        - Implementation timeline
+
+        ### Strategic Investments (Next Quarter+)
+        - Large-scale automations with significant ROI but higher complexity
+        - Build-vs-buy analysis for each
+
+        ### Total Impact Summary
+        - Current manual hours per month: {total}
+        - Projected automated hours per month: {saved}
+        - Annual cost savings estimate: ${amount}
+        - Recommended automation budget: ${invest}
+        - Payback period: {months} months
+
+        ### Recommended Tool Stack
+        - Which automation tools to use for each category
+        - Integration requirements
+        - Estimated monthly tool costs
+
+        Prioritize by ROI-to-effort ratio. Include specific tool recommendations.
+
+  connections:
+    - from: process-mapper
+      to: roi-calculator
+
+  budget:
+    max_usd: 1.00
+
+# ─── 11. Vendor Comparison ──────────────────────────────────
+---
+id: vendor-comparison
+name: Vendor Comparison
+category: business
+description: Research and compare vendors for a procurement decision
+tags: [procurement, vendor, evaluation, buying-decision]
+difficulty: intermediate
+estimatedCost: "$0.30-1.50"
+config:
+  name: vendor-comparison
+  description: Systematically evaluate vendors and produce a recommendation report
+
+  agents:
+    vendor-researcher:
+      role: Vendor intelligence researcher
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [web_search, web_fetch, read]
+      prompt: |
+        Research each vendor thoroughly across these dimensions:
+        1. **Product capabilities** — Feature list, unique strengths, known limitations
+        2. **Pricing** — Plans, per-seat cost, hidden fees, contract terms, discounts
+        3. **Reviews & reputation** — G2/Capterra scores, common praise, common complaints
+        4. **Company health** — Funding, headcount, revenue growth, risk of acquisition/shutdown
+        5. **Integration** — API quality, existing integrations, custom integration effort
+        6. **Support** — SLA levels, support channels, response time, dedicated CSM threshold
+        7. **Security & compliance** — SOC 2, GDPR, data residency, security practices
+        8. **Customer base** — Notable customers, industry focus, company size sweet spot
+
+        For each vendor, produce a structured profile with:
+        - Pros (5+ specific items)
+        - Cons (5+ specific items)
+        - Best for (ideal use case)
+        - Pricing summary
+
+        Include source URLs for all data points.
+
+    comparison-analyst:
+      role: Vendor evaluation analyst
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Produce a vendor comparison report and recommendation:
+
+        ## Vendor Comparison Report — {category}
+
+        ### Evaluation Criteria & Weights
+        Define scoring criteria with weights based on business priorities:
+        | Criterion | Weight | Description |
+        (e.g., Features 25%, Pricing 20%, Integration 20%, Support 15%, Security 10%, Vendor Health 10%)
+
+        ### Vendor Scorecard
+        | Criterion | Weight | {Vendor A} | {Vendor B} | {Vendor C} |
+        Score each 1-5 with justification notes.
+
+        ### Total Weighted Scores
+        Calculate and rank vendors by total score.
+
+        ### Detailed Comparison
+        For each criterion, explain the scoring with evidence.
+
+        ### TCO Analysis (3 years)
+        | Cost Item | {Vendor A} | {Vendor B} | {Vendor C} |
+        Include: license, implementation, training, ongoing support, switching cost.
+
+        ### Risk Assessment
+        - Vendor lock-in risk per vendor
+        - Business continuity risk
+        - Data migration complexity
+
+        ### Recommendation
+        - **Primary recommendation** with rationale
+        - **Runner-up** and when to choose it instead
+        - **Negotiation leverage** — points to use in vendor discussions
+        - **Implementation timeline** for recommended vendor
+
+        Be objective. If the decision is close, say so and explain what would tip it.
+
+  connections:
+    - from: vendor-researcher
+      to: comparison-analyst
+
+  budget:
+    max_usd: 1.50
+
+# ─── 12. Board Deck Preparator ──────────────────────────────
+---
+id: board-deck-preparator
+name: Board Deck Preparator
+category: business
+description: Compile data and create board meeting presentation content with narrative
+tags: [board-meeting, presentation, governance, executive]
+difficulty: advanced
+estimatedCost: "$0.50-2.00"
+config:
+  name: board-deck-preparator
+  description: Gather metrics and produce board-ready presentation content and talking points
+
+  agents:
+    data-aggregator:
+      role: Board metrics and data aggregator
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [read, grep, glob, web_search]
+      prompt: |
+        Compile all data needed for the board deck:
+        1. **Financial performance** — Revenue, expenses, EBITDA/net income, cash position, burn rate
+        2. **KPI dashboard** — Top 10 company KPIs with current vs. target vs. previous quarter
+        3. **Product milestones** — Shipped features, roadmap progress, technical debt status
+        4. **Customer metrics** — New logos, churn, expansion revenue, NPS trend, notable wins/losses
+        5. **Team metrics** — Headcount by department, key hires, attrition, open roles
+        6. **Market context** — Industry trends, competitor moves, macro factors affecting the business
+        7. **Risk register** — Top 5 business risks with likelihood and impact ratings
+        8. **Previous board actions** — Status of action items from last board meeting
+
+        For each data point, note:
+        - Source and date of data
+        - "[NEEDS VERIFICATION]" for any estimates
+        - Quarter-over-quarter trend
+
+    deck-writer:
+      role: Board presentation content creator
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Create board meeting presentation content (slide-by-slide):
+
+        **Slide 1: Title**
+        - Company name, Board Meeting date, "Confidential"
+
+        **Slide 2: Executive Summary**
+        - 4-5 bullet points: quarter highlights, lowlights, and ask
+
+        **Slide 3: Financial Overview**
+        - Revenue vs. plan chart description
+        - Key financial metrics in dashboard format
+        - Commentary on variances
+
+        **Slide 4: Revenue Deep Dive**
+        - Revenue by segment/product
+        - MRR growth waterfall (new, expansion, contraction, churn)
+        - Forecast vs. actual
+
+        **Slide 5: Product Update**
+        - Key launches and metrics
+        - Roadmap progress (on track / delayed items)
+        - Technical highlights
+
+        **Slide 6: Customer Metrics**
+        - Customer count, NPS, retention
+        - Logo wins and notable churn with reasons
+        - Customer concentration risk
+
+        **Slide 7: Team & Culture**
+        - Org chart changes
+        - Key hires and departures
+        - Employee satisfaction/engagement
+
+        **Slide 8: Market & Competition**
+        - Industry developments
+        - Competitive positioning changes
+        - Market opportunities
+
+        **Slide 9: Risk & Mitigation**
+        - Top 5 risks with status indicators
+        - Mitigation plans for each
+
+        **Slide 10: Financial Plan & Forecast**
+        - Updated projections
+        - Cash runway
+        - Scenario analysis (base, upside, downside)
+
+        **Slide 11: Asks & Discussion Topics**
+        - Specific decisions needed from the board
+        - Strategic questions for discussion
+
+        **Slide 12: Appendix**
+        - Detailed financials, KPI definitions, glossary
+
+        For each slide, provide:
+        - Title and subtitle
+        - Content (bullets, tables, chart descriptions)
+        - Speaker notes (what the presenter should say)
+        - Recommended visual format (chart type, layout)
+
+    talking-points:
+      role: Board meeting preparation advisor
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [read, write]
+      prompt: |
+        Prepare the CEO for the board meeting:
+
+        ## Pre-Board Briefing Document
+
+        ### Anticipated Questions
+        For each likely board question:
+        - The question
+        - Recommended answer (concise, data-backed)
+        - Supporting data point to reference
+        - What NOT to say (common pitfalls)
+
+        ### Narrative Arc
+        - Opening framing (set the tone for the meeting)
+        - Key story to tell (one compelling customer or product story)
+        - How to handle the tough slide (if numbers are down, how to frame it)
+        - Closing message (leave the board with this impression)
+
+        ### Follow-up Action Items (Pre-filled)
+        - Likely action items that will come out of the meeting
+        - Prepare draft responses for common board requests
+
+        ### Logistics Checklist
+        - [ ] Deck sent 48 hours before meeting
+        - [ ] Financial model available for drill-down questions
+        - [ ] Demo environment ready (if product demo planned)
+        - [ ] Previous meeting minutes reviewed
+        - [ ] Board member individual updates/concerns addressed
+
+  connections:
+    - from: data-aggregator
+      to: deck-writer
+    - from: deck-writer
+      to: talking-points
+
+  budget:
+    max_usd: 2.00

@@ -1,0 +1,429 @@
+# ═══════════════════════════════════════════════════════════════
+# Finance & Accounting Templates — Pulso Swarm Gallery
+# ═══════════════════════════════════════════════════════════════
+
+# ─── 1. Portfolio Analysis ───────────────────────────────────
+---
+id: portfolio-analysis
+name: Portfolio Analysis
+category: finance
+description: Analyze investment portfolio allocation, risk, and performance metrics
+tags: [portfolio, investing, risk-analysis, stocks]
+difficulty: intermediate
+estimatedCost: "$0.30-1.50"
+config:
+  name: portfolio-analysis
+
+  agents:
+    data-collector:
+      role: Financial data researcher
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [web_search, web_fetch]
+      prompt: |
+        Collect financial data for the portfolio:
+        - Look up current prices and recent performance for each holding
+        - Gather sector allocation and market cap data
+        - Find benchmark index performance (S&P 500, NASDAQ) for comparison
+        - Note any recent earnings, dividends, or corporate events
+        Output: structured data summary per holding with key metrics.
+
+    analyzer:
+      role: Portfolio risk and performance analyst
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write, web_search]
+      prompt: |
+        Analyze the portfolio using the collected data:
+        - Calculate allocation percentages by sector, geography, and asset class
+        - Assess diversification score and concentration risk
+        - Compare performance against benchmarks
+        - Identify overweight/underweight positions
+        - Estimate risk metrics (volatility, drawdown potential)
+        - Provide rebalancing recommendations with rationale
+        Output: comprehensive portfolio analysis report with actionable recommendations.
+
+  connections:
+    - from: data-collector
+      to: analyzer
+
+  budget:
+    max_usd: 1.50
+
+# ─── 2. Expense Report Auditor ───────────────────────────────
+---
+id: expense-report-auditor
+name: Expense Report Auditor
+category: finance
+description: Audit expense reports for policy violations and anomalies
+tags: [expenses, audit, compliance, accounting]
+difficulty: beginner
+estimatedCost: "$0.10-0.50"
+config:
+  name: expense-report-auditor
+
+  agents:
+    policy-checker:
+      role: Expense policy compliance checker
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [read, grep, glob]
+      prompt: |
+        Review expense reports against company policy:
+        - Check each expense against category limits
+        - Flag missing receipts or documentation
+        - Identify duplicate submissions
+        - Verify proper approval chain
+        - Check date consistency (expense date vs submission date)
+        Output: list of flagged items with violation type and severity.
+
+    auditor:
+      role: Expense anomaly analyst
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Using the policy check results, perform deeper analysis:
+        - Identify unusual spending patterns compared to historical data
+        - Detect potential split transactions to avoid thresholds
+        - Check vendor legitimacy and pricing reasonableness
+        - Summarize total spend by category and department
+        - Generate audit report with recommendations
+        Output: formatted audit report with findings, risk ratings, and action items.
+
+  connections:
+    - from: policy-checker
+      to: auditor
+
+  budget:
+    max_usd: 0.50
+
+# ─── 3. Invoice Processor ────────────────────────────────────
+---
+id: invoice-processor
+name: Invoice Processor
+category: finance
+description: Extract, validate, and categorize invoice data for bookkeeping
+tags: [invoices, accounts-payable, data-extraction, bookkeeping]
+difficulty: beginner
+estimatedCost: "$0.10-0.50"
+config:
+  name: invoice-processor
+
+  agents:
+    extractor:
+      role: Invoice data extractor
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [read, glob]
+      prompt: |
+        Extract key fields from each invoice:
+        - Vendor name and contact details
+        - Invoice number and date
+        - Line items with descriptions, quantities, and amounts
+        - Subtotal, tax, and total amounts
+        - Payment terms and due date
+        - Currency and bank details
+        Output: structured JSON-like data per invoice.
+
+    validator:
+      role: Invoice validation and categorization specialist
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Validate and categorize extracted invoice data:
+        - Verify math (line items sum to subtotal, tax calculation correct)
+        - Check for duplicate invoice numbers
+        - Assign general ledger account codes to each line item
+        - Flag discrepancies or missing information
+        - Generate a summary table of all processed invoices
+        - Create journal entry suggestions for bookkeeping
+        Output: validated invoice register with GL codes and any exceptions.
+
+  connections:
+    - from: extractor
+      to: validator
+
+  budget:
+    max_usd: 0.50
+
+# ─── 4. Financial Forecast ───────────────────────────────────
+---
+id: financial-forecast
+name: Financial Forecast
+category: finance
+description: Build revenue and expense forecasts with scenario modeling
+tags: [forecasting, revenue, budgeting, scenario-analysis]
+difficulty: advanced
+estimatedCost: "$0.50-2.00"
+config:
+  name: financial-forecast
+
+  agents:
+    data-analyst:
+      role: Historical financial data analyst
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [read, grep, glob, web_search]
+      prompt: |
+        Analyze historical financial data:
+        - Identify revenue trends (MoM, YoY growth rates)
+        - Break down costs into fixed vs variable categories
+        - Calculate key ratios (gross margin, operating margin, burn rate)
+        - Note seasonality patterns
+        - Research industry benchmarks for comparison
+        Output: historical analysis with identified trends and patterns.
+
+    forecaster:
+      role: Financial forecasting specialist
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Build financial forecasts using the historical analysis:
+        - Create 3 scenarios: conservative, base case, optimistic
+        - Project revenue for the next 12 months per scenario
+        - Forecast expenses by category
+        - Calculate cash runway for each scenario
+        - Identify key assumptions and sensitivity factors
+        - Include break-even analysis
+        Output: 12-month forecast with all three scenarios, assumptions table, and key metrics.
+
+    reviewer:
+      role: Financial model reviewer
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Review the forecast for accuracy and completeness:
+        - Validate assumptions against industry data
+        - Check mathematical consistency across scenarios
+        - Identify missing cost categories or revenue streams
+        - Stress-test key assumptions
+        - Add executive summary with decision recommendations
+        Output: reviewed forecast with reviewer notes and executive summary.
+
+  connections:
+    - from: data-analyst
+      to: forecaster
+    - from: forecaster
+      to: reviewer
+
+  budget:
+    max_usd: 2.00
+
+# ─── 5. Budget Optimizer ─────────────────────────────────────
+---
+id: budget-optimizer
+name: Budget Optimizer
+category: finance
+description: Analyze spending patterns and recommend budget optimizations
+tags: [budget, cost-reduction, optimization, spending]
+difficulty: intermediate
+estimatedCost: "$0.30-1.00"
+config:
+  name: budget-optimizer
+
+  agents:
+    spend-analyzer:
+      role: Spending pattern analyst
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [read, grep, glob]
+      prompt: |
+        Analyze current spending data:
+        - Categorize all expenses (SaaS, payroll, infrastructure, marketing, etc.)
+        - Calculate spend per category as percentage of revenue
+        - Identify month-over-month trends per category
+        - Find unused or underutilized subscriptions/services
+        - Compare department budgets vs actual spending
+        Output: detailed spend breakdown with trend analysis.
+
+    optimizer:
+      role: Budget optimization strategist
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write, web_search]
+      prompt: |
+        Create an optimization plan based on the spending analysis:
+        - Rank savings opportunities by potential impact and ease of implementation
+        - Suggest vendor consolidation opportunities
+        - Identify renegotiation candidates (contracts near renewal)
+        - Recommend tier downgrades for underutilized services
+        - Propose automation to reduce manual costs
+        - Calculate projected savings per recommendation
+        Output: prioritized optimization plan with estimated annual savings per item.
+
+  connections:
+    - from: spend-analyzer
+      to: optimizer
+
+  budget:
+    max_usd: 1.00
+
+# ─── 6. Tax Preparation ──────────────────────────────────────
+---
+id: tax-preparation
+name: Tax Preparation Assistant
+category: finance
+description: Organize financial data and identify deductions for tax filing
+tags: [tax, deductions, compliance, filing]
+difficulty: advanced
+estimatedCost: "$0.50-2.00"
+config:
+  name: tax-preparation
+
+  agents:
+    document-organizer:
+      role: Tax document organizer
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [read, grep, glob]
+      prompt: |
+        Organize and categorize financial documents for tax preparation:
+        - Identify income sources (W-2, 1099, investment income, etc.)
+        - Categorize deductible expenses (business, medical, charitable, etc.)
+        - List all relevant tax forms needed
+        - Flag missing documents or information gaps
+        - Create a checklist of required materials
+        Output: organized document inventory with missing items checklist.
+
+    deduction-finder:
+      role: Tax deduction specialist
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write, web_search]
+      prompt: |
+        Analyze financial data to maximize legitimate deductions:
+        - Identify all qualifying business expenses
+        - Check home office deduction eligibility
+        - Review vehicle/mileage deductions
+        - Assess retirement contribution optimization
+        - Check for available tax credits (R&D, energy, education)
+        - Compare standard vs itemized deduction benefit
+        - Flag any audit risk areas
+        Output: comprehensive deduction report with estimated tax savings.
+
+  connections:
+    - from: document-organizer
+      to: deduction-finder
+
+  budget:
+    max_usd: 2.00
+
+# ─── 7. Revenue Analysis ─────────────────────────────────────
+---
+id: revenue-analysis
+name: Revenue Analysis
+category: finance
+description: Deep-dive into revenue streams, cohorts, and growth drivers
+tags: [revenue, growth, cohort-analysis, metrics]
+difficulty: intermediate
+estimatedCost: "$0.30-1.50"
+config:
+  name: revenue-analysis
+
+  agents:
+    data-miner:
+      role: Revenue data analyst
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [read, grep, glob]
+      prompt: |
+        Extract and organize revenue data:
+        - Break down revenue by product/service line
+        - Segment by customer type (new, returning, enterprise, SMB)
+        - Calculate MRR, ARR, and growth rates
+        - Identify top revenue-generating customers/segments
+        - Track churn and expansion revenue
+        Output: structured revenue dataset with key segmentation.
+
+    strategist:
+      role: Revenue strategy analyst
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write, web_search]
+      prompt: |
+        Analyze revenue data and develop insights:
+        - Perform cohort analysis on customer revenue over time
+        - Calculate unit economics (LTV, CAC, LTV:CAC ratio)
+        - Identify revenue concentration risks
+        - Analyze pricing effectiveness across segments
+        - Forecast revenue trajectory based on current trends
+        - Recommend growth strategies (upsell, cross-sell, new segments)
+        Output: revenue analysis report with strategic recommendations and projected impact.
+
+  connections:
+    - from: data-miner
+      to: strategist
+
+  budget:
+    max_usd: 1.50
+
+# ─── 8. Cash Flow Projector ──────────────────────────────────
+---
+id: cash-flow-projector
+name: Cash Flow Projector
+category: finance
+description: Project cash inflows and outflows to manage liquidity and runway
+tags: [cash-flow, liquidity, runway, treasury]
+difficulty: intermediate
+estimatedCost: "$0.30-1.50"
+config:
+  name: cash-flow-projector
+
+  agents:
+    data-gatherer:
+      role: Cash flow data compiler
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [read, grep, glob]
+      prompt: |
+        Compile all cash flow inputs:
+        - List all recurring inflows (subscriptions, contracts, invoiced amounts)
+        - List all recurring outflows (payroll, rent, SaaS, loan payments)
+        - Identify variable expenses and their seasonal patterns
+        - Note upcoming one-time expenses or income
+        - Track accounts receivable aging and collection patterns
+        Output: comprehensive cash flow input table with timing.
+
+    projector:
+      role: Cash flow projection specialist
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Build detailed cash flow projections:
+        - Create weekly cash flow forecast for the next 13 weeks
+        - Create monthly cash flow forecast for the next 12 months
+        - Calculate cash runway under current burn rate
+        - Model impact of delayed payments or lost customers
+        - Identify potential cash crunches and their timing
+        - Recommend actions to improve cash position (accelerate collections, negotiate terms)
+        - Include minimum cash balance thresholds and alerts
+        Output: cash flow projection with weekly/monthly views, runway estimate, and action plan.
+
+  connections:
+    - from: data-gatherer
+      to: projector
+
+  budget:
+    max_usd: 1.50

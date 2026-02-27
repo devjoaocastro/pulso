@@ -1,0 +1,315 @@
+# ═══════════════════════════════════════════════════════════════
+# Legal & Contracts Templates — Pulso Swarm Gallery
+# ═══════════════════════════════════════════════════════════════
+
+# ─── 1. Contract Reviewer ────────────────────────────────────
+---
+id: contract-reviewer
+name: Contract Reviewer
+category: legal
+description: Review contracts for risks, unfavorable terms, and missing clauses
+tags: [contract, review, risk-analysis, negotiation]
+difficulty: intermediate
+estimatedCost: "$0.30-1.50"
+config:
+  name: contract-reviewer
+
+  agents:
+    analyzer:
+      role: Contract clause analyzer
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, grep, glob]
+      prompt: |
+        Analyze the contract clause by clause:
+        - Identify all parties, dates, and key definitions
+        - Review payment terms (amounts, schedules, late fees, net terms)
+        - Check liability and indemnification clauses
+        - Review intellectual property assignment and ownership
+        - Analyze termination conditions and exit costs
+        - Check confidentiality and non-compete scope
+        - Review warranty and guarantee provisions
+        - Identify auto-renewal and notice period traps
+        - Check governing law and dispute resolution
+        - Look for unusual or non-standard clauses
+        Output: clause-by-clause analysis with risk rating per section.
+
+    advisor:
+      role: Contract negotiation advisor
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Provide contract review recommendations:
+        - Summarize the overall risk level (low, medium, high)
+        - List deal-breaker clauses that must be changed
+        - Identify negotiable terms with suggested alternatives
+        - Recommend missing protective clauses to add
+        - Draft redline suggestions for problematic language
+        - Create a negotiation strategy (what to push, what to concede)
+        - Highlight standard vs non-standard terms for the contract type
+        DISCLAIMER: This is AI-assisted analysis, not legal advice. Recommend professional legal review for final decisions.
+        Output: contract review summary with redline suggestions and negotiation strategy.
+
+  connections:
+    - from: analyzer
+      to: advisor
+
+  budget:
+    max_usd: 1.50
+
+# ─── 2. Compliance Checker ───────────────────────────────────
+---
+id: compliance-checker
+name: Compliance Checker
+category: legal
+description: Check product or service compliance against regulatory frameworks
+tags: [compliance, regulation, gdpr, ccpa, audit]
+difficulty: advanced
+estimatedCost: "$0.50-2.00"
+config:
+  name: compliance-checker
+
+  agents:
+    auditor:
+      role: Regulatory compliance auditor
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, grep, glob, web_search]
+      prompt: |
+        Audit compliance against applicable regulations:
+        GDPR:
+        - Data processing lawful basis documented
+        - Privacy notice completeness
+        - Data subject rights implementation
+        - Data processing agreements in place
+        - Data protection impact assessments
+        - Cross-border transfer mechanisms
+
+        CCPA/CPRA:
+        - Consumer rights (know, delete, opt-out, correct)
+        - Do Not Sell/Share implementation
+        - Privacy policy requirements
+
+        General:
+        - Cookie consent implementation
+        - Data retention policies
+        - Breach notification procedures
+        - Record of processing activities
+        Check codebase for technical implementation of each requirement.
+        Output: compliance gap analysis per regulation with severity ratings.
+
+    remediator:
+      role: Compliance remediation planner
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Create a compliance remediation plan:
+        - Prioritize gaps by regulatory risk and fine exposure
+        - Draft policy documents for missing requirements
+        - Recommend technical implementations (consent manager, data deletion, export)
+        - Create data processing agreement templates
+        - Design employee compliance training outline
+        - Plan ongoing compliance monitoring procedures
+        - Recommend compliance tools and automation
+        DISCLAIMER: This is AI-assisted analysis. Consult qualified legal counsel for regulatory compliance decisions.
+        Output: remediation roadmap with policy drafts and technical requirements.
+
+  connections:
+    - from: auditor
+      to: remediator
+
+  budget:
+    max_usd: 2.00
+
+# ─── 3. Privacy Policy Generator ─────────────────────────────
+---
+id: privacy-policy-generator
+name: Privacy Policy Generator
+category: legal
+description: Generate a comprehensive privacy policy tailored to your product and data practices
+tags: [privacy, gdpr, ccpa, policy, data-protection]
+difficulty: intermediate
+estimatedCost: "$0.30-1.00"
+config:
+  name: privacy-policy-generator
+
+  agents:
+    data-mapper:
+      role: Data practice mapper
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [read, grep, glob]
+      prompt: |
+        Map all data practices in the product:
+        - Identify all personal data collected (forms, tracking, APIs)
+        - Map data flow (collection -> processing -> storage -> sharing)
+        - Identify all third-party services receiving data
+        - Document cookie and tracking technologies used
+        - Identify data retention periods per data type
+        - List all purposes for data processing
+        - Check for automated decision-making or profiling
+        Output: data practice inventory with flow mapping.
+
+    policy-writer:
+      role: Privacy policy author
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Write a comprehensive privacy policy:
+        Sections:
+        1. Introduction and identity of data controller
+        2. Data we collect (categories with examples)
+        3. How we collect data (direct, automatic, third-party)
+        4. Why we process data (purposes and legal basis per GDPR)
+        5. How we share data (categories of recipients)
+        6. International transfers and safeguards
+        7. Data retention periods
+        8. Your rights (GDPR: access, rectification, erasure, portability, object; CCPA: know, delete, opt-out)
+        9. Cookie policy
+        10. Children's privacy
+        11. Security measures
+        12. Changes to this policy
+        13. Contact information and DPO details
+
+        Write in plain language (no legalese). Include last updated date.
+        DISCLAIMER: This is AI-generated. Have a qualified attorney review before publishing.
+        Output: complete privacy policy in Markdown format.
+
+  connections:
+    - from: data-mapper
+      to: policy-writer
+
+  budget:
+    max_usd: 1.00
+
+# ─── 4. Terms of Service Writer ──────────────────────────────
+---
+id: terms-of-service-writer
+name: Terms of Service Writer
+category: legal
+description: Draft terms of service covering usage, liability, and user obligations
+tags: [terms-of-service, tos, legal-documents, user-agreement]
+difficulty: intermediate
+estimatedCost: "$0.30-1.00"
+config:
+  name: terms-of-service-writer
+
+  agents:
+    researcher:
+      role: ToS requirements researcher
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [read, grep, glob, web_search]
+      prompt: |
+        Research terms of service requirements:
+        - Identify the product type and applicable regulations
+        - Review competitor ToS for standard industry clauses
+        - Note jurisdiction-specific requirements
+        - Identify product-specific risks needing coverage
+        - Check for platform-specific requirements (app store, API terms)
+        Output: ToS requirements brief with industry standards and risk areas.
+
+    writer:
+      role: Terms of service author
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Draft comprehensive terms of service:
+        Sections:
+        1. Acceptance of terms
+        2. Description of service
+        3. User accounts and registration
+        4. Acceptable use policy (what users can and cannot do)
+        5. User content and intellectual property
+        6. Company intellectual property rights
+        7. Payment terms and billing (if applicable)
+        8. Free trials and subscription management
+        9. Termination and account deletion
+        10. Disclaimers of warranty
+        11. Limitation of liability
+        12. Indemnification
+        13. Dispute resolution (arbitration vs litigation)
+        14. Governing law and jurisdiction
+        15. Changes to terms
+        16. Severability and waiver
+        17. Contact information
+
+        Write clearly and fairly (avoid one-sided terms that courts reject).
+        DISCLAIMER: This is AI-generated. Consult a licensed attorney before use.
+        Output: complete Terms of Service document in Markdown format.
+
+  connections:
+    - from: researcher
+      to: writer
+
+  budget:
+    max_usd: 1.00
+
+# ─── 5. IP Assessment ────────────────────────────────────────
+---
+id: ip-assessment
+name: IP Assessment
+category: legal
+description: Assess intellectual property portfolio and identify protection opportunities
+tags: [intellectual-property, patents, trademarks, copyright]
+difficulty: advanced
+estimatedCost: "$0.50-2.00"
+config:
+  name: ip-assessment
+
+  agents:
+    auditor:
+      role: IP portfolio auditor
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, grep, glob, web_search]
+      prompt: |
+        Audit the intellectual property landscape:
+        - Inventory existing IP assets (code, brand, content, inventions)
+        - Check trademark registrations and availability for brand elements
+        - Identify patentable innovations or processes
+        - Review open-source license compliance in codebase
+        - Check for potential IP infringement risks
+        - Identify trade secret candidates
+        - Review employee/contractor IP assignment agreements
+        Output: IP asset inventory with protection status and risk assessment.
+
+    strategist:
+      role: IP protection strategist
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Develop an IP protection strategy:
+        - Recommend trademark filings (classes, jurisdictions)
+        - Assess patent filing opportunities with novelty assessment
+        - Recommend copyright registration priorities
+        - Identify trade secrets requiring protection procedures
+        - Create open-source compliance action plan
+        - Suggest IP monitoring strategy (competitor filings, domain squatting)
+        - Recommend employee IP training topics
+        - Estimate costs and timelines for recommended filings
+        - Create IP policy template for the organization
+        DISCLAIMER: This is AI-assisted analysis. Consult qualified IP counsel for filing decisions.
+        Output: IP strategy report with prioritized protection recommendations.
+
+  connections:
+    - from: auditor
+      to: strategist
+
+  budget:
+    max_usd: 2.00

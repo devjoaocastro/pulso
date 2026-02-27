@@ -1,0 +1,544 @@
+# ═══════════════════════════════════════════════════════════════
+# Marketing & Growth Templates — Pulso Swarm Gallery
+# ═══════════════════════════════════════════════════════════════
+
+# ─── 1. Campaign Analyzer ────────────────────────────────────
+---
+id: campaign-analyzer
+name: Campaign Analyzer
+category: marketing
+description: Analyze marketing campaign performance and recommend improvements
+tags: [campaign, analytics, roi, performance]
+difficulty: intermediate
+estimatedCost: "$0.30-1.50"
+config:
+  name: campaign-analyzer
+
+  agents:
+    data-analyst:
+      role: Campaign data analyst
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [read, grep, glob]
+      prompt: |
+        Analyze campaign performance data:
+        - Extract KPIs: impressions, clicks, CTR, conversions, CPA, ROAS
+        - Break down performance by channel, audience segment, and creative
+        - Identify top and bottom performing ad sets
+        - Calculate spend efficiency metrics
+        - Compare against industry benchmarks
+        Output: structured performance data with key metrics per segment.
+
+    strategist:
+      role: Campaign optimization strategist
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write, web_search]
+      prompt: |
+        Develop optimization recommendations from the analysis:
+        - Identify budget reallocation opportunities (shift from low to high performers)
+        - Recommend audience refinements and new lookalike strategies
+        - Suggest creative refresh based on fatigue indicators
+        - Propose bid strategy adjustments
+        - Recommend new channels or tactics to test
+        - Project performance impact of each recommendation
+        Output: optimization report with prioritized action items and projected ROI improvement.
+
+  connections:
+    - from: data-analyst
+      to: strategist
+
+  budget:
+    max_usd: 1.50
+
+# ─── 2. A/B Test Planner ─────────────────────────────────────
+---
+id: ab-test-planner
+name: A/B Test Planner
+category: marketing
+description: Design statistically rigorous A/B tests with hypothesis and sample sizing
+tags: [ab-testing, experimentation, statistics, cro]
+difficulty: intermediate
+estimatedCost: "$0.20-1.00"
+config:
+  name: ab-test-planner
+
+  agents:
+    researcher:
+      role: Experiment design researcher
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [read, web_search]
+      prompt: |
+        Research and gather context for the A/B test:
+        - Review current baseline metrics for the area being tested
+        - Research best practices for the test type
+        - Find case studies of similar experiments
+        - Identify potential confounding variables
+        Output: research brief with baseline data and context.
+
+    test-designer:
+      role: A/B test designer
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Design a rigorous A/B test plan:
+        - Define clear hypothesis (if X then Y because Z)
+        - Specify primary and secondary metrics
+        - Calculate required sample size for statistical significance (95% confidence, 80% power)
+        - Estimate test duration based on traffic
+        - Define control and variant(s) with specific changes
+        - Plan for segment analysis (device, geography, user type)
+        - Document guardrail metrics to monitor
+        - Create test implementation checklist
+        - Write success criteria and decision framework
+        Output: complete experiment design document ready for implementation.
+
+  connections:
+    - from: researcher
+      to: test-designer
+
+  budget:
+    max_usd: 1.00
+
+# ─── 3. Email Campaign ───────────────────────────────────────
+---
+id: email-campaign-builder
+name: Email Campaign Builder
+category: marketing
+description: Design and write targeted email marketing campaigns with segmentation
+tags: [email-marketing, campaign, segmentation, automation]
+difficulty: beginner
+estimatedCost: "$0.20-0.80"
+config:
+  name: email-campaign-builder
+
+  agents:
+    strategist:
+      role: Email campaign strategist
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [read, web_search]
+      prompt: |
+        Plan the email campaign strategy:
+        - Define campaign objective (awareness, conversion, retention, re-engagement)
+        - Identify target audience segments
+        - Plan send cadence and timing
+        - Research subject line best practices for the industry
+        - Define success metrics (open rate, CTR, conversion rate targets)
+        Output: campaign brief with audience segments and content plan.
+
+    copywriter:
+      role: Email campaign copywriter
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Write all email campaign content:
+        - 5 subject line options per email (A/B testable)
+        - Preview text for each email
+        - Email body with personalization tokens
+        - Clear CTA with urgency/value proposition
+        - Alt text for images
+        - Plain-text version for each email
+        - Segment-specific variations where needed
+        Optimize for mobile-first reading (short paragraphs, scannable).
+
+  connections:
+    - from: strategist
+      to: copywriter
+
+  budget:
+    max_usd: 0.80
+
+# ─── 4. Influencer Research ──────────────────────────────────
+---
+id: influencer-research
+name: Influencer Research
+category: marketing
+description: Find and evaluate influencers for partnership opportunities
+tags: [influencer, partnerships, social-media, outreach]
+difficulty: beginner
+estimatedCost: "$0.20-0.80"
+config:
+  name: influencer-research
+
+  agents:
+    researcher:
+      role: Influencer discovery specialist
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [web_search, web_fetch]
+      prompt: |
+        Research potential influencer partners:
+        - Search for influencers in the specified niche/industry
+        - Evaluate audience size, engagement rate, and content quality
+        - Check audience demographics alignment with target market
+        - Review past brand collaborations and sponsored content
+        - Assess brand safety (controversial content, fake followers)
+        - Estimate collaboration cost range
+        Output: ranked list of 15-20 influencer candidates with key metrics.
+
+    evaluator:
+      role: Influencer partnership strategist
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Evaluate and plan influencer partnerships:
+        - Score each candidate on relevance, reach, engagement, and brand fit
+        - Recommend top 5 for immediate outreach
+        - Suggest collaboration formats (sponsored post, review, ambassador, etc.)
+        - Draft outreach message templates
+        - Propose campaign structure and deliverables
+        - Calculate expected ROI per influencer tier
+        - Create partnership brief template
+        Output: influencer partnership plan with outreach templates and ROI projections.
+
+  connections:
+    - from: researcher
+      to: evaluator
+
+  budget:
+    max_usd: 0.80
+
+# ─── 5. Brand Monitoring ─────────────────────────────────────
+---
+id: brand-monitoring
+name: Brand Monitoring
+category: marketing
+description: Monitor brand mentions, sentiment, and competitive positioning online
+tags: [brand, sentiment, monitoring, reputation]
+difficulty: beginner
+estimatedCost: "$0.20-0.80"
+config:
+  name: brand-monitoring
+
+  agents:
+    monitor:
+      role: Brand mention researcher
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [web_search, web_fetch]
+      prompt: |
+        Research brand mentions and sentiment:
+        - Search for recent brand mentions across news, social media, forums
+        - Find product reviews and ratings on major platforms
+        - Identify trending topics related to the brand
+        - Check competitor mentions in the same context
+        - Look for any PR issues or negative press
+        Output: raw mention data organized by source and sentiment.
+
+    analyst:
+      role: Brand sentiment analyst
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Analyze brand mentions and develop insights:
+        - Classify sentiment (positive, neutral, negative) with reasoning
+        - Identify common themes in positive and negative mentions
+        - Track sentiment trend over the research period
+        - Compare share of voice against competitors
+        - Highlight emerging issues or opportunities
+        - Recommend response strategies for negative mentions
+        - Suggest content opportunities from positive themes
+        Output: brand health report with sentiment analysis and action recommendations.
+
+  connections:
+    - from: monitor
+      to: analyst
+
+  budget:
+    max_usd: 0.80
+
+# ─── 6. Competitor Ad Analysis ───────────────────────────────
+---
+id: competitor-ad-analysis
+name: Competitor Ad Analysis
+category: marketing
+description: Analyze competitor advertising strategies across channels
+tags: [competitive-analysis, advertising, strategy, intelligence]
+difficulty: intermediate
+estimatedCost: "$0.30-1.00"
+config:
+  name: competitor-ad-analysis
+
+  agents:
+    researcher:
+      role: Competitive advertising researcher
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [web_search, web_fetch]
+      prompt: |
+        Research competitor advertising activity:
+        - Find competitors' active ad campaigns (Facebook Ad Library, Google Ads Transparency)
+        - Analyze ad creative themes, copy, and CTAs
+        - Identify target audience signals from ad targeting
+        - Research their landing page strategies
+        - Track seasonal or event-driven campaign patterns
+        - Note any new product launches or messaging shifts
+        Output: competitor ad intelligence report with creative examples and patterns.
+
+    strategist:
+      role: Competitive advantage strategist
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Develop counter-strategies from the competitive analysis:
+        - Identify messaging gaps competitors are not addressing
+        - Recommend differentiation angles for ad creative
+        - Suggest audience segments competitors are overlooking
+        - Propose counter-positioning strategies
+        - Draft sample ad concepts that address competitive weaknesses
+        - Recommend budget allocation to capitalize on opportunities
+        Output: competitive strategy brief with actionable ad recommendations.
+
+  connections:
+    - from: researcher
+      to: strategist
+
+  budget:
+    max_usd: 1.00
+
+# ─── 7. Content Calendar ─────────────────────────────────────
+---
+id: content-calendar
+name: Content Calendar
+category: marketing
+description: Plan a month of content across channels with themes and schedules
+tags: [content-planning, calendar, social-media, editorial]
+difficulty: beginner
+estimatedCost: "$0.20-0.80"
+config:
+  name: content-calendar
+
+  agents:
+    planner:
+      role: Content calendar strategist
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [web_search]
+      prompt: |
+        Research and plan the content calendar:
+        - Identify upcoming holidays, awareness days, and industry events
+        - Research trending topics in the industry
+        - Define 4-5 content pillars/themes for the month
+        - Plan content mix ratio (educational, entertaining, promotional, community)
+        - Identify optimal posting times per platform
+        Output: content framework with themes, events, and posting schedule.
+
+    builder:
+      role: Content calendar builder
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Build the complete monthly content calendar:
+        - Create daily content plan for each platform (Twitter, LinkedIn, Instagram, Blog)
+        - Write brief content descriptions for each post
+        - Tag each piece with content pillar and format type
+        - Include visual/media suggestions per post
+        - Add key hashtags and mentions per platform
+        - Mark engagement activities (respond to comments, join conversations)
+        - Include content repurposing chains
+        Format as a structured calendar (Week > Day > Platform > Content).
+
+  connections:
+    - from: planner
+      to: builder
+
+  budget:
+    max_usd: 0.80
+
+# ─── 8. Conversion Optimization ──────────────────────────────
+---
+id: conversion-optimization
+name: Conversion Optimization
+category: marketing
+description: Audit conversion funnels and recommend improvements for higher conversion rates
+tags: [cro, conversion, funnel, optimization]
+difficulty: advanced
+estimatedCost: "$0.50-2.00"
+config:
+  name: conversion-optimization
+
+  agents:
+    funnel-analyst:
+      role: Conversion funnel analyst
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [read, grep, glob, web_search]
+      prompt: |
+        Analyze the conversion funnel:
+        - Map the complete user journey from landing to conversion
+        - Identify drop-off points and their magnitude
+        - Review page load times and technical friction points
+        - Analyze form completion rates and field-level abandonment
+        - Check mobile vs desktop conversion disparities
+        Output: funnel analysis with drop-off data per stage.
+
+    optimizer:
+      role: Conversion rate optimization specialist
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write, web_search]
+      prompt: |
+        Develop CRO recommendations:
+        - Prioritize fixes by potential impact (traffic volume x drop-off rate)
+        - Suggest copy improvements for key pages (headline, CTA, social proof)
+        - Recommend UX changes to reduce friction
+        - Design micro-conversion tracking points
+        - Propose A/B test roadmap (prioritized by expected lift)
+        - Suggest personalization opportunities
+        - Calculate expected revenue impact per improvement
+        Output: CRO plan with prioritized test backlog and projected conversion lift.
+
+  connections:
+    - from: funnel-analyst
+      to: optimizer
+
+  budget:
+    max_usd: 2.00
+
+# ─── 9. Product Launch Plan ──────────────────────────────────
+---
+id: product-launch-plan
+name: Product Launch Plan
+category: marketing
+description: Create a comprehensive go-to-market plan for a product launch
+tags: [product-launch, go-to-market, strategy, launch]
+difficulty: advanced
+estimatedCost: "$0.50-2.00"
+config:
+  name: product-launch-plan
+
+  agents:
+    researcher:
+      role: Market and competitive researcher
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [web_search, web_fetch]
+      prompt: |
+        Research for the product launch:
+        - Analyze target market size and segments
+        - Study competitor launch strategies
+        - Identify key media and press contacts in the space
+        - Research launch timing (avoid conflicts, leverage events)
+        - Find potential launch partners and co-marketing opportunities
+        Output: market research brief for launch planning.
+
+    planner:
+      role: Launch campaign planner
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Create the product launch plan:
+        - Define launch tiers (pre-launch, launch day, post-launch)
+        - Plan pre-launch activities (teaser campaign, waitlist, beta)
+        - Design launch day sequence (announcement, press, social)
+        - Create post-launch sustain plan (week 1-4 activities)
+        - Define channel strategy (owned, earned, paid)
+        - Write key messaging and positioning
+        - Create launch checklist with deadlines and owners
+        - Plan measurement framework (KPIs, dashboards, reporting cadence)
+        Output: complete launch plan with timeline, channel strategy, and measurement framework.
+
+    content-creator:
+      role: Launch content creator
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Create launch content assets:
+        - Press release for launch announcement
+        - Product Hunt launch copy (tagline, description, maker comment)
+        - Launch email to existing customers/waitlist
+        - Social media announcement posts (Twitter, LinkedIn, Instagram)
+        - Launch blog post
+        - Outreach template for press/influencers
+        Write with excitement while staying credible and benefit-focused.
+
+  connections:
+    - from: researcher
+      to: planner
+    - from: planner
+      to: content-creator
+
+  budget:
+    max_usd: 2.00
+
+# ─── 10. Customer Journey Mapper ─────────────────────────────
+---
+id: customer-journey-mapper
+name: Customer Journey Mapper
+category: marketing
+description: Map the complete customer journey with touchpoints and optimization opportunities
+tags: [customer-journey, ux, touchpoints, lifecycle]
+difficulty: intermediate
+estimatedCost: "$0.30-1.50"
+config:
+  name: customer-journey-mapper
+
+  agents:
+    researcher:
+      role: Customer experience researcher
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [read, grep, glob, web_search]
+      prompt: |
+        Research customer journey elements:
+        - Identify all customer touchpoints (website, email, social, support, product)
+        - Map the stages: awareness, consideration, decision, onboarding, retention, advocacy
+        - Gather data on customer behavior at each stage
+        - Identify common pain points and friction from reviews/feedback
+        - Research industry journey mapping best practices
+        Output: raw touchpoint inventory organized by journey stage.
+
+    mapper:
+      role: Customer journey mapping specialist
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Create a comprehensive customer journey map:
+        - Document each stage with customer goals, actions, and emotions
+        - Map touchpoints to channels and responsible teams
+        - Identify moments of truth (make-or-break interactions)
+        - Highlight gaps between customer expectation and reality
+        - Rate each touchpoint on satisfaction and importance
+        - Recommend improvements for the weakest touchpoints
+        - Suggest automation opportunities for repetitive interactions
+        - Create persona-specific journey variations
+        Output: visual journey map document with optimization recommendations per touchpoint.
+
+  connections:
+    - from: researcher
+      to: mapper
+
+  budget:
+    max_usd: 1.50

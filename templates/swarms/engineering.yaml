@@ -1,0 +1,787 @@
+# ═══════════════════════════════════════════════════════════════
+# Engineering Templates — Pulso Swarm Gallery
+# ═══════════════════════════════════════════════════════════════
+
+# ─── 1. Full Code Review Pipeline ─────────────────────────────
+---
+id: code-review-pipeline
+name: Full Code Review Pipeline
+category: engineering
+description: Three-agent review covering security, tests, and code quality
+tags: [review, security, testing, quality]
+difficulty: intermediate
+estimatedCost: "$0.50-2.00"
+config:
+  name: code-review-pipeline
+  description: Comprehensive code review with security scan, test analysis, and quality review
+
+  providers:
+    fast:
+      provider: anthropic
+      model: claude-haiku-4-5
+    smart:
+      provider: anthropic
+      model: claude-sonnet-4-6
+
+  agents:
+    security-scanner:
+      role: Security vulnerability scanner
+      model: $smart
+      tools: [read, grep, glob]
+      prompt: |
+        Scan the codebase for security vulnerabilities:
+        - SQL injection, XSS, CSRF
+        - Hardcoded secrets and API keys
+        - Insecure authentication patterns
+        - Missing input validation
+        - Dependency vulnerabilities
+        Output a prioritized list of findings with severity (Critical/High/Medium/Low).
+
+    test-analyzer:
+      role: Test coverage and quality analyzer
+      model: $fast
+      tools: [read, grep, glob]
+      prompt: |
+        Analyze the test suite:
+        - Identify untested code paths
+        - Check for weak assertions
+        - Find missing edge case tests
+        - Review test naming and organization
+        Output a coverage report with specific recommendations.
+
+    code-reviewer:
+      role: Senior code quality reviewer
+      model: $smart
+      tools: [read, grep, glob]
+      prompt: |
+        Using security and test findings from upstream agents, provide a comprehensive code review:
+        - Architecture and design patterns
+        - Code readability and maintainability
+        - Performance concerns
+        - Error handling completeness
+        - DRY violations
+        Produce a final review document with actionable feedback.
+
+  connections:
+    - from: [security-scanner, test-analyzer]
+      to: code-reviewer
+
+  budget:
+    max_usd: 2.00
+  maxConcurrent: 2
+
+# ─── 2. Bug Fix Pipeline ──────────────────────────────────────
+---
+id: bug-fix-pipeline
+name: Bug Fix Pipeline
+category: engineering
+description: Diagnose, fix, and verify bugs with three specialized agents
+tags: [debugging, fix, testing]
+difficulty: intermediate
+estimatedCost: "$0.30-1.50"
+config:
+  name: bug-fix-pipeline
+  description: Diagnose a bug, implement the fix, and write tests
+
+  agents:
+    debugger:
+      role: Bug diagnosis specialist
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, grep, glob, bash]
+      prompt: |
+        Diagnose the reported bug:
+        1. Reproduce the issue by reading relevant code
+        2. Trace the root cause through the call chain
+        3. Identify the exact file and line causing the issue
+        4. Propose a fix strategy
+        Output: root cause analysis and recommended fix approach.
+
+    fixer:
+      role: Code fix implementer
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write, edit, grep, glob]
+      prompt: |
+        Implement the fix based on the diagnosis:
+        1. Apply the minimum necessary changes
+        2. Preserve existing behavior for unaffected paths
+        3. Add defensive checks where appropriate
+        4. Ensure no regressions are introduced
+
+    test-writer:
+      role: Test writer for the fix
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [read, write, grep, glob]
+      prompt: |
+        Write tests that:
+        1. Verify the bug is fixed (regression test)
+        2. Cover the edge cases that led to the bug
+        3. Follow existing test patterns in the codebase
+
+  connections:
+    - from: debugger
+      to: fixer
+    - from: fixer
+      to: test-writer
+
+  budget:
+    max_usd: 1.50
+
+# ─── 3. PR Review Bot ─────────────────────────────────────────
+---
+id: pr-review-bot
+name: Pull Request Review Bot
+category: engineering
+description: Automated PR review with diff analysis and suggestions
+tags: [github, review, pull-request]
+difficulty: beginner
+estimatedCost: "$0.10-0.50"
+config:
+  name: pr-review-bot
+  description: Review a PR diff and provide actionable feedback
+
+  agents:
+    reviewer:
+      role: Senior pull request reviewer
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, grep, glob]
+      prompt: |
+        Review the provided code changes as a senior engineer:
+        - Check for correctness and edge cases
+        - Evaluate naming, readability, and style
+        - Look for potential performance issues
+        - Check error handling
+        - Verify backwards compatibility
+        Format as GitHub PR review comments (file:line format).
+
+  budget:
+    max_usd: 0.50
+
+# ─── 4. API Design & Implementation ───────────────────────────
+---
+id: api-design-implement
+name: API Design & Implementation
+category: engineering
+description: Design API endpoints, implement routes, and generate docs
+tags: [api, rest, design, documentation]
+difficulty: advanced
+estimatedCost: "$1.00-3.00"
+config:
+  name: api-design-implement
+  description: Design, implement, and document API endpoints
+
+  providers:
+    architect:
+      provider: anthropic
+      model: claude-sonnet-4-6
+    coder:
+      provider: anthropic
+      model: claude-sonnet-4-6
+
+  agents:
+    api-designer:
+      role: API architect
+      model: $architect
+      tools: [read, grep, glob]
+      prompt: |
+        Design REST API endpoints for the requested feature:
+        - Define routes, methods, request/response schemas
+        - Follow existing API conventions in the codebase
+        - Consider authentication, pagination, error responses
+        - Design for backwards compatibility
+        Output: OpenAPI-style specification.
+
+    implementer:
+      role: API implementer
+      model: $coder
+      tools: [read, write, edit, grep, glob]
+      prompt: |
+        Implement the API endpoints based on the design:
+        - Create route handlers following existing patterns
+        - Add input validation
+        - Implement proper error handling
+        - Add rate limiting if appropriate
+        - Write the actual code in the codebase.
+
+    doc-writer:
+      role: API documentation writer
+      model: $architect
+      tools: [read, write]
+      prompt: |
+        Generate API documentation for the implemented endpoints:
+        - Request/response examples with curl
+        - Authentication requirements
+        - Rate limits
+        - Error codes and handling
+        Write clear, developer-friendly docs.
+
+  connections:
+    - from: api-designer
+      to: implementer
+    - from: implementer
+      to: doc-writer
+
+  budget:
+    max_usd: 3.00
+
+# ─── 5. Database Migration Pipeline ───────────────────────────
+---
+id: db-migration-pipeline
+name: Database Migration Pipeline
+category: engineering
+description: Schema changes with migration scripts, rollback plans, and data validation
+tags: [database, migration, schema]
+difficulty: advanced
+estimatedCost: "$0.50-2.00"
+config:
+  name: db-migration-pipeline
+  description: Safe database schema migration with validation
+
+  agents:
+    schema-designer:
+      role: Database schema architect
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, grep, glob]
+      prompt: |
+        Design the schema changes:
+        1. Analyze current schema and relationships
+        2. Design the migration (new tables, columns, indexes)
+        3. Consider data integrity constraints
+        4. Plan for zero-downtime migration
+        Output: SQL migration script and rollback script.
+
+    migration-writer:
+      role: Migration script implementer
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write, edit, grep]
+      prompt: |
+        Create the migration based on the schema design:
+        1. Write the UP migration SQL
+        2. Write the DOWN migration SQL (rollback)
+        3. Create data migration scripts if needed
+        4. Update application code to use new schema
+        Ensure the migration is idempotent and safe.
+
+    validator:
+      role: Migration validator
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [read, grep, glob]
+      prompt: |
+        Validate the migration:
+        1. Check SQL syntax correctness
+        2. Verify rollback script reverses changes
+        3. Check for data loss risks
+        4. Verify application code is updated
+        5. Check index coverage for new queries
+        Output: validation report with pass/fail for each check.
+
+  connections:
+    - from: schema-designer
+      to: migration-writer
+    - from: migration-writer
+      to: validator
+
+  budget:
+    max_usd: 2.00
+
+# ─── 6. Refactoring Pipeline ──────────────────────────────────
+---
+id: refactoring-pipeline
+name: Code Refactoring Pipeline
+category: engineering
+description: Analyze, refactor, and verify code improvements
+tags: [refactoring, clean-code, architecture]
+difficulty: intermediate
+estimatedCost: "$0.50-2.00"
+config:
+  name: refactoring-pipeline
+  description: Systematic code refactoring with before/after verification
+
+  agents:
+    analyzer:
+      role: Code smell detector
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, grep, glob]
+      prompt: |
+        Analyze the codebase for refactoring opportunities:
+        - God classes/functions (too many responsibilities)
+        - Duplicate code (DRY violations)
+        - Deep nesting and complex conditionals
+        - Missing abstractions
+        - Tight coupling between modules
+        Prioritize by impact and risk.
+
+    refactorer:
+      role: Refactoring implementer
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write, edit, grep, glob]
+      prompt: |
+        Apply refactoring changes based on the analysis:
+        - Extract methods/classes for single responsibility
+        - Eliminate duplication
+        - Simplify complex logic
+        - Improve naming for clarity
+        Make changes incrementally, preserving behavior.
+
+  connections:
+    - from: analyzer
+      to: refactorer
+
+  budget:
+    max_usd: 2.00
+
+# ─── 7. Test Suite Generator ──────────────────────────────────
+---
+id: test-suite-generator
+name: Test Suite Generator
+category: engineering
+description: Analyze code and generate comprehensive test suites
+tags: [testing, unit-tests, integration-tests]
+difficulty: beginner
+estimatedCost: "$0.20-1.00"
+config:
+  name: test-suite-generator
+  description: Generate tests for untested code
+
+  agents:
+    test-planner:
+      role: Test strategy planner
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [read, grep, glob]
+      prompt: |
+        Analyze the target code and plan tests:
+        - Identify all public functions/methods
+        - List happy path scenarios
+        - List edge cases and error scenarios
+        - Note dependencies that need mocking
+        Output: test plan with scenarios per function.
+
+    test-writer:
+      role: Test implementation specialist
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write, grep, glob]
+      prompt: |
+        Write tests based on the test plan:
+        - Follow existing test patterns in the project
+        - Use the project's test framework
+        - Mock external dependencies
+        - Include descriptive test names
+        - Cover all planned scenarios
+
+  connections:
+    - from: test-planner
+      to: test-writer
+
+  budget:
+    max_usd: 1.00
+
+# ─── 8. Performance Optimization ──────────────────────────────
+---
+id: performance-optimization
+name: Performance Optimization
+category: engineering
+description: Profile, identify bottlenecks, and optimize code
+tags: [performance, optimization, profiling]
+difficulty: advanced
+estimatedCost: "$0.50-2.00"
+config:
+  name: performance-optimization
+
+  agents:
+    profiler:
+      role: Performance profiling specialist
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, grep, glob]
+      prompt: |
+        Analyze the codebase for performance issues:
+        - N+1 queries and unnecessary database calls
+        - Missing indexes for frequent queries
+        - Unoptimized loops and algorithms
+        - Memory leaks and excessive allocations
+        - Missing caching opportunities
+        - Bundle size and lazy loading gaps
+        Rank by impact (estimated improvement).
+
+    optimizer:
+      role: Performance optimization implementer
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write, edit, grep, glob]
+      prompt: |
+        Implement the top-priority optimizations:
+        - Add caching where identified
+        - Optimize queries and add indexes
+        - Refactor hot loops
+        - Add lazy loading for heavy modules
+        - Implement connection pooling if needed
+        Measure expected improvement for each change.
+
+  connections:
+    - from: profiler
+      to: optimizer
+
+  budget:
+    max_usd: 2.00
+
+# ─── 9. Dependency Upgrade ────────────────────────────────────
+---
+id: dependency-upgrade
+name: Dependency Upgrade Pipeline
+category: engineering
+description: Audit, upgrade, and test dependencies safely
+tags: [dependencies, npm, security, upgrade]
+difficulty: intermediate
+estimatedCost: "$0.30-1.00"
+config:
+  name: dependency-upgrade
+
+  agents:
+    auditor:
+      role: Dependency audit specialist
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [read, grep, glob, bash]
+      prompt: |
+        Audit project dependencies:
+        1. Run `npm audit` or check package.json versions
+        2. Identify outdated packages with breaking changes
+        3. Check for known CVEs
+        4. Prioritize updates by security impact
+        Output: prioritized upgrade list with risk assessment.
+
+    upgrader:
+      role: Dependency upgrade implementer
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write, edit, bash, grep]
+      prompt: |
+        Apply dependency upgrades based on the audit:
+        1. Start with security-critical updates
+        2. Update package.json versions
+        3. Fix any breaking API changes
+        4. Run tests to verify nothing breaks
+        5. Update lock file
+
+  connections:
+    - from: auditor
+      to: upgrader
+
+  budget:
+    max_usd: 1.00
+
+# ─── 10. Documentation Generator ─────────────────────────────
+---
+id: documentation-generator
+name: Documentation Generator
+category: engineering
+description: Generate README, API docs, and architecture docs from code
+tags: [documentation, readme, api-docs]
+difficulty: beginner
+estimatedCost: "$0.20-0.80"
+config:
+  name: documentation-generator
+
+  agents:
+    doc-analyzer:
+      role: Documentation gap analyzer
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [read, grep, glob]
+      prompt: |
+        Analyze the codebase for documentation needs:
+        - Missing README sections
+        - Undocumented API endpoints
+        - Functions without JSDoc/docstrings
+        - Missing architecture diagrams (describe in text)
+        Output: documentation gap report.
+
+    doc-writer:
+      role: Technical documentation writer
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write, grep, glob]
+      prompt: |
+        Write missing documentation:
+        - Clear README with setup instructions
+        - API endpoint documentation with examples
+        - Architecture overview
+        - Configuration guide
+        Use Markdown, follow existing doc style.
+
+  connections:
+    - from: doc-analyzer
+      to: doc-writer
+
+  budget:
+    max_usd: 0.80
+
+# ─── 11. Microservice Scaffolding ─────────────────────────────
+---
+id: microservice-scaffold
+name: Microservice Scaffolding
+category: engineering
+description: Design and scaffold a new microservice with all boilerplate
+tags: [microservice, scaffold, architecture]
+difficulty: advanced
+estimatedCost: "$0.50-2.00"
+config:
+  name: microservice-scaffold
+
+  agents:
+    architect:
+      role: Microservice architect
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, grep, glob]
+      prompt: |
+        Design the microservice architecture:
+        - Define service boundaries and API contracts
+        - Choose appropriate patterns (REST, gRPC, events)
+        - Design database schema
+        - Plan health checks and monitoring
+        - Define deployment configuration
+        Output: architecture decision record (ADR).
+
+    scaffolder:
+      role: Service scaffolding implementer
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write, bash, grep, glob]
+      prompt: |
+        Scaffold the microservice based on the architecture:
+        - Create project structure (routes, handlers, models)
+        - Set up configuration and environment handling
+        - Implement health check endpoint
+        - Create Dockerfile
+        - Write initial tests
+        - Add CI/CD workflow template
+
+  connections:
+    - from: architect
+      to: scaffolder
+
+  budget:
+    max_usd: 2.00
+
+# ─── 12. Monorepo Setup ──────────────────────────────────────
+---
+id: monorepo-setup
+name: Monorepo Setup
+category: engineering
+description: Set up a Turbo/pnpm monorepo with shared packages
+tags: [monorepo, turbo, pnpm, workspace]
+difficulty: intermediate
+estimatedCost: "$0.30-1.00"
+config:
+  name: monorepo-setup
+
+  agents:
+    planner:
+      role: Monorepo architecture planner
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, grep, glob]
+      prompt: |
+        Plan the monorepo structure:
+        - Define apps and packages
+        - Plan shared dependencies
+        - Design build pipeline (Turbo tasks)
+        - Configure TypeScript project references
+        - Plan versioning strategy
+
+    implementer:
+      role: Monorepo setup implementer
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write, bash, grep, glob]
+      prompt: |
+        Set up the monorepo:
+        - Create workspace configuration (pnpm-workspace.yaml, turbo.json)
+        - Set up shared TypeScript config
+        - Create package templates
+        - Configure build caching
+        - Add development scripts
+
+  connections:
+    - from: planner
+      to: implementer
+
+  budget:
+    max_usd: 1.00
+
+# ─── 13. CI/CD Pipeline Design ────────────────────────────────
+---
+id: cicd-pipeline-design
+name: CI/CD Pipeline Design
+category: engineering
+description: Design and implement GitHub Actions CI/CD workflows
+tags: [ci-cd, github-actions, deployment]
+difficulty: intermediate
+estimatedCost: "$0.30-1.00"
+config:
+  name: cicd-pipeline-design
+
+  agents:
+    designer:
+      role: CI/CD pipeline architect
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, grep, glob]
+      prompt: |
+        Design CI/CD pipelines for the project:
+        - Lint + type check + test on PR
+        - Build and deploy on merge to main
+        - Release workflow on git tag
+        - Environment-specific configs (staging, production)
+        - Caching strategy for fast builds
+
+    implementer:
+      role: GitHub Actions workflow writer
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write, grep, glob]
+      prompt: |
+        Create GitHub Actions workflows based on the design:
+        - .github/workflows/ci.yml (PR checks)
+        - .github/workflows/deploy.yml (auto-deploy)
+        - .github/workflows/release.yml (tagged releases)
+        Use caching, matrix builds where applicable.
+
+  connections:
+    - from: designer
+      to: implementer
+
+  budget:
+    max_usd: 1.00
+
+# ─── 14. Error Handling Audit ─────────────────────────────────
+---
+id: error-handling-audit
+name: Error Handling Audit
+category: engineering
+description: Audit and improve error handling across the codebase
+tags: [error-handling, reliability, audit]
+difficulty: intermediate
+estimatedCost: "$0.30-1.50"
+config:
+  name: error-handling-audit
+
+  agents:
+    auditor:
+      role: Error handling auditor
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, grep, glob]
+      prompt: |
+        Audit error handling patterns:
+        - Find unhandled promise rejections
+        - Identify missing try/catch blocks
+        - Check for swallowed errors (empty catch)
+        - Verify API error responses are consistent
+        - Look for missing error boundaries (React)
+        - Check for proper error logging
+        Output: categorized findings with fix recommendations.
+
+    fixer:
+      role: Error handling improvement implementer
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write, edit, grep, glob]
+      prompt: |
+        Fix the identified error handling issues:
+        - Add proper error boundaries
+        - Implement consistent error response format
+        - Add error logging where missing
+        - Handle edge cases
+        Prioritize by user impact.
+
+  connections:
+    - from: auditor
+      to: fixer
+
+  budget:
+    max_usd: 1.50
+
+# ─── 15. TypeScript Strict Mode Migration ─────────────────────
+---
+id: typescript-strict-migration
+name: TypeScript Strict Mode Migration
+category: engineering
+description: Progressively enable strict TypeScript and fix type errors
+tags: [typescript, strict, type-safety]
+difficulty: advanced
+estimatedCost: "$0.50-3.00"
+config:
+  name: typescript-strict-migration
+
+  agents:
+    analyzer:
+      role: TypeScript strictness analyzer
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [read, grep, glob, bash]
+      prompt: |
+        Analyze TypeScript strict mode readiness:
+        1. Check current tsconfig strict settings
+        2. Try enabling strict flags one by one
+        3. Categorize resulting errors by type
+        4. Estimate effort for each flag
+        Output: migration plan with prioritized flags.
+
+    migrator:
+      role: TypeScript strict mode migrator
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write, edit, grep, glob]
+      prompt: |
+        Apply TypeScript strict mode fixes:
+        - Add explicit types where inferred as 'any'
+        - Fix null/undefined handling
+        - Add return type annotations
+        - Use type guards for narrowing
+        Process file by file, verifying each compiles.
+
+  connections:
+    - from: analyzer
+      to: migrator
+
+  budget:
+    max_usd: 3.00

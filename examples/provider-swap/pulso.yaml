@@ -1,0 +1,46 @@
+# Provider Swap — Same task, different providers
+# Demonstrates Pulso's provider-agnostic architecture
+
+name: provider-swap
+description: Run the same task with Claude, GPT, and Ollama to compare
+
+providers:
+  claude:
+    provider: anthropic
+    model: claude-sonnet-4-5
+  gpt:
+    provider: openai
+    model: gpt-4.1
+  local:
+    provider: ollama
+    model: llama3.3:70b
+
+agents:
+  claude-agent:
+    role: Solves the task using Claude
+    model: $claude
+    tools: [read, write, grep, glob]
+    prompt: |
+      Complete the task. Prefix your output with [CLAUDE].
+
+  gpt-agent:
+    role: Solves the task using GPT
+    model: $gpt
+    tools: [read, write, grep, glob]
+    prompt: |
+      Complete the task. Prefix your output with [GPT].
+
+  local-agent:
+    role: Solves the task using a local model
+    model: $local
+    tools: [read, write, grep, glob]
+    prompt: |
+      Complete the task. Prefix your output with [LOCAL].
+
+# No connections = all three run in parallel
+connections: []
+
+budget:
+  max_usd: 2.00
+
+maxConcurrent: 3

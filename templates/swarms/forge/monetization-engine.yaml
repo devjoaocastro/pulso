@@ -1,0 +1,103 @@
+# ═══════════════════════════════════════════════════════════════
+# Forge Monetization Engine — Working Example
+# Validates demand, designs a monetizable offer, and creates a 30-day plan
+# ═══════════════════════════════════════════════════════════════
+---
+id: forge-user-monetization-engine
+name: Forge User Monetization Engine
+category: forge
+description: Turn a user skill into a monetization plan with validated demand, priced offer, acquisition channels, and execution checklist
+tags: [forge, monetization, revenue, offer-design, go-to-market]
+difficulty: intermediate
+estimatedCost: "$0.20-0.90"
+config:
+  name: forge-user-monetization-engine
+  description: Example Forge swarm for monetizing a user's skill in 30 days
+
+  agents:
+    opportunity_scout:
+      role: Market Opportunity Scout
+      model:
+        provider: openrouter
+        model: openrouter/free
+      tools: [web_search, web_fetch, news_search]
+      prompt: |
+        You are validating a monetization opportunity for the user.
+
+        INPUT SKILL/CONTEXT: {{task}}
+
+        Research and output:
+        1. Top 3 buyer pains this skill can solve.
+        2. Existing competitors and their pricing.
+        3. Demand signals (search trends, community discussions, social traction).
+        4. Market viability score (0-100) with rationale.
+
+        Keep output structured and specific with real numbers where possible.
+
+    offer_architect:
+      role: Offer & Pricing Architect
+      model:
+        provider: openrouter
+        model: openrouter/free
+      tools: [memory_store, memory_recall, calculate, web_fetch]
+      prompt: |
+        Based on the validated opportunity, design the monetizable offer.
+
+        Produce:
+        1. One core offer + two upsells.
+        2. Exact pricing strategy (entry, standard, premium).
+        3. Positioning statement and value proposition.
+        4. Delivery format (service, productized service, digital product, hybrid).
+        5. Unit economics assumptions (time cost, gross margin target, break-even units).
+
+        Be pragmatic and optimized for first revenue in 30 days.
+
+    channel_operator:
+      role: Acquisition Channel Operator
+      model:
+        provider: openrouter
+        model: openrouter/free
+      tools: [web_search, web_fetch, reddit_search, youtube_search]
+      prompt: |
+        Build channel strategy for customer acquisition.
+
+        Output:
+        1. 3 primary channels ranked by speed-to-revenue.
+        2. Daily channel actions for the first 14 days.
+        3. Messaging hooks for each channel.
+        4. Lead capture flow (from first touch to conversion).
+        5. Conversion KPIs (CPL, conversion rate, CAC, payback period).
+
+        Focus on actions the user can execute immediately.
+
+    monetization_manager:
+      role: Monetization Execution Manager
+      model:
+        provider: openrouter
+        model: openrouter/free
+      tools: [memory_recall, calculate]
+      prompt: |
+        Consolidate upstream outputs into a complete 30-day monetization execution plan.
+
+        Deliver this exact structure:
+        1. Executive Summary (max 8 bullets)
+        2. Offer Stack (table)
+        3. Pricing & Margin Targets
+        4. 30-Day Plan by week (Week 1..4)
+        5. Daily Checklist (first 10 days)
+        6. KPI Dashboard template (what to track daily)
+        7. Risk List + mitigations
+        8. Go/No-Go recommendation
+
+        Language: Portuguese (Portugal), clear and direct.
+
+  connections:
+    - from: opportunity_scout
+      to: offer_architect
+    - from: opportunity_scout
+      to: channel_operator
+    - from: [offer_architect, channel_operator]
+      to: monetization_manager
+
+  budget:
+    max_usd: 0.90

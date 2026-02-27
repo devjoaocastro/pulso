@@ -1,0 +1,338 @@
+# ═══════════════════════════════════════════════════════════════
+# Creative & Design Templates — Pulso Swarm Gallery
+# ═══════════════════════════════════════════════════════════════
+
+# ─── 1. Brand Identity Creator ───────────────────────────────
+---
+id: brand-identity-creator
+name: Brand Identity Creator
+category: creative
+description: Develop a complete brand identity system with voice, values, and visual direction
+tags: [branding, identity, voice, strategy]
+difficulty: intermediate
+estimatedCost: "$0.30-1.50"
+config:
+  name: brand-identity-creator
+
+  agents:
+    researcher:
+      role: Brand strategy researcher
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [web_search, web_fetch]
+      prompt: |
+        Research for brand identity development:
+        - Analyze competitor brand positioning and visual identity
+        - Research target audience preferences and aspirations
+        - Study industry design trends and aesthetic directions
+        - Find brand archetype examples that align with the product
+        - Gather inspiration from adjacent industries
+        Output: brand research brief with competitive landscape and audience insights.
+
+    creator:
+      role: Brand identity architect
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Create a comprehensive brand identity system:
+        - Brand purpose statement (why the brand exists)
+        - Mission and vision statements
+        - Core values (3-5, with behavioral examples)
+        - Brand personality traits and archetype
+        - Brand voice guidelines (tone, vocabulary, do/don't examples)
+        - Tagline options (5 variations)
+        - Messaging hierarchy (primary, secondary, tertiary)
+        - Visual direction: recommended color palette with hex codes
+        - Typography recommendations (heading, body, accent)
+        - Logo concept brief (style direction, symbols, wordmark vs icon)
+        - Photography and illustration style guidelines
+        Output: complete brand identity document ready for designer handoff.
+
+  connections:
+    - from: researcher
+      to: creator
+
+  budget:
+    max_usd: 1.50
+
+# ─── 2. Design System Documenter ─────────────────────────────
+---
+id: design-system-documenter
+name: Design System Documenter
+category: creative
+description: Document existing design system components, tokens, and usage guidelines
+tags: [design-system, documentation, components, tokens]
+difficulty: intermediate
+estimatedCost: "$0.30-1.50"
+config:
+  name: design-system-documenter
+
+  agents:
+    scanner:
+      role: Design system component scanner
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [read, grep, glob]
+      prompt: |
+        Scan the codebase for design system elements:
+        - Identify all reusable components (buttons, inputs, cards, modals, etc.)
+        - Extract design tokens (colors, spacing, typography, shadows, radii)
+        - Find component variants and states
+        - Map component composition patterns
+        - Identify inconsistencies (different buttons, multiple spacing scales)
+        - Note accessibility implementations (ARIA, keyboard, focus)
+        Output: component inventory with token values and variant list.
+
+    documenter:
+      role: Design system documentation writer
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Create design system documentation:
+        For each component:
+        - Description and purpose
+        - Props/API with types and defaults
+        - Usage guidelines (when to use, when not to use)
+        - Code examples for each variant
+        - Accessibility requirements
+        - Responsive behavior notes
+
+        For the system overall:
+        - Design principles
+        - Token reference table (color, spacing, typography)
+        - Layout patterns and grid system
+        - Icon usage guidelines
+        - Motion and animation guidelines
+        - Contribution guide for adding new components
+        Output: complete design system documentation site content.
+
+  connections:
+    - from: scanner
+      to: documenter
+
+  budget:
+    max_usd: 1.50
+
+# ─── 3. UX Audit ─────────────────────────────────────────────
+---
+id: ux-audit
+name: UX Audit
+category: creative
+description: Audit user experience flows for usability, accessibility, and consistency
+tags: [ux, usability, accessibility, audit]
+difficulty: intermediate
+estimatedCost: "$0.30-1.50"
+config:
+  name: ux-audit
+
+  agents:
+    auditor:
+      role: UX and accessibility auditor
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, grep, glob]
+      prompt: |
+        Audit the user experience:
+        Usability:
+        - Review user flows for unnecessary steps or friction
+        - Check error handling and recovery paths
+        - Evaluate form design (labels, validation, feedback)
+        - Assess navigation structure and information architecture
+        - Check loading states and empty states
+
+        Accessibility (WCAG 2.1 AA):
+        - Check color contrast ratios (4.5:1 text, 3:1 large text)
+        - Verify keyboard navigation for all interactive elements
+        - Check ARIA labels and roles
+        - Verify focus management in modals and dynamic content
+        - Check screen reader compatibility
+
+        Consistency:
+        - Verify design pattern consistency across pages
+        - Check terminology consistency
+        - Validate responsive behavior
+        Output: UX audit findings with severity and WCAG references.
+
+    reporter:
+      role: UX improvement report writer
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Create a UX improvement report:
+        - Executive summary with overall UX maturity score
+        - Prioritized findings by user impact
+        - Before/after improvement mockup descriptions
+        - Specific code-level fixes for accessibility issues
+        - User flow optimization recommendations
+        - Quick wins vs strategic improvements matrix
+        - Benchmark against competitor UX where relevant
+        Output: actionable UX report with prioritized improvement backlog.
+
+  connections:
+    - from: auditor
+      to: reporter
+
+  budget:
+    max_usd: 1.50
+
+# ─── 4. Wireframe Describer ──────────────────────────────────
+---
+id: wireframe-describer
+name: Wireframe Describer
+category: creative
+description: Create detailed wireframe descriptions and specifications for UI pages
+tags: [wireframe, ui-design, specification, layout]
+difficulty: beginner
+estimatedCost: "$0.15-0.60"
+config:
+  name: wireframe-describer
+
+  agents:
+    planner:
+      role: UI layout planner
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [read, web_search]
+      prompt: |
+        Plan the UI layout requirements:
+        - Identify all content elements needed on the page
+        - Research UI patterns for similar page types
+        - Define user goals and primary actions per page
+        - List data requirements and dynamic elements
+        - Note platform constraints (mobile, tablet, desktop)
+        Output: content inventory and user flow requirements per page.
+
+    describer:
+      role: Wireframe specification writer
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Write detailed wireframe specifications:
+        For each page/screen:
+        - Layout grid (columns, breakpoints)
+        - Component placement with spatial relationships
+        - Content hierarchy and visual weight
+        - Interactive elements with behavior descriptions
+        - State descriptions (loading, empty, error, success)
+        - Mobile adaptations and responsive breakpoints
+        - Micro-interactions and transitions
+        - Annotation notes for developers
+        Use ASCII art or structured text to describe layouts clearly.
+        Output: wireframe specification document ready for designer implementation.
+
+  connections:
+    - from: planner
+      to: describer
+
+  budget:
+    max_usd: 0.60
+
+# ─── 5. Color Palette Generator ──────────────────────────────
+---
+id: color-palette-generator
+name: Color Palette Generator
+category: creative
+description: Generate accessible color palettes with semantic naming and usage guidelines
+tags: [colors, palette, accessibility, design-tokens]
+difficulty: beginner
+estimatedCost: "$0.10-0.50"
+config:
+  name: color-palette-generator
+
+  agents:
+    generator:
+      role: Color system designer
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write, web_search]
+      prompt: |
+        Generate a comprehensive color palette system:
+        - Primary color: 10 shades (50-950) from input base color
+        - Secondary/accent color: complementary or analogous, 10 shades
+        - Neutral/gray scale: 10 shades for text, borders, backgrounds
+        - Semantic colors: success (green), warning (amber), error (red), info (blue)
+        - Each semantic color with 3 variants (light, default, dark)
+
+        For every color provide:
+        - Hex code, RGB, and HSL values
+        - WCAG contrast ratio against white and black backgrounds
+        - Recommended use cases (text, background, border, accent)
+
+        Design guidelines:
+        - Light mode and dark mode variants
+        - Accessible color combinations for text/background pairs
+        - Usage rules (maximum palette per page, primary/accent ratios)
+        - CSS custom property naming convention
+        - Tailwind config snippet
+
+        Output: complete color system with tokens, accessibility data, and CSS config.
+
+  budget:
+    max_usd: 0.50
+
+# ─── 6. Icon Set Planner ─────────────────────────────────────
+---
+id: icon-set-planner
+name: Icon Set Planner
+category: creative
+description: Plan a consistent icon set with style guidelines and usage documentation
+tags: [icons, iconography, design-guidelines, visual-design]
+difficulty: beginner
+estimatedCost: "$0.15-0.60"
+config:
+  name: icon-set-planner
+
+  agents:
+    planner:
+      role: Icon set architect
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [read, grep, glob, web_search]
+      prompt: |
+        Plan the icon set requirements:
+        - Inventory all icons currently used in the product
+        - Identify missing icons for planned features
+        - Categorize icons by function (navigation, action, status, object)
+        - Research icon style trends (outline, solid, duotone, animated)
+        - Evaluate existing icon libraries for fit (Lucide, Heroicons, Phosphor)
+        Output: icon inventory and requirements with category breakdown.
+
+    documenter:
+      role: Icon style guide author
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Create icon set guidelines and documentation:
+        - Define icon style rules (stroke width, corner radius, grid, optical size)
+        - Specify standard sizes (16px, 20px, 24px, 32px) and their use cases
+        - Create naming convention (category-action format)
+        - Write usage guidelines per category
+        - Define color rules (when to use colored vs monochrome)
+        - Specify padding and touch target requirements
+        - Document animation guidelines for interactive icons
+        - Create implementation guide (SVG sprites, React components, CSS)
+        - List the complete icon inventory with name and description
+        Output: icon style guide and implementation documentation.
+
+  connections:
+    - from: planner
+      to: documenter
+
+  budget:
+    max_usd: 0.60

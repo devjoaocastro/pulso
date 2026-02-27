@@ -1,0 +1,441 @@
+# ═══════════════════════════════════════════════════════════════
+# DevOps & Infrastructure Templates — Pulso Swarm Gallery
+# ═══════════════════════════════════════════════════════════════
+
+# ─── 1. Incident Response ────────────────────────────────────
+---
+id: incident-response
+name: Incident Response
+category: devops
+description: Structured incident triage, investigation, and resolution workflow
+tags: [incident, on-call, triage, postmortem]
+difficulty: advanced
+estimatedCost: "$0.50-2.00"
+config:
+  name: incident-response
+
+  agents:
+    triager:
+      role: Incident triage specialist
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [read, grep, glob, web_search]
+      prompt: |
+        Perform initial incident triage:
+        - Classify severity (P0/P1/P2/P3) based on user impact
+        - Identify affected services and dependencies
+        - Gather recent deployments and configuration changes
+        - Check for known issues or similar past incidents
+        - Determine initial blast radius
+        Output: triage report with severity, affected services, and probable cause area.
+
+    investigator:
+      role: Root cause investigator
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, grep, glob, bash]
+      prompt: |
+        Investigate the incident using triage findings:
+        - Analyze logs and error patterns in the codebase
+        - Trace the failure path through service dependencies
+        - Check for resource exhaustion (memory, CPU, connections)
+        - Identify the root cause and contributing factors
+        - Develop a fix or mitigation strategy
+        - Write the rollback plan if fix fails
+        Output: root cause analysis with fix strategy and rollback plan.
+
+    postmortem-writer:
+      role: Postmortem document author
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Write a blameless postmortem document:
+        - Timeline of events (detection, response, resolution)
+        - Root cause analysis (5 Whys)
+        - Impact assessment (duration, users affected, data impact)
+        - What went well during response
+        - What could be improved
+        - Action items with owners and deadlines
+        - Prevention measures for similar incidents
+        Format as a structured postmortem template.
+
+  connections:
+    - from: triager
+      to: investigator
+    - from: investigator
+      to: postmortem-writer
+
+  budget:
+    max_usd: 2.00
+
+# ─── 2. Infrastructure Audit ─────────────────────────────────
+---
+id: infrastructure-audit
+name: Infrastructure Audit
+category: devops
+description: Comprehensive audit of cloud infrastructure for best practices
+tags: [audit, cloud, infrastructure, best-practices]
+difficulty: intermediate
+estimatedCost: "$0.30-1.50"
+config:
+  name: infrastructure-audit
+
+  agents:
+    scanner:
+      role: Infrastructure configuration scanner
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [read, grep, glob]
+      prompt: |
+        Scan infrastructure configuration files:
+        - Review Terraform/CloudFormation/Pulumi configs
+        - Check Dockerfile and docker-compose files
+        - Audit Kubernetes manifests (resource limits, health checks)
+        - Review CI/CD pipeline configurations
+        - Check environment variable management
+        Output: inventory of all infrastructure configs with initial findings.
+
+    auditor:
+      role: Infrastructure best practices auditor
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write, web_search]
+      prompt: |
+        Audit infrastructure against best practices:
+        - Security: encryption at rest/transit, least-privilege IAM, secrets management
+        - Reliability: redundancy, health checks, auto-scaling, backups
+        - Performance: resource sizing, caching layers, CDN usage
+        - Cost: right-sizing, reserved instances, unused resources
+        - Observability: logging, metrics, alerting, tracing
+        - Compliance: tagging standards, region compliance
+        Output: audit report with findings rated by severity and remediation steps.
+
+  connections:
+    - from: scanner
+      to: auditor
+
+  budget:
+    max_usd: 1.50
+
+# ─── 3. Monitoring Setup ─────────────────────────────────────
+---
+id: monitoring-setup
+name: Monitoring Setup
+category: devops
+description: Design monitoring, alerting, and observability for your services
+tags: [monitoring, alerting, observability, metrics]
+difficulty: intermediate
+estimatedCost: "$0.30-1.00"
+config:
+  name: monitoring-setup
+
+  agents:
+    planner:
+      role: Observability architect
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, grep, glob, web_search]
+      prompt: |
+        Design a monitoring and observability strategy:
+        - Identify key metrics per service (latency, error rate, throughput)
+        - Define SLIs, SLOs, and error budgets
+        - Plan alert thresholds and escalation policies
+        - Design dashboard layouts (overview, per-service, on-call)
+        - Recommend logging strategy (structured logs, log levels)
+        - Plan distributed tracing implementation
+        Output: observability design document with metric definitions and alert rules.
+
+    implementer:
+      role: Monitoring configuration writer
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write, grep, glob]
+      prompt: |
+        Create monitoring configurations based on the design:
+        - Write Prometheus/Grafana dashboard JSON configs
+        - Create alerting rules (PagerDuty/Opsgenie format)
+        - Write health check endpoints
+        - Create structured logging middleware
+        - Write runbook templates for each alert
+        - Configure SLO tracking
+        Output: ready-to-deploy monitoring configuration files.
+
+  connections:
+    - from: planner
+      to: implementer
+
+  budget:
+    max_usd: 1.00
+
+# ─── 4. Deployment Pipeline ──────────────────────────────────
+---
+id: deployment-pipeline
+name: Deployment Pipeline
+category: devops
+description: Design a robust CI/CD deployment pipeline with rollback support
+tags: [ci-cd, deployment, pipeline, automation]
+difficulty: intermediate
+estimatedCost: "$0.30-1.50"
+config:
+  name: deployment-pipeline
+
+  agents:
+    architect:
+      role: Deployment pipeline architect
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, grep, glob, web_search]
+      prompt: |
+        Design the deployment pipeline:
+        - Define stages: build, test, security scan, staging, production
+        - Choose deployment strategy (blue-green, canary, rolling)
+        - Plan rollback mechanisms (automatic and manual)
+        - Design environment promotion flow
+        - Plan feature flag integration
+        - Define approval gates for production
+        Output: pipeline architecture document with stage definitions.
+
+    implementer:
+      role: Pipeline configuration implementer
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write, grep, glob]
+      prompt: |
+        Implement the deployment pipeline:
+        - Write GitHub Actions / GitLab CI workflow files
+        - Create deployment scripts with health checks
+        - Implement rollback scripts
+        - Set up environment-specific configurations
+        - Add smoke test automation for post-deploy verification
+        - Configure notification webhooks (Slack/Discord)
+        Output: complete CI/CD configuration files ready for use.
+
+  connections:
+    - from: architect
+      to: implementer
+
+  budget:
+    max_usd: 1.50
+
+# ─── 5. Cloud Cost Optimization ──────────────────────────────
+---
+id: cloud-cost-optimization
+name: Cloud Cost Optimization
+category: devops
+description: Analyze cloud spending and recommend cost reduction strategies
+tags: [cloud, cost, optimization, aws, gcp, azure]
+difficulty: intermediate
+estimatedCost: "$0.30-1.50"
+config:
+  name: cloud-cost-optimization
+
+  agents:
+    analyzer:
+      role: Cloud cost analyst
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [read, grep, glob, web_search]
+      prompt: |
+        Analyze cloud infrastructure costs:
+        - Review infrastructure configs for resource sizing
+        - Identify over-provisioned instances and storage
+        - Check for idle/unused resources (unattached volumes, stopped instances)
+        - Analyze data transfer patterns and costs
+        - Review reserved instance and savings plan coverage
+        - Check for unnecessary cross-region traffic
+        Output: itemized cost analysis with waste identification.
+
+    optimizer:
+      role: Cloud cost optimization strategist
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Create a cloud cost optimization plan:
+        - Recommend right-sizing for each over-provisioned resource
+        - Suggest reserved instance or savings plan purchases
+        - Identify spot instance candidates for non-critical workloads
+        - Recommend storage tier optimization (hot/warm/cold)
+        - Suggest architectural changes for cost efficiency (serverless, caching)
+        - Calculate estimated monthly savings per recommendation
+        - Prioritize by savings impact and implementation effort
+        Output: optimization plan with ROI estimates and implementation order.
+
+  connections:
+    - from: analyzer
+      to: optimizer
+
+  budget:
+    max_usd: 1.50
+
+# ─── 6. Disaster Recovery Plan ───────────────────────────────
+---
+id: disaster-recovery-plan
+name: Disaster Recovery Plan
+category: devops
+description: Create a comprehensive disaster recovery and business continuity plan
+tags: [disaster-recovery, business-continuity, backup, resilience]
+difficulty: advanced
+estimatedCost: "$0.50-2.00"
+config:
+  name: disaster-recovery-plan
+
+  agents:
+    risk-assessor:
+      role: Risk and impact assessor
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, grep, glob, web_search]
+      prompt: |
+        Assess disaster recovery risks:
+        - Inventory all critical systems and their dependencies
+        - Identify single points of failure
+        - Assess current backup coverage and RPO/RTO gaps
+        - Evaluate data replication strategies
+        - Map critical business processes to technical dependencies
+        - Rate risks by likelihood and business impact
+        Output: risk assessment matrix with prioritized vulnerability list.
+
+    planner:
+      role: DR plan author
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Create a disaster recovery plan:
+        - Define RPO and RTO targets per system tier
+        - Design backup strategy (frequency, retention, testing)
+        - Create failover procedures for each critical system
+        - Write step-by-step recovery runbooks
+        - Define communication plan (who to notify, when, how)
+        - Plan DR testing schedule and procedures
+        - Document escalation matrix
+        - Include vendor contact information and SLA details
+        Output: complete DR plan document ready for organizational review.
+
+  connections:
+    - from: risk-assessor
+      to: planner
+
+  budget:
+    max_usd: 2.00
+
+# ─── 7. Load Testing Plan ────────────────────────────────────
+---
+id: load-testing-plan
+name: Load Testing Plan
+category: devops
+description: Design load tests, define performance baselines, and stress test endpoints
+tags: [load-testing, performance, stress-test, benchmarking]
+difficulty: intermediate
+estimatedCost: "$0.30-1.00"
+config:
+  name: load-testing-plan
+
+  agents:
+    planner:
+      role: Load test architect
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, grep, glob, web_search]
+      prompt: |
+        Design a load testing strategy:
+        - Identify critical user flows to test
+        - Define performance baselines and targets (p50, p95, p99 latency)
+        - Choose appropriate test types (load, stress, soak, spike)
+        - Plan traffic patterns that mimic real usage
+        - Identify data setup requirements
+        - Define pass/fail criteria
+        Output: load test plan with scenarios, targets, and acceptance criteria.
+
+    script-writer:
+      role: Load test script writer
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write, grep]
+      prompt: |
+        Write load test scripts based on the plan:
+        - Create k6 or Artillery test scripts for each scenario
+        - Include realistic think times and user behavior patterns
+        - Add proper assertion checks per endpoint
+        - Configure ramp-up and ramp-down patterns
+        - Include data parameterization for test users
+        - Add custom metric collection points
+        - Write a results analysis template
+        Output: executable load test scripts with run instructions.
+
+  connections:
+    - from: planner
+      to: script-writer
+
+  budget:
+    max_usd: 1.00
+
+# ─── 8. Container Security Scan ──────────────────────────────
+---
+id: container-security-scan
+name: Container Security Scan
+category: devops
+description: Audit Dockerfiles and container configs for security vulnerabilities
+tags: [docker, container, security, hardening]
+difficulty: intermediate
+estimatedCost: "$0.20-1.00"
+config:
+  name: container-security-scan
+
+  agents:
+    scanner:
+      role: Container configuration scanner
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [read, grep, glob]
+      prompt: |
+        Scan all container configurations:
+        - Audit Dockerfiles for security anti-patterns
+        - Check base image freshness and CVE exposure
+        - Review docker-compose files for privileged containers
+        - Check for hardcoded secrets in build args or env vars
+        - Verify container runs as non-root user
+        - Check resource limits and capabilities
+        Output: findings list with severity ratings per container.
+
+    hardener:
+      role: Container security hardening specialist
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write, web_search]
+      prompt: |
+        Harden containers based on scan findings:
+        - Rewrite Dockerfiles using multi-stage builds and minimal base images
+        - Remove unnecessary packages and reduce attack surface
+        - Implement proper secrets management (build secrets, runtime injection)
+        - Add security scanning to CI pipeline (Trivy, Grype)
+        - Configure read-only filesystems where possible
+        - Set proper seccomp and AppArmor profiles
+        - Write container security policy document
+        Output: hardened Dockerfile examples and security policy recommendations.
+
+  connections:
+    - from: scanner
+      to: hardener
+
+  budget:
+    max_usd: 1.00

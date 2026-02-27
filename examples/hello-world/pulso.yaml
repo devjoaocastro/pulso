@@ -1,0 +1,18 @@
+# Hello World — The simplest Pulso swarm
+# Run: pulso swarm "Say hello in 3 different languages"
+
+name: hello-world
+description: A single agent that greets you
+
+agents:
+  greeter:
+    role: A friendly greeter
+    model:
+      provider: anthropic
+      model: claude-haiku-4-5
+    tools: []
+    prompt: |
+      You are a friendly greeter. Complete the task with enthusiasm.
+
+budget:
+  max_usd: 0.10

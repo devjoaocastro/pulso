@@ -1,0 +1,162 @@
+# ═══════════════════════════════════════════════════════════════
+# Forge Discovery Swarm — Market Research + Validation + Plan
+# Runs once when user describes their skill/product
+# ═══════════════════════════════════════════════════════════════
+---
+id: forge-discovery
+name: Forge Discovery
+category: forge
+description: Research market, validate demand, and generate a business plan from a user's skill description
+tags: [forge, discovery, market-research, business-plan]
+difficulty: intermediate
+estimatedCost: "$0.05-0.40"
+config:
+  name: forge-discovery
+  description: Analyze a user's skill/product, research the market, validate demand, and produce a complete business plan
+
+  providers:
+    fast:
+      provider: openrouter
+      model: openrouter/free
+    smart:
+      provider: openrouter
+      model: openrouter/free
+    genius:
+      provider: openrouter
+      model: openrouter/free
+
+  agents:
+    market-scanner:
+      role: Market Research Analyst
+      model: $fast
+      tools: [web_search, web_fetch]
+      prompt: |
+        You are researching a market opportunity for a new micro-business.
+
+        **User's skill/product**: {{task}}
+
+        Conduct thorough market research:
+        1. **Market Size** — Search for the market size of this niche. Estimate TAM/SAM/SOM.
+        2. **Trends** — What are the current trends? Is demand growing or declining?
+        3. **Competition** — Who are the top 5-10 competitors? What do they charge? What's their positioning?
+        4. **Keywords** — What search terms do potential customers use? Estimate monthly search volume.
+        5. **Pricing** — What's the price range in this market? What's the sweet spot?
+        6. **Channels** — Where do potential customers hang out? (Instagram, TikTok, local markets, etc.)
+
+        Focus on the Portuguese/European market first, then global opportunities.
+        Output structured data with numbers and sources.
+
+    niche-strategist:
+      role: Niche Strategy Expert
+      model: $smart
+      tools: [web_search, web_fetch]
+      depends_on: [market-scanner]
+      prompt: |
+        Using the market research data from upstream, identify the best niche angle.
+
+        **User's skill/product**: {{task}}
+
+        Analyze:
+        1. **Competitive Gaps** — What are competitors NOT doing well? Where's the opportunity?
+        2. **Unique Positioning** — How should this business differentiate? What's the unique angle?
+        3. **Target Audience** — Define the ideal customer persona (age, income, location, pain points).
+        4. **Value Proposition** — Write a compelling one-sentence value proposition.
+        5. **Pricing Strategy** — Recommend specific pricing (not a range) with justification.
+        6. **Quick Wins** — What are 3 things that could generate revenue in the first week?
+
+        Be specific and actionable. No generic advice.
+
+    validator:
+      role: Demand Validator
+      model: $smart
+      tools: [web_search, web_fetch]
+      depends_on: [market-scanner]
+      prompt: |
+        Validate real demand for this business idea using social signals and data.
+
+        **User's skill/product**: {{task}}
+
+        Check these sources:
+        1. **Reddit** — Search relevant subreddits. Are people asking for this? What are their pain points?
+        2. **Social Media** — Search Instagram/TikTok hashtags. What's the engagement like?
+        3. **Google Trends** — Is interest growing, stable, or declining?
+        4. **Forums/Communities** — Any niche-specific forums where people discuss this?
+        5. **Reviews** — What do competitor reviews say? What complaints exist?
+
+        Calculate a **Demand Score (0-100)** based on:
+        - Search volume trend (0-25)
+        - Social engagement (0-25)
+        - Forum activity (0-25)
+        - Competitor review sentiment (0-25)
+
+        Be honest. If demand is low, say so. It's better to pivot now than fail later.
+
+    plan-writer:
+      role: Business Plan Generator
+      model: $genius
+      tools: [web_fetch]
+      depends_on: [market-scanner, niche-strategist, validator]
+      prompt: |
+        You are creating a complete business plan based on all the research above.
+
+        **User's skill/product**: {{task}}
+
+        Write the plan in this format:
+
+        ## Business Plan
+
+        ### Executive Summary
+        One paragraph describing the business opportunity.
+
+        ### Business Name Suggestions
+        5 name options with brief justification for each.
+
+        ### Value Proposition
+        Clear, compelling statement of what makes this business unique.
+
+        ### Target Market
+        - Primary audience (persona)
+        - Market size estimate
+        - Growth trend
+
+        ### Products/Services
+        - List each product/service with:
+          - Name
+          - Description
+          - Recommended price
+          - Estimated demand
+
+        ### Revenue Projections (Monthly)
+        | Scenario | Month 1 | Month 3 | Month 6 | Month 12 |
+        |----------|---------|---------|---------|----------|
+        | Conservative | ... | ... | ... | ... |
+        | Moderate | ... | ... | ... | ... |
+        | Optimistic | ... | ... | ... | ... |
+
+        ### Marketing Strategy
+        - Top 3 channels to focus on
+        - Content strategy (what type of content, how often)
+        - First week action plan
+
+        ### Competitive Advantages
+        - List 3-5 specific advantages over competitors
+
+        ### Risks & Mitigation
+        - Top 3 risks with mitigation strategies
+
+        ### Demand Validation Score
+        Include the demand score from the validator with breakdown.
+
+        ### Next Steps
+        Clear action items to start building.
+
+        Write in the user's preferred language. Be specific with numbers and timelines.
+        This plan should feel like it was written by a seasoned business consultant.
+
+  connections:
+    - from: market-scanner
+      to: niche-strategist
+    - from: market-scanner
+      to: validator
+    - from: [market-scanner, niche-strategist, validator]
+      to: plan-writer

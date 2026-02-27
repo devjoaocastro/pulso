@@ -1,0 +1,427 @@
+# ═══════════════════════════════════════════════════════════════
+# Data & Analytics Templates — Pulso Swarm Gallery
+# ═══════════════════════════════════════════════════════════════
+
+# ─── 1. ETL Pipeline Designer ────────────────────────────────
+---
+id: etl-pipeline-designer
+name: ETL Pipeline Designer
+category: data
+description: Design and implement ETL pipelines for data integration workflows
+tags: [etl, data-integration, pipeline, transformation]
+difficulty: advanced
+estimatedCost: "$0.50-2.00"
+config:
+  name: etl-pipeline-designer
+
+  agents:
+    architect:
+      role: ETL pipeline architect
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, grep, glob, web_search]
+      prompt: |
+        Design the ETL pipeline architecture:
+        - Map source systems and their data formats (API, database, files)
+        - Define extraction strategy per source (full load, incremental, CDC)
+        - Design transformation rules (cleaning, normalization, enrichment)
+        - Plan the target schema and loading strategy
+        - Design error handling and retry logic
+        - Plan data validation checkpoints
+        - Define scheduling and orchestration
+        Output: ETL pipeline design document with data flow diagrams.
+
+    implementer:
+      role: ETL pipeline implementer
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write, grep, glob]
+      prompt: |
+        Implement the ETL pipeline based on the design:
+        - Write extraction scripts for each data source
+        - Implement transformation logic with data validation
+        - Create loading procedures with upsert handling
+        - Add comprehensive logging and monitoring hooks
+        - Write idempotent operations for safe re-runs
+        - Create data quality assertion tests
+        - Document pipeline configuration and dependencies
+        Output: complete ETL pipeline code with configuration and tests.
+
+  connections:
+    - from: architect
+      to: implementer
+
+  budget:
+    max_usd: 2.00
+
+# ─── 2. Data Quality Audit ───────────────────────────────────
+---
+id: data-quality-audit
+name: Data Quality Audit
+category: data
+description: Audit datasets for completeness, accuracy, consistency, and freshness
+tags: [data-quality, audit, validation, cleaning]
+difficulty: intermediate
+estimatedCost: "$0.30-1.00"
+config:
+  name: data-quality-audit
+
+  agents:
+    profiler:
+      role: Data profiling specialist
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [read, grep, glob]
+      prompt: |
+        Profile the dataset:
+        - Calculate completeness (null/missing values per column)
+        - Identify data type mismatches
+        - Detect duplicate records
+        - Calculate value distribution and outliers
+        - Check referential integrity across related tables
+        - Measure data freshness (staleness of records)
+        Output: data profiling report with statistics per column.
+
+    auditor:
+      role: Data quality auditor
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Perform a comprehensive data quality audit:
+        - Score each dimension: completeness, accuracy, consistency, timeliness, uniqueness
+        - Identify root causes for quality issues
+        - Classify issues by business impact (critical, high, medium, low)
+        - Recommend data cleaning procedures
+        - Suggest validation rules to prevent future issues
+        - Create a data quality scorecard
+        - Propose monitoring alerts for quality degradation
+        Output: data quality audit report with scorecard and remediation plan.
+
+  connections:
+    - from: profiler
+      to: auditor
+
+  budget:
+    max_usd: 1.00
+
+# ─── 3. Dashboard Builder ────────────────────────────────────
+---
+id: dashboard-builder
+name: Dashboard Builder
+category: data
+description: Design data dashboards with metrics, layouts, and visualization recommendations
+tags: [dashboard, visualization, metrics, reporting]
+difficulty: intermediate
+estimatedCost: "$0.30-1.50"
+config:
+  name: dashboard-builder
+
+  agents:
+    metrics-designer:
+      role: Metrics and KPI designer
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [read, grep, glob]
+      prompt: |
+        Define the dashboard metrics and data requirements:
+        - Identify key metrics and KPIs for the audience
+        - Define metric calculations (formulas, aggregations, filters)
+        - Map data sources needed for each metric
+        - Determine refresh frequency requirements
+        - Define drill-down paths from summary to detail
+        Output: metrics specification with data source mappings.
+
+    dashboard-designer:
+      role: Dashboard layout and visualization designer
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Design the dashboard layout and visualizations:
+        - Organize metrics in a logical visual hierarchy
+        - Choose optimal chart types per metric (line, bar, heatmap, table, etc.)
+        - Design filter and parameter controls
+        - Plan responsive layout for different screen sizes
+        - Add contextual elements (targets, benchmarks, period comparisons)
+        - Write SQL queries or data transformations for each widget
+        - Include color scheme and conditional formatting rules
+        - Add alert thresholds for key metrics
+        Output: complete dashboard specification with queries, layout, and visualization configs.
+
+  connections:
+    - from: metrics-designer
+      to: dashboard-designer
+
+  budget:
+    max_usd: 1.50
+
+# ─── 4. SQL Query Optimizer ──────────────────────────────────
+---
+id: sql-query-optimizer
+name: SQL Query Optimizer
+category: data
+description: Analyze and optimize slow SQL queries for better performance
+tags: [sql, optimization, performance, database]
+difficulty: intermediate
+estimatedCost: "$0.20-1.00"
+config:
+  name: sql-query-optimizer
+
+  agents:
+    analyzer:
+      role: SQL query performance analyst
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [read, grep, glob]
+      prompt: |
+        Analyze the SQL queries for performance issues:
+        - Identify missing or unused indexes
+        - Detect N+1 query patterns
+        - Find full table scans and cartesian joins
+        - Check for unnecessary subqueries
+        - Identify queries that could benefit from CTEs or window functions
+        - Note any anti-patterns (SELECT *, implicit type casting)
+        Output: list of queries with identified performance issues.
+
+    optimizer:
+      role: SQL optimization specialist
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Optimize the identified queries:
+        - Rewrite queries for better execution plans
+        - Add index recommendations with CREATE INDEX statements
+        - Replace correlated subqueries with JOINs where beneficial
+        - Implement proper pagination instead of OFFSET
+        - Add query hints where appropriate
+        - Explain the optimization reasoning for each change
+        - Estimate performance improvement per optimization
+        Output: optimized queries with before/after comparison and index DDL.
+
+  connections:
+    - from: analyzer
+      to: optimizer
+
+  budget:
+    max_usd: 1.00
+
+# ─── 5. Data Migration Planner ───────────────────────────────
+---
+id: data-migration-planner
+name: Data Migration Planner
+category: data
+description: Plan and validate data migrations between systems or schemas
+tags: [migration, data-transfer, validation, mapping]
+difficulty: advanced
+estimatedCost: "$0.50-2.00"
+config:
+  name: data-migration-planner
+
+  agents:
+    mapper:
+      role: Data mapping specialist
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, grep, glob]
+      prompt: |
+        Create the data migration mapping:
+        - Document source schema with data types and constraints
+        - Document target schema with data types and constraints
+        - Create field-level mapping (source -> target)
+        - Identify transformation rules (type conversion, value mapping, concatenation)
+        - Flag unmapped fields and data loss risks
+        - Note referential integrity dependencies and migration order
+        Output: complete field mapping document with transformation rules.
+
+    planner:
+      role: Migration execution planner
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Create the migration execution plan:
+        - Define migration phases (test, pilot, full)
+        - Create migration scripts based on field mappings
+        - Design validation queries (row counts, checksums, sample comparisons)
+        - Plan rollback procedures
+        - Estimate migration duration and downtime requirements
+        - Create parallel-run comparison strategy
+        - Write acceptance criteria for each phase
+        - Document communication plan for stakeholders
+        Output: migration runbook with scripts, validation queries, and rollback procedures.
+
+  connections:
+    - from: mapper
+      to: planner
+
+  budget:
+    max_usd: 2.00
+
+# ─── 6. Anomaly Detector ─────────────────────────────────────
+---
+id: anomaly-detector
+name: Anomaly Detector
+category: data
+description: Detect anomalies and outliers in datasets with root cause analysis
+tags: [anomaly-detection, outliers, monitoring, analysis]
+difficulty: intermediate
+estimatedCost: "$0.30-1.00"
+config:
+  name: anomaly-detector
+
+  agents:
+    detector:
+      role: Statistical anomaly detector
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [read, grep, glob]
+      prompt: |
+        Detect anomalies in the dataset:
+        - Calculate statistical baselines (mean, median, standard deviation)
+        - Identify values beyond 2-3 standard deviations
+        - Detect sudden changes in trend or seasonality
+        - Find missing data patterns
+        - Check for impossible or logically inconsistent values
+        - Identify temporal anomalies (unusual time patterns)
+        Output: list of detected anomalies with statistical context.
+
+    analyst:
+      role: Anomaly investigation analyst
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write, web_search]
+      prompt: |
+        Investigate and explain detected anomalies:
+        - Classify each anomaly (data error, real event, seasonal, systemic)
+        - Correlate anomalies with external events or system changes
+        - Assess business impact of each anomaly
+        - Recommend actions (fix data, investigate further, alert, ignore)
+        - Suggest automated detection rules for recurring patterns
+        - Create anomaly monitoring dashboard specifications
+        Output: anomaly investigation report with classifications and recommended actions.
+
+  connections:
+    - from: detector
+      to: analyst
+
+  budget:
+    max_usd: 1.00
+
+# ─── 7. Report Generator ─────────────────────────────────────
+---
+id: report-generator
+name: Report Generator
+category: data
+description: Generate formatted business reports from raw data with insights
+tags: [reporting, business-intelligence, insights, analytics]
+difficulty: beginner
+estimatedCost: "$0.20-0.80"
+config:
+  name: report-generator
+
+  agents:
+    data-processor:
+      role: Data aggregation specialist
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [read, grep, glob]
+      prompt: |
+        Process and aggregate raw data for reporting:
+        - Calculate summary statistics and KPIs
+        - Create period-over-period comparisons (MoM, QoQ, YoY)
+        - Segment data by relevant dimensions
+        - Identify top/bottom performers in each category
+        - Calculate trends and growth rates
+        Output: aggregated data tables ready for report formatting.
+
+    report-writer:
+      role: Business report writer
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Write a professional business report:
+        - Executive summary with key findings (1 paragraph)
+        - KPI scorecards with traffic light indicators
+        - Trend analysis with narrative explanation
+        - Segment deep-dives for notable performers
+        - Chart and table recommendations with data
+        - Key insights and what they mean for the business
+        - Recommended actions based on the data
+        Format as a clean, executive-ready document.
+
+  connections:
+    - from: data-processor
+      to: report-writer
+
+  budget:
+    max_usd: 0.80
+
+# ─── 8. Data Catalog Builder ─────────────────────────────────
+---
+id: data-catalog-builder
+name: Data Catalog Builder
+category: data
+description: Document datasets with metadata, lineage, and usage guidelines
+tags: [data-catalog, metadata, documentation, governance]
+difficulty: intermediate
+estimatedCost: "$0.30-1.50"
+config:
+  name: data-catalog-builder
+
+  agents:
+    discoverer:
+      role: Data asset discoverer
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [read, grep, glob]
+      prompt: |
+        Discover and inventory data assets:
+        - Scan schema files, migration scripts, and database configs
+        - Identify all tables, views, and data models
+        - Extract column names, types, and constraints
+        - Find data flow references in application code
+        - Identify data sources and consumers
+        Output: raw data asset inventory with schema details.
+
+    cataloger:
+      role: Data catalog author
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Build a comprehensive data catalog:
+        - Write business-friendly descriptions for each table and column
+        - Document data types, constraints, and valid values
+        - Map data lineage (source -> transformation -> destination)
+        - Classify data sensitivity (PII, financial, public)
+        - Define data ownership and stewardship
+        - Add sample queries for common use cases
+        - Document data refresh schedules and SLAs
+        - Create a glossary of business terms to technical fields
+        Output: complete data catalog document organized by domain.
+
+  connections:
+    - from: discoverer
+      to: cataloger
+
+  budget:
+    max_usd: 1.50

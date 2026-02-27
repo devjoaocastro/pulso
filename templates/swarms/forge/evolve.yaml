@@ -1,0 +1,164 @@
+# ═══════════════════════════════════════════════════════════════
+# Forge Evolve Swarm — Weekly Analytics + Optimization + Strategy
+# Runs weekly for Fleet-tier businesses
+# ═══════════════════════════════════════════════════════════════
+---
+id: forge-evolve
+name: Forge Evolve (Weekly)
+category: forge
+description: Weekly performance analysis, A/B testing, strategy optimization, and growth recommendations
+tags: [forge, evolve, analytics, optimization, strategy]
+difficulty: advanced
+estimatedCost: "$0.15-0.90"
+config:
+  name: forge-evolve-weekly
+  description: Deep analysis and optimization of business performance with strategic improvements
+
+  providers:
+    fast:
+      provider: openrouter
+      model: openrouter/free
+    smart:
+      provider: openrouter
+      model: openrouter/free
+    genius:
+      provider: openrouter
+      model: openrouter/free
+
+  agents:
+    analytics-agent:
+      role: Business Analytics Expert
+      model: $smart
+      tools: [web_search, web_fetch, calculate, memory_store, memory_recall]
+      prompt: |
+        Perform a deep weekly analysis of business performance.
+
+        **Business Context**: {{task}}
+
+        Analyze (last 7 days vs previous 7 days):
+
+        1. **Revenue Analysis**
+           - Total revenue, average order value, conversion rate
+           - Revenue by product/service
+           - Revenue by source (organic, ads, referral, social)
+           - Week-over-week growth rate
+
+        2. **Marketing Performance**
+           - Posts published: engagement rate per post
+           - Best performing content (type, time, topic)
+           - Worst performing content (why?)
+           - Hashtag effectiveness
+           - Follower growth
+
+        3. **Sales Pipeline**
+           - Leads generated (by source)
+           - Conversion rate (lead → customer)
+           - Average deal cycle time
+           - Lost deals analysis (why did they not convert?)
+
+        4. **Customer Insights**
+           - Support tickets by category
+           - Customer satisfaction indicators
+           - Common questions/complaints
+           - Repeat purchase rate
+
+        5. **Cost Analysis**
+           - Agent costs (LLM tokens + tools)
+           - Ad spend (if any)
+           - Cost per lead, cost per acquisition
+           - ROI by channel
+
+        Output structured data with specific numbers, percentages, and comparisons.
+
+    optimizer-agent:
+      role: Growth Strategy Optimizer
+      model: $genius
+      tools: [web_search, web_fetch, calculate, memory_recall]
+      depends_on: [analytics-agent]
+      prompt: |
+        Based on the weekly analytics, generate specific optimization strategies.
+
+        **Business Context**: {{task}}
+
+        For each area, propose concrete changes:
+
+        1. **Content Optimization**
+           - What content type should we do MORE of? (based on engagement data)
+           - What should we STOP doing? (low engagement)
+           - New content ideas based on trends
+           - A/B test proposals (test what against what)
+
+        2. **Pricing Optimization**
+           - Should prices change? (based on conversion data)
+           - Bundle/upsell opportunities
+           - Discount strategy for slow periods
+
+        3. **Channel Optimization**
+           - Which channels have best ROI?
+           - Should we add/remove any channels?
+           - Posting time optimization (when does the audience engage most?)
+
+        4. **Sales Process**
+           - Response time improvements
+           - Script improvements (based on objections)
+           - Follow-up sequence tuning
+
+        5. **Growth Experiments**
+           - 3 experiments to run next week
+           - Each with: hypothesis, metric, expected impact, effort
+
+        Be specific and data-driven. No vague suggestions.
+        Each recommendation should have an expected impact estimate.
+
+    reporter-agent:
+      role: Weekly Performance Reporter
+      model: $smart
+      tools: [memory_recall, calculate]
+      depends_on: [analytics-agent, optimizer-agent]
+      prompt: |
+        Create the weekly performance report for the business owner.
+
+        Use all data from the analytics and optimizer agents upstream.
+
+        Format:
+
+        ## Weekly Report — Week of {date}
+
+        ### Executive Summary (3 sentences max)
+        Overall performance + key highlight + key concern.
+
+        ### Scorecard
+        | Metric | This Week | Last Week | Change |
+        |--------|-----------|-----------|--------|
+        | Revenue | €XX | €XX | +X% |
+        | Orders | X | X | +X% |
+        | Leads | X | X | +X% |
+        | Conversion Rate | X% | X% | +X% |
+        | Customer Satisfaction | X/10 | X/10 | +X |
+        | Agent Cost | €XX | €XX | -X% |
+        | ROI | Xx | Xx | +X% |
+
+        ### Top Wins
+        - 3 biggest wins this week
+
+        ### Areas for Improvement
+        - 3 things that need attention
+
+        ### Strategy Changes for Next Week
+        - What's changing and why (from optimizer)
+        - Expected impact
+
+        ### Experiments Running
+        - Active A/B tests with current results
+
+        ### Growth Forecast
+        - Next month projection based on current trends
+
+        Write in the owner's preferred language.
+        Include specific numbers everywhere. No vague statements.
+
+  connections:
+    - from: analytics-agent
+      to: optimizer-agent
+    - from: [analytics-agent, optimizer-agent]
+      to: reporter-agent

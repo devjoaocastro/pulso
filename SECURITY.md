@@ -6,42 +6,56 @@ If you discover a security vulnerability in Pulso, please report it responsibly.
 
 **Do NOT open a public GitHub issue for security vulnerabilities.**
 
-Instead, please email us at:
+Instead, please email: **security@runpulso.com**
 
-**security@runpulso.com**
+We will respond within 48 hours and work with you to resolve the issue.
 
-Include:
-- Description of the vulnerability
-- Steps to reproduce
-- Potential impact
-- Any suggested fix (optional)
+## Supported Versions
 
-## Response Timeline
+| Version | Supported |
+| ------- | --------- |
+| 0.1.x   | Yes       |
 
-- **Acknowledgment**: Within 24 hours
-- **Assessment**: Within 72 hours
-- **Resolution**: Based on severity (Critical: 7 days, High: 14 days, Medium: 30 days)
+## How We Handle Your Data
 
-## Scope
+### Credential Encryption
 
-This policy applies to:
-- The Pulso web application (app.runpulso.com)
-- The Pulso API (api.runpulso.com)
-- The Pulso Companion daemon (@pulso/companion on npm)
-- The Pulso Companion App (macOS menu bar app)
-- The Pulso mobile application
+- All API keys are encrypted with **AES-256-GCM** before storage
+- Encryption keys are derived using **PBKDF2** with 100,000 iterations
+- Unique salt and IV per credential
+- Zero-knowledge architecture — the server cannot read your API keys at rest
 
-## Out of Scope
+### Authentication
 
-- Third-party AI provider services (Anthropic, OpenAI, Google, etc.)
-- Third-party messaging platforms (Telegram, WhatsApp, Slack, etc.)
-- Social engineering attacks against Pulso employees
-- Denial of service attacks
+- Passwords hashed with PBKDF2 (100K iterations, SHA-256)
+- JWT tokens with HMAC-SHA256, 7-day expiry
+- Timing-safe comparison to prevent timing attacks
 
-## Recognition
+### Agent Execution
 
-We appreciate security researchers who help keep Pulso safe. With your permission, we will acknowledge your contribution in our security advisories.
+Pulso agents can execute actions on your behalf. Security controls include:
 
----
+- **Sandboxed execution** — each agent runs in isolation
+- **Explicit tool permissions** — agents only access tools you authorize
+- **Budget enforcement** — hard spending limits prevent runaway costs
+- **Audit logging** — all agent actions are logged
 
-CodeAhead Lda | security@runpulso.com
+### Self-Hosting
+
+When self-hosting Pulso, ensure:
+
+- `JWT_SECRET` is a strong random value (32+ characters)
+- `ENCRYPTION_KEY` is generated securely
+- D1/KV stores are not publicly accessible
+- HTTPS is enforced in production
+
+## Security Considerations
+
+In Advanced Mode, agents can:
+
+- Read and write files on the filesystem
+- Execute shell commands
+- Make network requests
+
+Always review your `pulso.yaml` configuration and agent prompts carefully.
+Use the `permissions` field to restrict agent capabilities.

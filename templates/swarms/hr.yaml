@@ -1,0 +1,320 @@
+# ═══════════════════════════════════════════════════════════════
+# HR & People Templates — Pulso Swarm Gallery
+# ═══════════════════════════════════════════════════════════════
+
+# ─── 1. Job Description Writer ───────────────────────────────
+---
+id: job-description-writer
+name: Job Description Writer
+category: hr
+description: Research role requirements and write compelling, inclusive job descriptions
+tags: [hiring, job-posting, recruiting, dei]
+difficulty: beginner
+estimatedCost: "$0.15-0.60"
+config:
+  name: job-description-writer
+
+  agents:
+    researcher:
+      role: Role and market researcher
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [web_search, web_fetch]
+      prompt: |
+        Research the role and market context:
+        - Find salary ranges for the role in target locations
+        - Research common requirements and skills for similar positions
+        - Identify competing job postings and their positioning
+        - Note industry trends for the role
+        - Research inclusive language best practices
+        Output: role research brief with market data and competitor analysis.
+
+    writer:
+      role: Job description copywriter
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Write a compelling job description:
+        - Engaging opening that sells the opportunity (not just lists duties)
+        - Clear role summary (2-3 sentences)
+        - Responsibilities section (8-12 bullet points, action verbs)
+        - Requirements: must-have (5-7) and nice-to-have (3-5)
+        - Benefits and perks section
+        - Company culture paragraph
+        - Salary range and location/remote details
+        - Use inclusive language (avoid gendered terms, unnecessary requirements)
+        - Remove bias signals (age, education snobbery)
+        - Include equal opportunity statement
+        Output: ready-to-publish job description with SEO-friendly title.
+
+  connections:
+    - from: researcher
+      to: writer
+
+  budget:
+    max_usd: 0.60
+
+# ─── 2. Resume Screener ──────────────────────────────────────
+---
+id: resume-screener
+name: Resume Screener
+category: hr
+description: Screen resumes against job requirements with objective scoring criteria
+tags: [recruiting, screening, resumes, hiring]
+difficulty: intermediate
+estimatedCost: "$0.20-1.00"
+config:
+  name: resume-screener
+
+  agents:
+    screener:
+      role: Resume screening specialist
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [read, grep, glob]
+      prompt: |
+        Screen resumes against the job requirements:
+        - Score each must-have requirement (met/partially met/not met)
+        - Score each nice-to-have requirement
+        - Check for relevant experience years
+        - Note career progression and trajectory
+        - Identify transferable skills from different industries
+        - Flag potential red flags (gaps, inconsistencies)
+        Do NOT discriminate based on name, age, gender, or school prestige.
+        Output: scored candidate list with requirement match matrix.
+
+    evaluator:
+      role: Candidate evaluation summarizer
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Create candidate evaluation summaries:
+        - Rank candidates by overall fit score
+        - Write 3-4 sentence summary per candidate highlighting strengths
+        - Note specific areas to probe in interviews
+        - Group into tiers: strong match, possible match, not a fit
+        - Suggest personalized interview questions per candidate
+        - Create comparison matrix of top candidates
+        Output: candidate ranking with evaluation summaries and interview prep notes.
+
+  connections:
+    - from: screener
+      to: evaluator
+
+  budget:
+    max_usd: 1.00
+
+# ─── 3. Onboarding Checklist ────────────────────────────────
+---
+id: onboarding-checklist
+name: Onboarding Checklist Generator
+category: hr
+description: Generate role-specific onboarding checklists with timelines and resources
+tags: [onboarding, new-hire, checklist, orientation]
+difficulty: beginner
+estimatedCost: "$0.10-0.50"
+config:
+  name: onboarding-checklist
+
+  agents:
+    planner:
+      role: Onboarding experience designer
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, web_search]
+      prompt: |
+        Design a comprehensive onboarding program:
+        Pre-day 1:
+        - IT setup (accounts, hardware, access)
+        - Welcome package contents
+        - Buddy/mentor assignment
+
+        Week 1 (Orientation):
+        - Company overview and values
+        - Team introductions and structure
+        - Tools and systems training
+        - Security and compliance training
+        - First 1:1 with manager
+
+        Week 2-4 (Ramp-up):
+        - Role-specific training modules
+        - Shadowing sessions
+        - First small project assignment
+        - Key stakeholder meetings
+
+        Day 30/60/90 milestones:
+        - Expected deliverables per milestone
+        - Check-in meetings and feedback loops
+        - Evaluation criteria
+
+        Output: complete onboarding checklist with owner assignments and timeline.
+
+  budget:
+    max_usd: 0.50
+
+# ─── 4. Performance Review Prep ──────────────────────────────
+---
+id: performance-review-prep
+name: Performance Review Prep
+category: hr
+description: Prepare structured performance review materials with examples and coaching tips
+tags: [performance, review, feedback, development]
+difficulty: intermediate
+estimatedCost: "$0.20-0.80"
+config:
+  name: performance-review-prep
+
+  agents:
+    data-gatherer:
+      role: Performance data collector
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [read, grep, glob]
+      prompt: |
+        Collect performance review inputs:
+        - Gather goal completions and key results from the review period
+        - Collect peer feedback themes and quotes
+        - Review project deliverables and outcomes
+        - Note recognition and awards received
+        - Identify areas of growth and development
+        - Compile relevant metrics (productivity, quality, collaboration)
+        Output: organized performance data per review dimension.
+
+    review-writer:
+      role: Performance review facilitator
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Prepare performance review materials:
+        - Write assessment summaries per competency area
+        - Provide specific examples (Situation-Behavior-Impact format)
+        - Rate performance with calibration guidelines
+        - Draft constructive feedback for development areas
+        - Write coaching-oriented growth suggestions (not criticism)
+        - Create development plan with specific goals
+        - Prepare conversation guide for the review meeting
+        - Include self-reflection prompts for the employee
+        Output: complete review package with assessments, development plan, and meeting guide.
+
+  connections:
+    - from: data-gatherer
+      to: review-writer
+
+  budget:
+    max_usd: 0.80
+
+# ─── 5. Compensation Benchmarker ─────────────────────────────
+---
+id: compensation-benchmarker
+name: Compensation Benchmarker
+category: hr
+description: Research market compensation data and benchmark roles for competitive pay
+tags: [compensation, salary, benchmarking, total-rewards]
+difficulty: intermediate
+estimatedCost: "$0.30-1.00"
+config:
+  name: compensation-benchmarker
+
+  agents:
+    researcher:
+      role: Compensation data researcher
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [web_search, web_fetch]
+      prompt: |
+        Research market compensation data:
+        - Search salary data from Levels.fyi, Glassdoor, Payscale, LinkedIn
+        - Segment by location, experience level, and company size
+        - Collect base salary, bonus, equity, and total compensation data
+        - Note benefits and perks that affect total rewards
+        - Research cost-of-living adjustments for different locations
+        - Identify compensation trends (remote premiums, skill premiums)
+        Output: market compensation data organized by role and segment.
+
+    analyst:
+      role: Compensation analysis specialist
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Analyze compensation competitiveness:
+        - Compare current compensation to market percentiles (25th, 50th, 75th)
+        - Identify under-market and over-market positions
+        - Calculate cost of bringing all roles to target percentile
+        - Recommend pay band structures per level
+        - Suggest equity and bonus frameworks
+        - Model budget impact of proposed adjustments
+        - Create compensation philosophy recommendations
+        Output: benchmarking report with pay bands, gap analysis, and budget impact.
+
+  connections:
+    - from: researcher
+      to: analyst
+
+  budget:
+    max_usd: 1.00
+
+# ─── 6. Culture Survey Analyzer ──────────────────────────────
+---
+id: culture-survey-analyzer
+name: Culture Survey Analyzer
+category: hr
+description: Analyze employee engagement and culture survey results with action plans
+tags: [culture, engagement, survey, employee-experience]
+difficulty: intermediate
+estimatedCost: "$0.30-1.00"
+config:
+  name: culture-survey-analyzer
+
+  agents:
+    data-analyst:
+      role: Survey data analyst
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [read, grep, glob]
+      prompt: |
+        Analyze survey response data:
+        - Calculate overall engagement score and per-dimension scores
+        - Identify statistically significant differences by department, tenure, level
+        - Find highest and lowest scoring dimensions
+        - Compare to previous survey periods (trend analysis)
+        - Analyze open-ended response themes (sentiment and topic)
+        - Calculate response rates by segment
+        Output: statistical analysis with segmented scores and theme clusters.
+
+    strategist:
+      role: Culture and engagement strategist
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Develop action plans from survey insights:
+        - Prioritize focus areas by impact on engagement and feasibility
+        - Write specific, measurable action items per focus area
+        - Assign ownership to leadership levels (exec, manager, team)
+        - Create a communication plan for sharing results with employees
+        - Design pulse survey cadence for tracking improvement
+        - Benchmark against industry engagement data
+        - Recommend quick wins (< 30 days) and strategic initiatives (< 6 months)
+        Output: engagement action plan with prioritized initiatives and measurement framework.
+
+  connections:
+    - from: data-analyst
+      to: strategist
+
+  budget:
+    max_usd: 1.00

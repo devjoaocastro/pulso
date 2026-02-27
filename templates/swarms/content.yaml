@@ -1,0 +1,608 @@
+# ═══════════════════════════════════════════════════════════════
+# Content & Writing Templates — Pulso Swarm Gallery
+# ═══════════════════════════════════════════════════════════════
+
+---
+id: blog-post-pipeline
+name: Blog Post Pipeline
+category: content
+description: Research, write, edit, and SEO-optimize a blog post
+tags: [blog, seo, writing, content-marketing]
+difficulty: beginner
+estimatedCost: "$0.30-1.50"
+config:
+  name: blog-post-pipeline
+
+  agents:
+    researcher:
+      role: Topic researcher
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [web_search, web_fetch]
+      prompt: |
+        Research the topic thoroughly:
+        - Find 5+ authoritative sources
+        - Identify key statistics and data points
+        - Note competing articles and their angles
+        - Find unique insights not commonly covered
+        Output: research brief with sources and key points.
+
+    writer:
+      role: Content writer
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Write a compelling blog post based on the research:
+        - Hook readers with a strong opening
+        - Use subheadings for scanability
+        - Include data and examples
+        - Write conversationally but authoritatively
+        - 1500-2500 words
+        - Include a CTA at the end
+
+    editor:
+      role: Editor and SEO optimizer
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write, edit]
+      prompt: |
+        Edit and optimize the blog post:
+        - Fix grammar, clarity, and flow
+        - Optimize title and meta description for SEO
+        - Add internal/external link suggestions
+        - Ensure proper heading hierarchy (H1, H2, H3)
+        - Suggest featured image description
+        - Add schema markup suggestions
+
+  connections:
+    - from: researcher
+      to: writer
+    - from: writer
+      to: editor
+
+  budget:
+    max_usd: 1.50
+
+---
+id: social-media-campaign
+name: Social Media Campaign
+category: content
+description: Generate a week of social media content across platforms
+tags: [social-media, twitter, linkedin, instagram]
+difficulty: beginner
+estimatedCost: "$0.20-0.80"
+config:
+  name: social-media-campaign
+
+  agents:
+    strategist:
+      role: Social media strategist
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [web_search]
+      prompt: |
+        Plan a 7-day social media campaign:
+        - Define daily themes and content pillars
+        - Research trending topics and hashtags
+        - Plan platform-specific content (Twitter, LinkedIn, Instagram)
+        - Include engagement triggers (questions, polls, CTAs)
+        Output: content calendar with daily posts per platform.
+
+    copywriter:
+      role: Social media copywriter
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Write all social media posts for the campaign:
+        - Twitter: punchy, 280 chars, with hashtags
+        - LinkedIn: professional tone, 200-300 words
+        - Instagram: visual-first captions with emoji
+        - Include variations for A/B testing
+        - Suggest image/video concepts for each post
+        Format as a publishable content sheet.
+
+  connections:
+    - from: strategist
+      to: copywriter
+
+  budget:
+    max_usd: 0.80
+
+---
+id: newsletter-pipeline
+name: Newsletter Pipeline
+category: content
+description: Curate, write, and format a weekly newsletter
+tags: [newsletter, email, curation]
+difficulty: beginner
+estimatedCost: "$0.20-0.80"
+config:
+  name: newsletter-pipeline
+
+  agents:
+    curator:
+      role: Content curator
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [web_search, web_fetch]
+      prompt: |
+        Curate this week's best content for the newsletter:
+        - Find 8-12 noteworthy articles, tools, or updates
+        - Categorize by topic
+        - Write 2-sentence summaries for each
+        - Identify the #1 story for the featured section
+
+    writer:
+      role: Newsletter writer
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Write the newsletter:
+        - Engaging subject line (50 chars max)
+        - Personal intro/editorial (150 words)
+        - Featured story with analysis
+        - Curated links with summaries
+        - Quick tips or tool recommendations
+        - Closing with CTA
+        Format in clean HTML/Markdown.
+
+  connections:
+    - from: curator
+      to: writer
+
+  budget:
+    max_usd: 0.80
+
+---
+id: technical-documentation
+name: Technical Documentation Writer
+category: content
+description: Generate comprehensive technical documentation from code
+tags: [docs, technical-writing, api-docs]
+difficulty: intermediate
+estimatedCost: "$0.30-1.50"
+config:
+  name: technical-documentation
+
+  agents:
+    analyzer:
+      role: Code documentation analyzer
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [read, grep, glob]
+      prompt: |
+        Analyze the codebase structure for documentation:
+        - Map all public APIs and interfaces
+        - Identify configuration options
+        - Note usage patterns and examples
+        - Find undocumented features
+        Output: documentation outline with sections.
+
+    writer:
+      role: Technical writer
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Write comprehensive documentation:
+        - Getting Started guide with step-by-step setup
+        - API Reference with request/response examples
+        - Configuration guide with all options explained
+        - Troubleshooting section with common issues
+        - Architecture overview for contributors
+        Write in clear, jargon-free Markdown.
+
+  connections:
+    - from: analyzer
+      to: writer
+
+  budget:
+    max_usd: 1.50
+
+---
+id: product-copy-generator
+name: Product Copy Generator
+category: content
+description: Generate landing page copy, taglines, and feature descriptions
+tags: [copywriting, landing-page, product]
+difficulty: beginner
+estimatedCost: "$0.10-0.50"
+config:
+  name: product-copy-generator
+
+  agents:
+    researcher:
+      role: Product and market researcher
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [web_search, read]
+      prompt: |
+        Research the product and its market:
+        - Identify target audience pain points
+        - Analyze competitor messaging
+        - Find unique selling propositions
+        - Note emotional triggers that resonate
+        Output: messaging framework.
+
+    copywriter:
+      role: Conversion copywriter
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Write high-converting product copy:
+        - 5 hero headline options (benefit-driven)
+        - 3 tagline options (memorable, under 10 words)
+        - Feature descriptions (benefit → feature → proof)
+        - Social proof suggestions
+        - CTA button text options
+        - FAQ section (8-10 questions)
+        Write for clarity and emotional impact.
+
+  connections:
+    - from: researcher
+      to: copywriter
+
+  budget:
+    max_usd: 0.50
+
+---
+id: content-repurposer
+name: Content Repurposer
+category: content
+description: Transform one piece of content into multiple formats
+tags: [repurpose, content-marketing, cross-platform]
+difficulty: beginner
+estimatedCost: "$0.15-0.60"
+config:
+  name: content-repurposer
+
+  agents:
+    repurposer:
+      role: Content transformation specialist
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Transform the source content into multiple formats:
+        1. Twitter thread (10-15 tweets)
+        2. LinkedIn article (500 words)
+        3. Instagram carousel script (10 slides)
+        4. YouTube video script (5 minutes)
+        5. Podcast talking points (15 minutes)
+        6. Email sequence (3 emails)
+        7. Slide deck outline (15 slides)
+        Maintain the core message while adapting tone per platform.
+
+  budget:
+    max_usd: 0.60
+
+---
+id: case-study-writer
+name: Case Study Writer
+category: content
+description: Research and write a compelling customer case study
+tags: [case-study, testimonial, b2b]
+difficulty: intermediate
+estimatedCost: "$0.20-1.00"
+config:
+  name: case-study-writer
+
+  agents:
+    researcher:
+      role: Case study researcher
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [read, web_search]
+      prompt: |
+        Gather case study information:
+        - Customer background and industry
+        - Problem/challenge they faced
+        - Solution implemented (our product)
+        - Results and metrics
+        - Timeline of implementation
+        Structure using the Challenge → Solution → Results framework.
+
+    writer:
+      role: Case study writer
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Write a compelling case study:
+        - Headline with key result metric
+        - Executive summary (2-3 sentences)
+        - Customer profile sidebar
+        - Challenge section (empathize with reader)
+        - Solution section (how the product helped)
+        - Results section (specific metrics, quotes)
+        - Key takeaways
+        Write like a story, not a feature list.
+
+  connections:
+    - from: researcher
+      to: writer
+
+  budget:
+    max_usd: 1.00
+
+---
+id: seo-content-cluster
+name: SEO Content Cluster
+category: content
+description: Plan and write a topic cluster for SEO authority
+tags: [seo, content-cluster, pillar-page]
+difficulty: advanced
+estimatedCost: "$1.00-4.00"
+config:
+  name: seo-content-cluster
+
+  agents:
+    keyword-researcher:
+      role: SEO keyword researcher
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [web_search]
+      prompt: |
+        Research keywords for the topic cluster:
+        - Identify 1 pillar keyword (high volume, medium difficulty)
+        - Find 10-15 supporting long-tail keywords
+        - Map search intent for each (informational, transactional, navigational)
+        - Identify content gaps vs top-ranking pages
+        Output: keyword map with volume estimates and content types.
+
+    content-planner:
+      role: Content strategist
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Plan the content cluster:
+        - 1 pillar page (comprehensive, 3000+ words)
+        - 8-12 cluster articles (1000-1500 words each)
+        - Internal linking strategy between articles
+        - Content briefs for each piece
+        Output: full content plan with outlines.
+
+    pillar-writer:
+      role: Pillar page writer
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Write the pillar page:
+        - Comprehensive coverage of the main topic
+        - Sections that link to cluster articles
+        - Include data, examples, and expert insights
+        - Optimize for the pillar keyword
+        - Table of contents at the top
+        3000+ words, authoritative tone.
+
+  connections:
+    - from: keyword-researcher
+      to: content-planner
+    - from: content-planner
+      to: pillar-writer
+
+  budget:
+    max_usd: 4.00
+
+---
+id: email-sequence-builder
+name: Email Sequence Builder
+category: content
+description: Design and write automated email sequences
+tags: [email, automation, drip-campaign, nurture]
+difficulty: intermediate
+estimatedCost: "$0.20-1.00"
+config:
+  name: email-sequence-builder
+
+  agents:
+    strategist:
+      role: Email sequence strategist
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [read, web_search]
+      prompt: |
+        Design the email sequence:
+        - Define the goal (onboarding, nurture, win-back, etc.)
+        - Map the customer journey and touchpoints
+        - Plan 5-8 emails with timing and triggers
+        - Define segmentation criteria
+        Output: sequence blueprint with email briefs.
+
+    copywriter:
+      role: Email copywriter
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Write each email in the sequence:
+        - Subject lines (3 options per email, A/B testable)
+        - Preview text
+        - Body copy (concise, scannable)
+        - Clear CTA per email
+        - PS line for urgency/value
+        Match tone to sequence stage (welcome vs urgency).
+
+  connections:
+    - from: strategist
+      to: copywriter
+
+  budget:
+    max_usd: 1.00
+
+---
+id: video-script-writer
+name: Video Script Writer
+category: content
+description: Research and write video scripts with shot suggestions
+tags: [video, youtube, script, storytelling]
+difficulty: intermediate
+estimatedCost: "$0.20-1.00"
+config:
+  name: video-script-writer
+
+  agents:
+    researcher:
+      role: Video topic researcher
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [web_search]
+      prompt: |
+        Research for the video:
+        - Top-performing videos on this topic (titles, hooks)
+        - Key points viewers want to know
+        - Common questions and misconceptions
+        - Competitor video analysis
+        Output: content brief for the scriptwriter.
+
+    scriptwriter:
+      role: Video scriptwriter
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Write a video script:
+        - Hook (first 5 seconds to retain viewers)
+        - Introduction with promise
+        - Main content in clear sections
+        - B-roll and visual suggestions per section
+        - Transitions between sections
+        - Strong outro with CTA
+        - Timestamps for description
+        Format: two columns (VISUAL | AUDIO/NARRATION).
+
+  connections:
+    - from: researcher
+      to: scriptwriter
+
+  budget:
+    max_usd: 1.00
+
+---
+id: press-release-writer
+name: Press Release Writer
+category: content
+description: Write a professional press release with distribution plan
+tags: [press-release, pr, media]
+difficulty: beginner
+estimatedCost: "$0.10-0.50"
+config:
+  name: press-release-writer
+
+  agents:
+    writer:
+      role: Press release writer
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write, web_search]
+      prompt: |
+        Write a professional press release:
+        - FOR IMMEDIATE RELEASE header
+        - Compelling headline (max 10 words)
+        - Subheadline with context
+        - City, Date dateline
+        - Lead paragraph (who, what, when, where, why)
+        - Supporting quotes from key stakeholders
+        - Background paragraph (boilerplate)
+        - Contact information
+        - ### (end mark)
+        Follow AP Style guide, keep under 500 words.
+
+  budget:
+    max_usd: 0.50
+
+---
+id: whitepaper-pipeline
+name: Whitepaper Pipeline
+category: content
+description: Research, write, and design a B2B whitepaper
+tags: [whitepaper, b2b, thought-leadership]
+difficulty: advanced
+estimatedCost: "$1.00-4.00"
+config:
+  name: whitepaper-pipeline
+
+  agents:
+    researcher:
+      role: Industry researcher
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [web_search, web_fetch]
+      prompt: |
+        Conduct deep research for the whitepaper:
+        - Industry trends and market data
+        - Expert opinions and analyst reports
+        - Case studies and real-world examples
+        - Statistical data with sources
+        - Competitive landscape
+        Output: research document with cited sources.
+
+    writer:
+      role: Whitepaper author
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Write the whitepaper (3000-5000 words):
+        - Executive Summary
+        - Introduction (problem statement)
+        - Background (industry context)
+        - Analysis (data-driven insights)
+        - Solution framework
+        - Implementation guide
+        - Conclusion and recommendations
+        - References
+        Use a professional, authoritative tone with charts/table suggestions.
+
+    editor:
+      role: Whitepaper editor
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [read, edit]
+      prompt: |
+        Edit the whitepaper for:
+        - Factual accuracy and source verification
+        - Logical flow and argument strength
+        - Grammar and professional tone
+        - Consistent formatting
+        - Visual element placement suggestions
+
+  connections:
+    - from: researcher
+      to: writer
+    - from: writer
+      to: editor
+
+  budget:
+    max_usd: 4.00

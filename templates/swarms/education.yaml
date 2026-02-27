@@ -1,0 +1,349 @@
+# ═══════════════════════════════════════════════════════════════
+# Education & Learning Templates — Pulso Swarm Gallery
+# ═══════════════════════════════════════════════════════════════
+
+# ─── 1. Curriculum Designer ──────────────────────────────────
+---
+id: curriculum-designer
+name: Curriculum Designer
+category: education
+description: Design comprehensive curricula with learning objectives, modules, and assessments
+tags: [curriculum, instructional-design, learning-objectives, pedagogy]
+difficulty: advanced
+estimatedCost: "$0.50-2.00"
+config:
+  name: curriculum-designer
+
+  agents:
+    researcher:
+      role: Educational content researcher
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [web_search, web_fetch]
+      prompt: |
+        Research for curriculum development:
+        - Review existing curricula for the subject area
+        - Identify industry standards and competency frameworks
+        - Research pedagogical best practices for the target audience
+        - Find prerequisite knowledge requirements
+        - Gather assessment methodology recommendations
+        - Identify available learning resources and tools
+        Output: curriculum research brief with standards and resource inventory.
+
+    designer:
+      role: Curriculum architect
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Design a comprehensive curriculum:
+        - Define program-level learning outcomes (Bloom's taxonomy verbs)
+        - Structure modules in logical progression (prerequisite chains)
+        - For each module:
+          - Learning objectives (specific, measurable)
+          - Topics and subtopics with time allocation
+          - Teaching methods (lecture, discussion, lab, project)
+          - Required readings and resources
+          - Activities and exercises
+          - Assessment method and rubric criteria
+        - Design summative assessments (exams, projects, portfolios)
+        - Create a pacing guide with weekly schedule
+        - Include differentiation strategies for varied skill levels
+        - Add feedback and iteration loops
+        Output: complete curriculum document with module breakdowns and assessment rubrics.
+
+    reviewer:
+      role: Curriculum quality reviewer
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Review the curriculum for quality and completeness:
+        - Verify alignment between objectives, activities, and assessments
+        - Check cognitive level progression (knowledge -> application -> creation)
+        - Identify gaps in topic coverage
+        - Assess time allocation realism
+        - Verify accessibility and inclusivity
+        - Suggest improvements based on pedagogical research
+        Output: reviewed curriculum with quality notes and improvement suggestions.
+
+  connections:
+    - from: researcher
+      to: designer
+    - from: designer
+      to: reviewer
+
+  budget:
+    max_usd: 2.00
+
+# ─── 2. Quiz Generator ───────────────────────────────────────
+---
+id: quiz-generator
+name: Quiz Generator
+category: education
+description: Generate quizzes and practice tests with varied question types and explanations
+tags: [quiz, assessment, testing, practice]
+difficulty: beginner
+estimatedCost: "$0.15-0.60"
+config:
+  name: quiz-generator
+
+  agents:
+    question-writer:
+      role: Assessment question designer
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write, web_search]
+      prompt: |
+        Generate a comprehensive quiz:
+        - Multiple choice questions (4 options, 1 correct) -- 10 questions
+        - True/False with justification required -- 5 questions
+        - Short answer questions -- 5 questions
+        - Scenario-based application questions -- 3 questions
+        - Fill-in-the-blank -- 5 questions
+
+        For every question:
+        - Specify the cognitive level (remember, understand, apply, analyze, evaluate, create)
+        - Write the correct answer
+        - Write detailed explanations for why each option is correct or incorrect
+        - Map to specific learning objective
+        - Tag difficulty level (easy, medium, hard)
+
+        Include answer key with scoring rubric.
+        Distribute difficulty: 30% easy, 50% medium, 20% hard.
+        Output: complete quiz with answer key and explanations.
+
+  budget:
+    max_usd: 0.60
+
+# ─── 3. Lesson Plan Creator ──────────────────────────────────
+---
+id: lesson-plan-creator
+name: Lesson Plan Creator
+category: education
+description: Create detailed lesson plans with activities, timing, and differentiation
+tags: [lesson-plan, teaching, classroom, instruction]
+difficulty: beginner
+estimatedCost: "$0.15-0.60"
+config:
+  name: lesson-plan-creator
+
+  agents:
+    planner:
+      role: Lesson plan designer
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write, web_search]
+      prompt: |
+        Create a detailed lesson plan:
+        Header:
+        - Subject, grade level/audience, duration
+        - Learning objectives (SWBAT format: students will be able to...)
+        - Required materials and preparation
+
+        Lesson Structure:
+        - Hook/opening (5 min): engaging activity to activate prior knowledge
+        - Direct instruction (15 min): key concepts with examples
+        - Guided practice (15 min): structured activity with scaffolding
+        - Independent practice (15 min): student-led application
+        - Closure (5 min): recap, exit ticket, preview next lesson
+
+        Differentiation:
+        - Modifications for struggling learners
+        - Extensions for advanced learners
+        - ELL accommodations
+
+        Assessment:
+        - Formative checks during lesson (observation, questioning)
+        - Exit ticket or quiz
+        - Homework/follow-up activity
+
+        Include teacher notes, discussion questions, and timing cues.
+        Output: ready-to-teach lesson plan with all materials.
+
+  budget:
+    max_usd: 0.60
+
+# ─── 4. Student Progress Analyzer ────────────────────────────
+---
+id: student-progress-analyzer
+name: Student Progress Analyzer
+category: education
+description: Analyze student performance data to identify trends and intervention needs
+tags: [assessment, analytics, progress-monitoring, intervention]
+difficulty: intermediate
+estimatedCost: "$0.30-1.00"
+config:
+  name: student-progress-analyzer
+
+  agents:
+    analyzer:
+      role: Student data analyst
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [read, grep, glob]
+      prompt: |
+        Analyze student performance data:
+        - Calculate individual and class averages per topic/skill
+        - Identify performance trends over time (improving, declining, plateau)
+        - Find common misconceptions from wrong answer patterns
+        - Detect achievement gaps between student groups
+        - Identify students needing intervention (below benchmark)
+        - Find students ready for acceleration (consistently above)
+        Output: statistical analysis with individual and group performance data.
+
+    advisor:
+      role: Educational intervention advisor
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Create intervention and enrichment recommendations:
+        - Group students by need: intensive support, targeted support, on track, enrichment
+        - Recommend specific interventions for struggling topics
+        - Suggest grouping strategies for differentiated instruction
+        - Design re-teaching activities for common misconceptions
+        - Create individual learning goals for at-risk students
+        - Recommend enrichment activities for advanced students
+        - Suggest parent communication talking points
+        - Design progress monitoring schedule
+        Output: intervention plan with student groupings and targeted strategies.
+
+  connections:
+    - from: analyzer
+      to: advisor
+
+  budget:
+    max_usd: 1.00
+
+# ─── 5. Tutoring Session Planner ─────────────────────────────
+---
+id: tutoring-session-planner
+name: Tutoring Session Planner
+category: education
+description: Plan personalized tutoring sessions with diagnostic questions and practice materials
+tags: [tutoring, personalized-learning, one-on-one, remediation]
+difficulty: beginner
+estimatedCost: "$0.15-0.60"
+config:
+  name: tutoring-session-planner
+
+  agents:
+    diagnostician:
+      role: Learning gap diagnostician
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [read, web_search]
+      prompt: |
+        Diagnose learning gaps for the tutoring session:
+        - Review student's current level and recent performance
+        - Identify prerequisite skills that may be missing
+        - Prepare diagnostic questions to pinpoint exact gaps
+        - Research common stumbling blocks for this topic
+        - Identify the student's learning style preferences
+        Output: diagnostic assessment with targeted questions and gap hypotheses.
+
+    session-planner:
+      role: Tutoring session designer
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Plan a personalized tutoring session (60 minutes):
+        - Warm-up review (5 min): review previous session and homework
+        - Diagnostic check (10 min): use prepared questions to confirm gaps
+        - Concept teaching (15 min): explain using multiple representations
+        - Guided practice (15 min): work through problems together with scaffolding
+        - Independent practice (10 min): student works while tutor observes
+        - Wrap-up (5 min): summarize learning, assign practice, preview next session
+
+        Include:
+        - Specific examples and analogies for the topic
+        - Practice problems (graduated difficulty)
+        - Encouraging language and growth mindset prompts
+        - Homework assignment with clear instructions
+        - Notes for next session based on predicted progress
+        Output: detailed tutoring session plan with all practice materials.
+
+  connections:
+    - from: diagnostician
+      to: session-planner
+
+  budget:
+    max_usd: 0.60
+
+# ─── 6. Course Outline Builder ───────────────────────────────
+---
+id: course-outline-builder
+name: Course Outline Builder
+category: education
+description: Build a structured online course outline with modules, lessons, and learning paths
+tags: [course-design, online-learning, modules, e-learning]
+difficulty: intermediate
+estimatedCost: "$0.30-1.00"
+config:
+  name: course-outline-builder
+
+  agents:
+    researcher:
+      role: Course content researcher
+      model:
+        provider: anthropic
+        model: claude-haiku-4-5
+      tools: [web_search, web_fetch]
+      prompt: |
+        Research for course outline development:
+        - Survey existing courses on the topic (Udemy, Coursera, YouTube)
+        - Identify what top-rated courses cover and how they structure content
+        - Find gaps in existing courses (common student complaints)
+        - Research optimal course length and lesson duration
+        - Gather data on student completion patterns
+        Output: competitive analysis of existing courses with content gap opportunities.
+
+    builder:
+      role: Course architect
+      model:
+        provider: anthropic
+        model: claude-sonnet-4-6
+      tools: [read, write]
+      prompt: |
+        Build a comprehensive course outline:
+        Course Overview:
+        - Title and subtitle (compelling, keyword-rich)
+        - Target audience and prerequisites
+        - Learning outcomes (what students will be able to do)
+        - Course duration and time commitment
+
+        Module Structure (6-10 modules):
+        For each module:
+        - Module title and description
+        - Learning objectives
+        - Lessons (3-5 per module) with format (video, text, exercise)
+        - Estimated duration per lesson
+        - Hands-on project or exercise
+        - Module quiz or assessment
+        - Resources and further reading
+
+        Course Elements:
+        - Welcome and orientation content
+        - Community/discussion prompts per module
+        - Capstone project description and rubric
+        - Certificate of completion criteria
+        - Bonus materials and next steps
+        Output: complete course outline ready for content production.
+
+  connections:
+    - from: researcher
+      to: builder
+
+  budget:
+    max_usd: 1.00
